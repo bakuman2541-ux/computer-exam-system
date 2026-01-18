@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เข้าสู่ระบบ - วิชาคอมพิวเตอร์</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <div class="bg"></div>
+
+  <main class="wrap">
+    <section class="heroCard">
+
+      <!-- Header -->
+      <header class="heroHeader">
+        <div class="heroLeft">
+          <div class="heroIcon">💻</div>
+          <div>
+            <h1 class="heroTitle">วิชาคอมพิวเตอร์</h1>
+            <p class="heroSub">เข้าสู่ระบบด้วยเลข 13 หลัก และเลขนักเรียน 4 หลัก</p>
+          </div>
+        </div>
+
+        <!-- Top Right Buttons -->
+        <div class="heroRight">
+          <!-- ✅ ลบปุ่มตรวจสอบผลออกแล้ว -->
+
+          <a class="quickBtn admin" href="admin.html">
+            <span class="quickIcon">🔐</span>
+            <span class="quickText">
+              <b>Admin</b>
+              <small>จัดการระบบ</small>
+            </span>
+          </a>
+        </div>
+      </header>
+
+      <hr class="line" />
+
+      <!-- Login Box -->
+      <section class="loginArea">
+        <div class="loginBox">
+          <form id="loginForm" class="loginForm">
+            <div class="field">
+              <label>เลขบัตรประชาชน (13 หลัก)</label>
+              <div class="inputWrap">
+                <span class="inputIcon">🪪</span>
+                <input id="citizenId" type="text" inputmode="numeric" maxlength="13" placeholder="เช่น 1234567890123" required />
+              </div>
+            </div>
+
+            <div class="field">
+              <label>เลขนักเรียน (4 หลัก)</label>
+              <div class="inputWrap">
+                <span class="inputIcon">🎓</span>
+                <input id="studentNo" type="text" inputmode="numeric" maxlength="4" placeholder="เช่น 0001" required />
+              </div>
+            </div>
+
+            <button type="submit" class="btnPrimary">เข้าสู่ระบบ</button>
+            <div id="msg" class="msg"></div>
+          </form>
+        </div>
+
+        <div class="hintBox">
+          <div class="hintTitle">📌 คำแนะนำ</div>
+          <ul class="hintList">
+            <li>กรอกเลขบัตรประชาชนให้ครบ 13 หลัก</li>
+            <li>กรอกเลขนักเรียนให้ครบ 4 หลัก</li>
+            <li>หากเข้าไม่ได้ ให้แจ้งครูผู้สอน</li>
+          </ul>
+        </div>
+      </section>
+
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,710 @@
+/* ===============================
+   GLOBAL THEME (ไม่กระทบระบบเดิม)
+   =============================== */
+:root{
+  --bg1:#7dd3fc;
+  --bg2:#fbcfe8;
+  --bg3:#a7f3d0;
+
+  --text:#0f172a;
+  --muted:#64748b;
+  --card: rgba(255,255,255,.78);
+  --border: rgba(255,255,255,.55);
+  --shadow: 0 18px 50px rgba(2,6,23,.12);
+
+  --primary:#2563eb;
+  --primary2:#1d4ed8;
+
+  /* ✅ exam theme */
+  --exam-card: rgba(255,255,255,.85);
+  --exam-border: rgba(226,232,240,.95);
+  --exam-shadow: 0 16px 40px rgba(2, 6, 23, .10);
+  --exam-soft: rgba(37,99,235,.08);
+  --exam-soft2: rgba(16,185,129,.10);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color:var(--text);
+  min-height:100vh;
+}
+
+.bg{
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(1000px 520px at 15% 10%, var(--bg1), transparent 60%),
+    radial-gradient(1000px 520px at 85% 15%, var(--bg2), transparent 60%),
+    radial-gradient(1000px 520px at 55% 90%, var(--bg3), transparent 60%),
+    linear-gradient(180deg, #f8fafc, #ffffff);
+  z-index:-2;
+}
+
+.wrap{
+  max-width: 1080px;
+  margin: 40px auto;
+  padding: 0 18px;
+}
+
+.heroCard{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 24px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(14px);
+}
+
+.heroHeader{
+  display:flex;
+  gap:18px;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.heroLeft{
+  display:flex;
+  gap:14px;
+  align-items:center;
+}
+
+.heroIcon{
+  width:52px;height:52px;
+  border-radius: 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(226,232,240,.9);
+  box-shadow: 0 12px 24px rgba(2,6,23,.08);
+  font-size: 24px;
+}
+
+.heroTitle{
+  margin:0;
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.heroSub{
+  margin:4px 0 0 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.heroRight{
+  display:flex;
+  gap:12px;
+}
+
+.quickBtn{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(226,232,240,.9);
+  box-shadow: 0 10px 20px rgba(2,6,23,.08);
+  min-width: 210px;
+}
+
+.quickBtn:hover{ transform: translateY(-1px); transition:.15s; }
+
+.quickBtn.admin{
+  background: rgba(255,255,255,.70);
+}
+
+.quickIcon{
+  width:40px;height:40px;
+  border-radius: 14px;
+  background: rgba(37,99,235,.12);
+  display:flex; align-items:center; justify-content:center;
+  font-size: 18px;
+}
+
+.quickText b{
+  display:block;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.15;
+}
+.quickText small{
+  display:block;
+  color: var(--muted);
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.line{
+  border:none;
+  border-top: 1px solid rgba(226,232,240,.9);
+  margin: 18px 0;
+}
+
+.loginArea{
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap: 16px;
+}
+
+.loginBox{
+  background: rgba(255,255,255,.75);
+  border: 1px solid rgba(226,232,240,.95);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 26px rgba(2,6,23,.08);
+}
+
+.loginForm{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+.field label{
+  display:block;
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.inputWrap{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border: 1px solid rgba(226,232,240,1);
+  background: rgba(255,255,255,.9);
+  padding: 10px 12px;
+  border-radius: 16px;
+  box-shadow: 0 12px 22px rgba(2,6,23,.06);
+}
+
+.inputIcon{
+  font-size: 18px;
+}
+
+.inputWrap input{
+  width:100%;
+  border:none;
+  outline:none;
+  font-size: 16px;
+  background:transparent;
+  font-weight: 800;
+}
+
+.btnPrimary{
+  width:100%;
+  border:none;
+  cursor:pointer;
+  border-radius: 16px;
+  padding: 12px 14px;
+  font-size: 16px;
+  font-weight: 1000;
+  color:white;
+  background: linear-gradient(180deg, var(--primary), var(--primary2));
+  box-shadow: 0 14px 26px rgba(37,99,235,.28);
+}
+
+.btnPrimary:hover{ transform: translateY(-1px); transition:.15s; }
+.btnPrimary:active{ transform: translateY(0); }
+
+.msg{
+  margin-top: 4px;
+  font-weight: 900;
+  font-size: 14px;
+}
+.msg.ok{ color:#16a34a; }
+.msg.err{ color:#dc2626; }
+
+.hintBox{
+  background: rgba(255,255,255,.60);
+  border: 1px solid rgba(226,232,240,.9);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 14px 26px rgba(2,6,23,.06);
+}
+
+.hintTitle{
+  font-weight: 1000;
+  margin-bottom: 10px;
+}
+
+.hintList{
+  margin:0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-weight: 800;
+  line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 960px){
+  .heroHeader{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .heroRight{
+    width:100%;
+    flex-wrap:wrap;
+  }
+  .quickBtn{ min-width: 220px; }
+  .loginArea{
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   ✅ EXAM UI (Scoped: ทำงานเฉพาะหน้า examPage เท่านั้น)
+   ✅ แก้ปัญหา "ข้อสอบไม่แสดง" ด้วยการไม่ยุ่งกับ layout หลัก
+   ========================================================= */
+
+/* ✅ โหมดปลอดภัย: ห้ามไปซ่อน element ใด ๆ */
+body.examPage #questions,
+body.examPage .questions,
+body.examPage .questionList,
+body.examPage .questionContainer{
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+body.examPage .wrap{
+  max-width: 1100px;
+}
+
+body.examPage .heroCard{
+  background: rgba(255,255,255,.76);
+  border: 1px solid rgba(255,255,255,.55);
+}
+
+body.examPage .loginBox,
+body.examPage .hintBox{
+  background: var(--exam-card);
+  border: 1px solid var(--exam-border);
+  box-shadow: var(--exam-shadow);
+}
+
+/* ✅ Question card (รองรับ class ได้หลายชื่อ) */
+body.examPage .questionCard,
+body.examPage .questionBox,
+body.examPage .questionItem{
+  background: var(--exam-card);
+  border: 1px solid var(--exam-border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: var(--exam-shadow);
+  backdrop-filter: blur(10px);
+}
+
+/* ✅ spacing */
+body.examPage .questionCard + .questionCard,
+body.examPage .questionBox + .questionBox,
+body.examPage .questionItem + .questionItem{
+  margin-top: 14px;
+}
+
+/* ✅ title */
+body.examPage .questionTitle,
+body.examPage .qTitle,
+body.examPage .qText{
+  font-weight: 1000;
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 0 0 12px 0;
+}
+
+/* ✅ options list */
+body.examPage .choices,
+body.examPage .options,
+body.examPage .answers{
+  display:flex;
+  flex-direction:column;
+  gap: 10px;
+}
+
+/* ✅ option row */
+body.examPage .choice,
+body.examPage .option,
+body.examPage label.optionRow,
+body.examPage .optionRow{
+  display:flex;
+  align-items:center;
+  gap: 12px;
+  border: 1px solid rgba(226,232,240,.9);
+  background: rgba(255,255,255,.92);
+  border-radius: 16px;
+  padding: 12px 12px;
+  cursor:pointer;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  box-shadow: 0 10px 18px rgba(2, 6, 23, .06);
+}
+
+body.examPage .choice:hover,
+body.examPage .option:hover,
+body.examPage .optionRow:hover{
+  transform: translateY(-1px);
+  border-color: rgba(37,99,235,.35);
+  box-shadow: 0 14px 24px rgba(37,99,235,.14);
+}
+
+/* ✅ radio */
+body.examPage input[type="radio"]{
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}
+
+/* ✅ selected */
+body.examPage .optionRow.selected,
+body.examPage .choice.selected,
+body.examPage .option.selected{
+  background: linear-gradient(180deg, rgba(37,99,235,.10), rgba(37,99,235,.06));
+  border-color: rgba(37,99,235,.40);
+}
+
+/* ✅ letter badge ก/ข/ค/ง */
+body.examPage .badge,
+body.examPage .optBadge,
+body.examPage .choiceBadge{
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight: 1000;
+  background: rgba(37,99,235,.10);
+  border: 1px solid rgba(37,99,235,.20);
+}
+
+/* ✅ option text */
+body.examPage .optText,
+body.examPage .choiceText{
+  font-weight: 900;
+  color: #0f172a;
+}
+
+/* ✅ action button */
+body.examPage .btnPrimary{
+  border-radius: 18px;
+  padding: 14px 16px;
+  letter-spacing: .2px;
+}
+
+/* ✅ mobile */
+@media (max-width: 600px){
+  body.examPage .questionTitle,
+  body.examPage .qTitle,
+  body.examPage .qText{
+    font-size: 16px;
+  }
+
+  body.examPage .choice,
+  body.examPage .option,
+  body.examPage .optionRow{
+    padding: 12px 10px;
+    border-radius: 14px;
+  }
+}
+/* ==========================================
+   ✅ EXAM - Make question boxes beautiful
+   ✅ ADD-ON ONLY (วางท้ายไฟล์ style.css)
+   ========================================== */
+
+body.examPage .questionCard,
+body.examPage .questionBox,
+body.examPage .questionItem{
+  background: rgba(255,255,255,.92);
+  border: 1px solid rgba(226,232,240,.95);
+  border-radius: 22px;
+  padding: 18px 18px;
+  box-shadow: 0 16px 40px rgba(2,6,23,.08);
+  backdrop-filter: blur(10px);
+}
+
+body.examPage .questionTitle,
+body.examPage .qTitle,
+body.examPage .qText{
+  font-size: 18px;
+  font-weight: 1000;
+  line-height: 1.4;
+  margin: 0 0 14px 0;
+  color: #0f172a;
+}
+
+/* ✅ choices container spacing */
+body.examPage .choices,
+body.examPage .options,
+body.examPage .answers{
+  display:flex;
+  flex-direction:column;
+  gap: 12px;
+}
+
+/* ✅ each option row -> modern button card */
+body.examPage label.optionRow,
+body.examPage .optionRow,
+body.examPage .choice,
+body.examPage .option{
+  position: relative;
+  display:flex;
+  align-items:center;
+  gap: 14px;
+
+  padding: 14px 14px;
+  border-radius: 18px;
+
+  background: linear-gradient(180deg, #ffffff, #f8fafc);
+  border: 1px solid rgba(226,232,240,1);
+
+  box-shadow:
+    0 10px 24px rgba(2, 6, 23, .06);
+
+  cursor:pointer;
+  transition: all .15s ease;
+}
+
+/* ✅ hover look */
+body.examPage label.optionRow:hover,
+body.examPage .optionRow:hover,
+body.examPage .choice:hover,
+body.examPage .option:hover{
+  transform: translateY(-1px);
+  border-color: rgba(37,99,235,.35);
+  box-shadow:
+    0 16px 32px rgba(37,99,235,.12),
+    0 8px 16px rgba(2,6,23,.06);
+}
+
+/* ✅ radio style */
+body.examPage input[type="radio"]{
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+}
+
+/* ✅ letter badge (ก ข ค ง) */
+body.examPage .badge,
+body.examPage .optBadge,
+body.examPage .choiceBadge{
+  width: 38px;
+  height: 38px;
+  border-radius: 14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-weight: 1000;
+  font-size: 14px;
+  color: #1e40af;
+
+  background: rgba(37,99,235,.10);
+  border: 1px solid rgba(37,99,235,.16);
+  box-shadow: 0 10px 18px rgba(37,99,235,.08);
+}
+
+/* ✅ option text */
+body.examPage .optText,
+body.examPage .choiceText{
+  font-size: 15px;
+  font-weight: 900;
+  color: #0f172a;
+  line-height: 1.5;
+}
+
+/* ✅ selected state (สำคัญมาก) */
+body.examPage .optionRow.selected,
+body.examPage label.optionRow.selected,
+body.examPage .choice.selected,
+body.examPage .option.selected{
+  background: linear-gradient(180deg, rgba(37,99,235,.14), rgba(37,99,235,.06));
+  border-color: rgba(37,99,235,.55);
+  box-shadow:
+    0 18px 40px rgba(37,99,235,.18),
+    0 10px 20px rgba(2,6,23,.06);
+}
+
+/* ✅ add a left glow bar when selected */
+body.examPage .optionRow.selected::before,
+body.examPage label.optionRow.selected::before,
+body.examPage .choice.selected::before,
+body.examPage .option.selected::before{
+  content:"";
+  position:absolute;
+  left: 10px;
+  top: 12px;
+  bottom: 12px;
+  width: 6px;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #2563eb, #22c55e);
+  box-shadow: 0 10px 24px rgba(37,99,235,.25);
+}
+
+/* ✅ mobile */
+@media (max-width: 640px){
+  body.examPage .questionCard,
+  body.examPage .questionBox,
+  body.examPage .questionItem{
+    padding: 14px;
+    border-radius: 18px;
+  }
+
+  body.examPage label.optionRow,
+  body.examPage .optionRow,
+  body.examPage .choice,
+  body.examPage .option{
+    padding: 12px 12px;
+    border-radius: 16px;
+  }
+
+  body.examPage .badge,
+  body.examPage .optBadge,
+  body.examPage .choiceBadge{
+    width: 34px;
+    height: 34px;
+    border-radius: 12px;
+  }
+}
+/* ==============================
+   Admin Exam Control - Beautiful Permission Cell
+   ✅ เพิ่มอย่างเดียว ไม่ทับของเดิม
+   ✅ เจาะจงเฉพาะหน้า admin-exam-control เท่านั้น
+================================ */
+
+/* กรณีไฟล์คุณมี class/body เฉพาะ admin ให้ใช้ก่อน (ถ้ามี) */
+.adminExamControlPage .permWrap,
+.permWrap{
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  line-height: 1.1;
+}
+
+/* แถว badge MID/FINAL ให้อยู่บรรทัดเดียวและมี gap */
+.adminExamControlPage .permWrap .badgeRow,
+.permWrap .badgeRow{
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Badge สวยขึ้น */
+.adminExamControlPage .badge,
+.badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* สี badge */
+.adminExamControlPage .badge.ok,
+.badge.ok{
+  background: rgba(34, 197, 94, 0.12);
+  border-color: rgba(34, 197, 94, 0.25);
+  color: #15803d;
+}
+
+.adminExamControlPage .badge.bad,
+.badge.bad{
+  background: rgba(239, 68, 68, 0.10);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #b91c1c;
+}
+
+.adminExamControlPage .badge.gray,
+.badge.gray{
+  background: rgba(148, 163, 184, 0.14);
+  border-color: rgba(148, 163, 184, 0.25);
+  color: #475569;
+}
+
+/* ข้อความ attempted ให้เป็นกล่องเล็ก */
+.adminExamControlPage .attemptTxt,
+.attemptTxt{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px dashed rgba(99, 102, 241, 0.22);
+  color: #3730a3;
+}
+
+/* ทำให้คอลัมน์สิทธิ์ดูไม่แน่น */
+.adminExamControlPage td.permCell,
+td.permCell{
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+/* ================================
+   Admin Exam Control - Action Button
+   ✅ วางเพิ่มท้ายไฟล์ style.css
+   ✅ ไม่กระทบส่วนอื่น
+================================ */
+
+/* ปุ่มในคอลัมน์ "จัดการ" หน้านี้เท่านั้น */
+#tbody td:last-child button {
+  appearance: none;
+  border: none !important;
+  cursor: pointer;
+
+  padding: 10px 14px;
+  min-width: 132px;
+  border-radius: 14px;
+
+  font-family: "Prompt", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+
+  color: #fff;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 10px 26px rgba(37, 99, 235, 0.25);
+
+  transition: transform 0.12s ease, box-shadow 0.12s ease, filter 0.12s ease;
+}
+
+/* hover */
+#tbody td:last-child button:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.02);
+  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.32);
+}
+
+/* active */
+#tbody td:last-child button:active {
+  transform: translateY(0px) scale(0.98);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+}
+
+/* disabled (ถ้ามีการ disable) */
+#tbody td:last-child button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  box-shadow: none;
+  transform: none;
+  filter: none;
+}
