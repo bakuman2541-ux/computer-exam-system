@@ -1,5 +1,5 @@
 // ✅ ใส่ URL WebApp ของ Apps Script ของคุณ
-const API_URL = "https://script.google.com/macros/s/AKfycbxpoC26Gm3Ieyokk7gp_ik3NcjIBnh2Sr28UcyVw8z-feIsLHQpbYNCls5MV3vNqlgGbQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby_Rd8q2Xdj1kSJOVvgho1Fcqa9OtAYMhQzcU8IHww1puOc0KZ_CMSas_-swjLZsDK20Q/exec";
 
 const levelEl = document.getElementById("level");
 const roomEl  = document.getElementById("room");
@@ -186,3 +186,4 @@ btnSave.addEventListener("click", saveRoomScores);
 
 // init
 renderTable([]);
+
