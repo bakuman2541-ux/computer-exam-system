@@ -41,10 +41,52 @@ function showStudent(student){
   p_citizenId.textContent = maskCitizenId(student.citizenId || "-");
 }
 
-// ✅ หา record ล่าสุดจาก list
+// ✅ หา record ล่าสุดจาก list (ยังใช้กับกลางภาค/ปลายภาค)
 function getLatest(list){
   if (!Array.isArray(list) || list.length === 0) return null;
   return list[list.length - 1];
+}
+
+/**
+ * ✅ รวมคะแนนงานทั้งหมด (ASSIGNMENT)
+ * - รองรับเพิ่มงานไม่จำกัด
+ * - ถ้า "ชื่องาน exam ซ้ำ" => ใช้คะแนนล่าสุดของงานนั้น (กันรวมซ้ำ)
+ * คืนค่า: { sumScore, sumTotal, items }
+ */
+function summarizeAssignments(list){
+  if (!Array.isArray(list) || list.length === 0) {
+    return { sumScore: 0, sumTotal: 0, items: [] };
+  }
+
+  // ใช้ Map เก็บงานล่าสุดตามชื่อ exam
+  const map = new Map();
+
+  for (const x of list) {
+    const examName = String(x.exam || x.name || "").trim() || "งานที่ไม่ระบุชื่อ";
+    map.set(examName, x); // ถ้าซ้ำ จะถูกทับด้วย record ล่าสุด
+  }
+
+  const items = [];
+  let sumScore = 0;
+  let sumTotal = 0;
+
+  for (const [examName, x] of map.entries()) {
+    const sc = num(x.score);
+    const tt = num(x.total);
+    sumScore += sc;
+    sumTotal += tt;
+
+    items.push({
+      exam: examName,
+      score: sc,
+      total: tt
+    });
+  }
+
+  // เรียงชื่อให้ดูเป็นระเบียบ
+  items.sort((a,b) => a.exam.localeCompare(b.exam, "th"));
+
+  return { sumScore, sumTotal, items };
 }
 
 // ✅ MAIN LOAD SCORE
@@ -77,32 +119,34 @@ async function loadScoreSummary(student){
     const mids   = scores.filter(x => String(x.type || "").toUpperCase() === "MIDTERM");
     const finals = scores.filter(x => String(x.type || "").toUpperCase() === "FINAL");
 
-    const keepLatest = getLatest(keeps);
+    // ✅ สรุปคะแนนเก็บทั้งหมด (รวมทุกงาน)
+    const keepSum = summarizeAssignments(keeps);
+
     const midLatest = getLatest(mids);
     const finalLatest = getLatest(finals);
 
-    // ✅ แสดงคะแนนเก็บ
+    // ✅ แสดงคะแนนเก็บ (รวม)
     if (keepScore){
-      keepScore.textContent = keepLatest
-        ? `${keepLatest.score} / ${keepLatest.total}`
+      keepScore.textContent = (keepSum.sumTotal > 0)
+        ? `${keepSum.sumScore} / ${keepSum.sumTotal}`
         : "ยังไม่มีคะแนน";
     }
 
-    // ✅ แสดงคะแนนกลางภาค
+    // ✅ แสดงคะแนนกลางภาค (ล่าสุด)
     midScore.textContent = midLatest
       ? `${midLatest.score} / ${midLatest.total}`
       : "ยังไม่มีคะแนน";
 
-    // ✅ แสดงคะแนนปลายภาค
+    // ✅ แสดงคะแนนปลายภาค (ล่าสุด)
     finalScore.textContent = finalLatest
       ? `${finalLatest.score} / ${finalLatest.total}`
       : "ยังไม่มีคะแนน";
 
-    const keepVal  = keepLatest ? num(keepLatest.score) : 0;
+    const keepVal  = keepSum.sumScore;
     const midVal   = midLatest ? num(midLatest.score) : 0;
     const finalVal = finalLatest ? num(finalLatest.score) : 0;
 
-    // ✅ รวมคะแนน (คะแนนเก็บ + กลางภาค + ปลายภาค)
+    // ✅ รวมคะแนน (คะแนนเก็บรวม + กลางภาค + ปลายภาค)
     totalScore.textContent = `${keepVal + midVal + finalVal} คะแนน`;
 
   }catch(err){
