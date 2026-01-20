@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>หน้าหลัก - วิชาคอมพิวเตอร์</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="bg"></div>
+
+  <main class="wrap">
+    <section class="heroCard">
+
+      <!-- HEADER -->
+      <header class="heroHeader">
+        <div class="heroLeft">
+          <div class="heroIcon">🏫</div>
+          <div>
+            <h1 class="heroTitle">หน้าหลักนักเรียน</h1>
+            <p class="heroSub" id="studentInfo">กำลังโหลดข้อมูลนักเรียน...</p>
+          </div>
+        </div>
+
+        <!-- ✅ เหลือแค่ออกจากระบบ -->
+        <div class="heroRight">
+          <button class="quickBtn admin" id="logoutBtn" type="button" style="cursor:pointer;">
+            <span class="quickIcon">🚪</span>
+            <span class="quickText">
+              <b>ออกจากระบบ</b>
+              <small>กลับหน้าเข้าสู่ระบบ</small>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <hr class="line" />
+
+      <!-- INFO + ANNOUNCEMENT -->
+      <section class="loginArea">
+
+        <!-- โปรไฟล์นักเรียน -->
+        <div class="loginBox">
+          <div style="font-weight:1000;font-size:16px;margin-bottom:10px;">🪪 ข้อมูลส่วนตัว</div>
+
+          <div id="profileCard" style="
+            padding:14px;
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,.85);
+            box-shadow:0 10px 20px rgba(2,6,23,.06);
+          ">
+
+            <div style="display:flex;gap:12px;align-items:center;">
+              <div style="
+                width:52px;height:52px;border-radius:18px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(37,99,235,.12);
+                border:1px solid rgba(191,219,254,1);
+                font-size:22px;
+              ">🎓</div>
+
+              <div style="min-width:0;">
+                <div id="p_name" style="font-weight:1000;font-size:16px;">-</div>
+                <div id="p_class" style="color:#64748b;font-weight:900;font-size:13px;margin-top:2px;">-</div>
+              </div>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div style="
+              display:grid;
+              grid-template-columns: 1fr 1fr;
+              gap:10px;
+              font-weight:900;
+              color:#0f172a;
+            ">
+              <div style="padding:10px 12px;border-radius:16px;border:1px solid rgba(226,232,240,1);background:rgba(255,255,255,.9);">
+                <div style="color:#64748b;font-size:12px;font-weight:1000;">เลขนักเรียน</div>
+                <div id="p_studentNo">-</div>
+              </div>
+
+              <div style="padding:10px 12px;border-radius:16px;border:1px solid rgba(226,232,240,1);background:rgba(255,255,255,.9);">
+                <div style="color:#64748b;font-size:12px;font-weight:1000;">เลขบัตรประชาชน</div>
+                <div id="p_citizenId">-</div>
+              </div>
+            </div>
+
+            <div style="height:10px"></div>
+
+            <div style="
+              padding:10px 12px;border-radius:16px;
+              border:1px solid rgba(226,232,240,1);
+              background:rgba(255,255,255,.9);
+              font-weight:1000;
+              display:flex;align-items:center;gap:10px;
+            ">
+              ✅ สถานะระบบ: <span style="color:#16a34a;">พร้อมใช้งาน</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ประกาศ -->
+        <div class="hintBox">
+          <div class="hintTitle">📌 ประกาศจากครู</div>
+          <ul class="hintList">
+            <li>ให้นักเรียนทำแบบทดสอบหลังเรียนจบบท</li>
+            <li>ข้อสอบกลางภาค/ปลายภาค เปิดตามกำหนดครู</li>
+          </ul>
+        </div>
+
+      </section>
+
+      <div style="height:14px"></div>
+
+      <!-- ✅ Score Summary (เพิ่มคะแนนเก็บ + ไม่รวมคะแนนสอบ) -->
+      <section class="loginBox">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+          <div style="font-weight:1000;">📊 สรุปคะแนน (คะแนนเก็บ / กลางภาค / ปลายภาค)</div>
+          <div style="color:#64748b;font-weight:900;font-size:13px;">
+            อัปเดตล่าสุด: <span id="scoreUpdated">-</span>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- ✅ เปลี่ยนเป็น 4 ช่อง -->
+        <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;" class="scoreGrid">
+
+          <!-- ✅ คะแนนเก็บ (เพิ่มใหม่) -->
+          <div style="
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,.88);
+            box-shadow:0 10px 20px rgba(2,6,23,.06);
+            padding:14px;
+          ">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="
+                width:46px;height:46px;border-radius:16px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(34,197,94,.14);
+                border:1px solid rgba(34,197,94,.22);
+                font-size:20px;
+              ">🟩</div>
+              <div>
+                <div style="font-weight:1000;">คะแนนเก็บ</div>
+                <div id="keepScore" style="color:#64748b;font-weight:900;font-size:13px;">กำลังโหลด...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- กลางภาค -->
+          <div style="
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,.88);
+            box-shadow:0 10px 20px rgba(2,6,23,.06);
+            padding:14px;
+          ">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="
+                width:46px;height:46px;border-radius:16px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(251,146,60,.16);
+                border:1px solid rgba(251,146,60,.25);
+                font-size:20px;
+              ">🟧</div>
+              <div>
+                <div style="font-weight:1000;">กลางภาค</div>
+                <div id="midScore" style="color:#64748b;font-weight:900;font-size:13px;">กำลังโหลด...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ปลายภาค -->
+          <div style="
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,.88);
+            box-shadow:0 10px 20px rgba(2,6,23,.06);
+            padding:14px;
+          ">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="
+                width:46px;height:46px;border-radius:16px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(239,68,68,.14);
+                border:1px solid rgba(239,68,68,.22);
+                font-size:20px;
+              ">🟥</div>
+              <div>
+                <div style="font-weight:1000;">ปลายภาค</div>
+                <div id="finalScore" style="color:#64748b;font-weight:900;font-size:13px;">กำลังโหลด...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- รวมคะแนนสอบ -->
+          <div style="
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,.88);
+            box-shadow:0 10px 20px rgba(2,6,23,.06);
+            padding:14px;
+          ">
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div style="
+                width:46px;height:46px;border-radius:16px;
+                display:flex;align-items:center;justify-content:center;
+                background:rgba(37,99,235,.14);
+                border:1px solid rgba(37,99,235,.22);
+                font-size:20px;
+              ">🧮</div>
+              <div>
+                <div style="font-weight:1000;">รวมคะแนนสอบ</div>
+                <div id="totalScore" style="color:#64748b;font-weight:900;font-size:13px;">กำลังโหลด...</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="height:14px"></div>
+
+        <!-- ✅ เพิ่ม id เพื่อให้ JS ล็อกปุ่มได้ -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-start;">
+          <a id="btnMidExam" class="quickBtn" href="exam-midterm.html" style="min-width:260px;">
+            <span class="quickIcon">🟧</span>
+            <span class="quickText">
+              <b>ทำข้อสอบกลางภาค</b>
+              <small>เริ่มทำแบบทดสอบ</small>
+            </span>
+          </a>
+
+          <a id="btnFinalExam" class="quickBtn admin" href="exam-final.html" style="min-width:260px;">
+            <span class="quickIcon">🟥</span>
+            <span class="quickText">
+              <b>ทำข้อสอบปลายภาค</b>
+              <small>เริ่มทำแบบทดสอบ</small>
+            </span>
+          </a>
+        </div>
+      </section>
+
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+
+  <style>
+    /* responsive แบบไม่กระทบหน้าอื่น */
+    @media (max-width: 960px){
+      .scoreGrid{ grid-template-columns: 1fr !important; }
+    }
+  </style>
+</body>
+</html>

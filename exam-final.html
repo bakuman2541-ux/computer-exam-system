@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ข้อสอบปลายภาค</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="bg"></div>
+
+  <main class="wrap">
+    <section class="heroCard">
+
+      <header class="heroHeader">
+        <div class="heroLeft">
+          <div class="heroIcon">🟥</div>
+          <div>
+            <h1 class="heroTitle">ข้อสอบปลายภาค</h1>
+            <p class="heroSub" id="sub">กำลังโหลดข้อสอบ...</p>
+          </div>
+        </div>
+
+        <div class="heroRight">
+          <a class="quickBtn" href="dashboard.html">
+            <span class="quickIcon">⬅️</span>
+            <span class="quickText">
+              <b>กลับหน้าหลัก</b>
+              <small>Dashboard</small>
+            </span>
+          </a>
+        </div>
+      </header>
+
+      <hr class="line" />
+
+      <section class="loginArea">
+        <div class="loginBox">
+          <div style="font-weight:1000;margin-bottom:10px;">📌 คำแนะนำ</div>
+          <ul class="hintList">
+            <li>เลือกคำตอบให้ครบทุกข้อ</li>
+            <li>ส่งคำตอบแล้ว ระบบจะบันทึกคะแนนอัตโนมัติ</li>
+            <li>หากต้องทำใหม่ ครูจะต้องอนุญาตในหน้าแอดมิน</li>
+          </ul>
+
+          <div style="height:12px;"></div>
+
+          <button class="btnPrimary" id="btnStart">เริ่มทำข้อสอบ</button>
+          <button class="btnPrimary" id="btnSubmit" style="background:#0f172a;display:none;">ส่งคำตอบ</button>
+
+          <div id="msg" class="msg"></div>
+        </div>
+
+        <div class="hintBox">
+          <div class="hintTitle">🧑‍🎓 ข้อมูลผู้สอบ</div>
+          <div id="studentBox" style="color:#0f172a;font-weight:1000;line-height:1.9;">-</div>
+        </div>
+      </section>
+
+      <div style="height:14px;"></div>
+
+      <section class="loginBox">
+        <div style="font-weight:1000;margin-bottom:10px;">📝 คำถาม</div>
+        <div id="examArea" style="display:grid;gap:12px;"></div>
+      </section>
+
+    </section>
+  </main>
+
+  <!-- ✅ เปลี่ยนเป็นไฟล์ปลายภาค -->
+  <script src="exam-final.js"></script>
+</body>
+</html>
