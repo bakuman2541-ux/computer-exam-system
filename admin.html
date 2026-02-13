@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - จัดการระบบ</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- ✅ FIX: ปรับ LockScreen ให้ตรงกลาง/สวย/ไม่เพี้ยน โดยไม่กระทบไฟล์อื่น -->
+  <style>
+    .lockScreen{
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(2, 6, 23, .35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 99999;
+    }
+    .lockCard{
+      width: min(520px, 92vw);
+      border-radius: 26px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(226,232,240,1);
+      box-shadow: 0 30px 80px rgba(2,6,23,.25);
+      padding: 18px 18px 16px;
+      animation: popIn .18s ease-out;
+    }
+    @keyframes popIn{
+      from{ transform: translateY(10px) scale(.98); opacity: .6;}
+      to{ transform: translateY(0) scale(1); opacity: 1;}
+    }
+    .lockHead{
+      display:flex; align-items:center; gap:12px;
+    }
+    .lockIcon{
+      width:44px;height:44px;border-radius:16px;
+      display:flex;align-items:center;justify-content:center;
+      background: rgba(226,232,240,.7);
+      border:1px solid rgba(226,232,240,1);
+      font-size: 22px;
+    }
+    .inputWrap{
+      display:flex; align-items:center; gap:10px;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border:1px solid rgba(226,232,240,1);
+      background: rgba(255,255,255,.9);
+    }
+    .inputIcon{ font-size: 18px; }
+    .inputWrap input{
+      width:100%;
+      border:none;
+      outline:none;
+      background: transparent;
+      font-weight: 900;
+      font-size: 14px;
+      color:#0f172a;
+    }
+    .inputWrap input::placeholder{ color:#94a3b8; font-weight:900; }
+  </style>
+</head>
+
+<body class="page-admin">
+  <div class="bg"></div>
+
+  <main class="wrap">
+    <section class="heroCard">
+
+      <!-- HEADER -->
+      <header class="heroHeader">
+        <div class="heroLeft">
+          <div class="heroIcon">🛡️</div>
+          <div>
+            <h1 class="heroTitle">Admin</h1>
+            <p class="heroSub">ศูนย์รวมเมนูผู้ดูแลระบบ / ครูผู้สอน</p>
+          </div>
+        </div>
+
+        <div class="heroRight">
+          <button class="quickBtn admin" id="logoutAdminBtn" type="button" style="cursor:pointer;">
+            <span class="quickIcon">🚪</span>
+            <span class="quickText">
+              <b>ออกจากระบบ</b>
+              <small>กลับหน้าเข้าสู่ระบบ</small>
+            </span>
+          </button>
+        </div>
+      </header>
+
+      <hr class="line" />
+
+      <section class="loginArea">
+
+        <!-- LEFT -->
+        <div class="loginBox">
+          <div class="adminTitle" style="font-weight:1000;font-size:16px;margin-bottom:10px;">📌 เมนูแอดมิน</div>
+
+          <div class="adminMenu" style="display:flex;flex-direction:column;gap:10px;">
+
+            <a class="quickBtn" href="admin-score.html" style="width:100%;justify-content:flex-start;text-decoration:none;">
+              <span class="quickIcon">🧾</span>
+              <span class="quickText">
+                <b>บันทึกคะแนนเก็บ (ทั้งห้อง)</b>
+                <small>กรอกคะแนน/ใบงาน และบันทึกลง Scores</small>
+              </span>
+            </a>
+
+            <!-- ✅ NEW: ปุ่มดูคะแนนรวม -->
+            <a class="quickBtn" href="admin-view-score.html" style="width:100%;justify-content:flex-start;text-decoration:none;">
+              <span class="quickIcon">📊</span>
+              <span class="quickText">
+                <b>ดูคะแนนรวมรายห้อง (ปพ.5)</b>
+                <small>สรุปคะแนน / คิดเกรด / ค่าเฉลี่ยทั้งห้อง</small>
+              </span>
+            </a>
+
+            <a class="quickBtn" href="admin-exam-control.html" style="width:100%;justify-content:flex-start;text-decoration:none;">
+              <span class="quickIcon">🔄</span>
+              <span class="quickText">
+                <b>อนุญาตให้ทำข้อสอบใหม่</b>
+                <small>รีเซ็ตสิทธิ์/ปลดล็อกการทำข้อสอบ</small>
+              </span>
+            </a>
+
+            <a class="quickBtn" href="#"
+              onclick="alert('เมนูประกาศกำลังทำอยู่'); return false;"
+              style="width:100%;justify-content:flex-start;text-decoration:none;">
+              <span class="quickIcon">📢</span>
+              <span class="quickText">
+                <b>ประกาศ</b>
+                <small>กำลังพัฒนา</small>
+              </span>
+            </a>
+
+          </div>
+
+          <div class="adminNote" style="
+            margin-top:14px;
+            padding:12px 14px;
+            border-radius:18px;
+            border:1px solid rgba(226,232,240,1);
+            background:rgba(255,255,255,0.88);
+            box-shadow:0 14px 34px rgba(2,6,23,0.08);
+            font-weight:900;
+            color:#0f172a;
+          ">
+            ✅ แนะนำ: ใช้เมนู “บันทึกคะแนนเก็บ” ก่อน แล้วตรวจสอบผลที่ “ดูคะแนนรวมรายห้อง”
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="loginBox">
+          <div style="font-weight:1000;font-size:16px;margin-bottom:10px;">💡 Tips</div>
+          <ul style="margin:0;padding-left:18px;line-height:1.8;font-weight:900;color:#475569;">
+            <li>ควรจัดการงาน/คะแนนเต็มก่อนกรอกคะแนน</li>
+            <li>แนะนำตั้งรหัสงาน เช่น A01, A02</li>
+            <li>คะแนนทั้งหมดจะเก็บในชีต <b>Scores</b></li>
+          </ul>
+        </div>
+
+      </section>
+
+    </section>
+  </main>
+
+  <!-- ✅ LOCK SCREEN -->
+  <div class="lockScreen" id="lockScreen">
+    <div class="lockCard">
+      <div class="lockHead">
+        <div class="lockIcon">🔒</div>
+        <div>
+          <div style="font-weight:1000;font-size:16px;">โหมด Admin</div>
+          <div style="color:#64748b;font-weight:900;font-size:13px;">กรอกรหัสผ่านเพื่อเข้าใช้งาน</div>
+        </div>
+      </div>
+
+      <div style="height:12px;"></div>
+
+      <div class="inputWrap">
+        <span class="inputIcon">🔑</span>
+        <input id="adminPass" type="password" placeholder="ใส่รหัสผ่าน Admin" />
+      </div>
+
+      <div style="height:12px;"></div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="quickBtn admin" id="unlockBtn" type="button">
+          <span class="quickIcon">✅</span>
+          <span class="quickText"><b>ปลดล็อก</b><small>เข้าสู่ระบบ</small></span>
+        </button>
+
+        <a class="quickBtn" href="index.html" style="text-decoration:none;">
+          <span class="quickIcon">⬅️</span>
+          <span class="quickText"><b>กลับ</b><small>หน้าเข้าสู่ระบบ</small></span>
+        </a>
+      </div>
+
+      <div id="lockMsg" style="margin-top:10px;color:#ef4444;font-weight:1000;"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEY = "ADMIN_UNLOCKED";
+    const PASS = "runix3213"; // เปลี่ยนรหัสได้
+
+    const lockScreen = document.getElementById("lockScreen");
+    const adminPass = document.getElementById("adminPass");
+    const unlockBtn = document.getElementById("unlockBtn");
+    const lockMsg = document.getElementById("lockMsg");
+    const logoutAdminBtn = document.getElementById("logoutAdminBtn");
+
+    function openLock(){
+      lockScreen.style.display = "flex";
+      adminPass.value = "";
+      lockMsg.textContent = "";
+      setTimeout(()=>adminPass.focus(), 100);
+    }
+    function closeLock(){
+      lockScreen.style.display = "none";
+    }
+
+    function unlockAdmin(){
+      const p = (adminPass.value || "").trim();
+      if(p !== PASS){
+        lockMsg.textContent = "รหัสผ่านไม่ถูกต้อง";
+        return;
+      }
+      localStorage.setItem(KEY, "1");
+      closeLock();
+    }
+
+    if(localStorage.getItem(KEY) !== "1"){
+      openLock();
+    }else{
+      closeLock();
+    }
+
+    unlockBtn.addEventListener("click", unlockAdmin);
+    adminPass.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter") unlockAdmin();
+      if(e.key === "Escape") window.location.href = "index.html";
+    });
+
+    logoutAdminBtn.addEventListener("click", ()=>{
+      localStorage.removeItem(KEY);
+      openLock();
+    });
+  </script>
+</body>
+</html>
