@@ -1,5 +1,5 @@
 // ✅ ใส่ URL WebApp ของ Apps Script ตรงนี้ (ต้องตรงกับ script.js/check.js/admin.js)
-const API_URL = "https://script.google.com/macros/s/AKfycbxgfWdWaZ-1aE6BYOZ8207eLyUtWga4coQoJOk1wB_DHUL6I-db98k1Yyzqo29uWRT18g/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzaQBAcwYpbGOoFuZZGfuAfNtmUBAGpb6CrG7lGRBWwdl3w7KB-eAXA9KKbkD39Q9luog/exec";
 
 const studentInfo = document.getElementById("studentInfo");
 const logoutBtn = document.getElementById("logoutBtn");
@@ -169,19 +169,27 @@ async function loadScoreSummary(student){
     // ✅ รวมคะแนน (คะแนนเก็บ + กลางภาค + ปลายภาค)
     totalScore.textContent = `${keepVal + midVal + finalVal} คะแนน`;
 
-    // ✅ ป้องกันการทำข้อสอบซ้ำจากหน้า dashboard
-    // ถ้ามีคะแนนล่าสุดแล้ว = ถือว่าเคยทำแล้ว → ปิดปุ่ม
-    if (midLatest && num(midLatest.total) > 0) {
-      lockExamButton(btnMidExam, "ทำข้อสอบแล้ว");
-    } else {
-      unlockExamButton(btnMidExam);
-    }
+    // ✅ ใช้ ExamAccess ควบคุมปุ่ม
+const accessUrl =
+  `${API_URL}?action=getExamAccess&citizenId=${encodeURIComponent(student.citizenId || "")}&studentNo=${encodeURIComponent(student.studentNo || "")}`;
 
-    if (finalLatest && num(finalLatest.total) > 0) {
-      lockExamButton(btnFinalExam, "ทำข้อสอบแล้ว");
-    } else {
-      unlockExamButton(btnFinalExam);
-    }
+const accRes = await fetch(accessUrl);
+const accData = await accRes.json();
+const access = accData && accData.ok ? accData.access || {} : {};
+
+// กลางภาค
+if (access.midtermUnlocked === "TRUE" && access.midtermAttempted !== "TRUE") {
+  unlockExamButton(btnMidExam);
+} else {
+  lockExamButton(btnMidExam, "ยังไม่เปิดให้สอบ");
+}
+
+// ปลายภาค
+if (access.finalUnlocked === "TRUE" && access.finalAttempted !== "TRUE") {
+  unlockExamButton(btnFinalExam);
+} else {
+  lockExamButton(btnFinalExam, "ยังไม่เปิดให้สอบ");
+}
 
   }catch(err){
     console.error(err);
