@@ -5,8 +5,7 @@
  ***************************************/
 
 // ✅ ใส่ URL WebApp ของ Apps Script ของคุณ (ตัวล่าสุด)
-const API_URL = "https://script.google.com/macros/s/AKfycbzaQBAcwYpbGOoFuZZGfuAfNtmUBAGpb6CrG7lGRBWwdl3w7KB-eAXA9KKbkD39Q9luog/exec";
-
+const API_URL ="https://script.google.com/macros/s/AKfycbxgfWdWaZ-1aE6BYOZ8207eLyUtWga4coQoJOk1wB_DHUL6I-db98k1Yyzqo29uWRT18g/exec";
 const levelEl = document.getElementById("level");
 const roomEl = document.getElementById("room");
 const examEl = document.getElementById("exam");
@@ -286,6 +285,7 @@ btnUnlockRoom?.addEventListener("click", unlockRoom);
 // init placeholder
 tbody.innerHTML = `<tr><td colspan="5" class="emptyRow">กรุณากด “โหลดรายชื่อห้องนี้”</td></tr>`;
 setMsg("", "");
+
 
 
 
