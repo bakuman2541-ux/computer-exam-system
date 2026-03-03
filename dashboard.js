@@ -112,6 +112,13 @@ async function loadScoreSummary(student){
   finalScore.textContent = "กำลังโหลด...";
   totalScore.textContent = "กำลังโหลด...";
 
+  function getLatestScore(scores, type) {
+  const filtered = scores.filter(s => String(s.type).toUpperCase() === type);
+  if (!filtered.length) return null;
+
+  filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+  return filtered[0]; // 🔥 เอาแถวล่าสุดเท่านั้น
+}
   // default ปุ่ม
   unlockExamButton(btnMidExam);
   unlockExamButton(btnFinalExam);
@@ -170,6 +177,7 @@ async function loadScoreSummary(student){
     totalScore.textContent = `${keepVal + midVal + finalVal} คะแนน`;
 
     // ✅ ใช้ ExamAccess ควบคุมปุ่ม
+// ✅ ใช้ ExamAccess ควบคุมปุ่ม
 const accessUrl =
   `${API_URL}?action=getExamAccess&citizenId=${encodeURIComponent(student.citizenId || "")}&studentNo=${encodeURIComponent(student.studentNo || "")}`;
 
@@ -177,15 +185,32 @@ const accRes = await fetch(accessUrl);
 const accData = await accRes.json();
 const access = accData && accData.ok ? accData.access || {} : {};
 
+// แปลงค่าให้รองรับทั้ง TRUE และ true
+const midUnlocked =
+  access.midtermUnlocked === true ||
+  access.midtermUnlocked === "TRUE";
+
+const midAttempted =
+  access.midtermAttempted === true ||
+  access.midtermAttempted === "TRUE";
+
+const finalUnlocked =
+  access.finalUnlocked === true ||
+  access.finalUnlocked === "TRUE";
+
+const finalAttempted =
+  access.finalAttempted === true ||
+  access.finalAttempted === "TRUE";
+
 // กลางภาค
-if (access.midtermUnlocked === "TRUE" && access.midtermAttempted !== "TRUE") {
+if (midUnlocked && !midAttempted) {
   unlockExamButton(btnMidExam);
 } else {
   lockExamButton(btnMidExam, "ยังไม่เปิดให้สอบ");
 }
 
 // ปลายภาค
-if (access.finalUnlocked === "TRUE" && access.finalAttempted !== "TRUE") {
+if (finalUnlocked && !finalAttempted) {
   unlockExamButton(btnFinalExam);
 } else {
   lockExamButton(btnFinalExam, "ยังไม่เปิดให้สอบ");
