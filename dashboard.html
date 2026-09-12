@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  หน้าหลักนักเรียน - Student Assessment System
+</title>
+
+<link
+  rel="stylesheet"
+  href="style.css"
+>
+
+<style>
+
+/* =====================================================
+   DASHBOARD NEW THEME
+   Scoped เฉพาะหน้านี้
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+body.page-dashboard{
+
+  margin:0;
+
+  min-height:100vh;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+
+  color:#0f172a;
+
+  background:#020617;
+
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.page-dashboard .dashboardBg{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:-10;
+
+  background:
+
+    radial-gradient(
+      circle at 7% 16%,
+      rgba(14,165,233,.55),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 92% 12%,
+      rgba(236,72,153,.38),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 18% 92%,
+      rgba(6,182,212,.25),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 90% 86%,
+      rgba(168,85,247,.23),
+      transparent 40%
+    ),
+
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #061725 42%,
+      #09091a 72%,
+      #020617 100%
+    );
+
+}
+
+
+.page-dashboard .dashboardBg::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:450px;
+  height:450px;
+
+  left:-220px;
+  bottom:-190px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(103,232,249,.20);
+
+}
+
+
+.page-dashboard .dashboardBg::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:450px;
+  height:450px;
+
+  right:-200px;
+  top:-190px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(244,114,182,.18);
+
+}
+
+
+/* =====================================================
+   WRAPPER
+===================================================== */
+
+.dashboardWrap{
+
+  width:
+    min(
+      1240px,
+      calc(100% - 34px)
+    );
+
+  margin:
+    30px auto 50px;
+
+}
+
+
+.dashboardCard{
+
+  padding:28px;
+
+  border-radius:30px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.985),
+      rgba(248,250,252,.955)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.84);
+
+  box-shadow:
+
+    0 35px 100px
+    rgba(0,0,0,.42),
+
+    0 0 55px
+    rgba(56,189,248,.08);
+
+  backdrop-filter:
+    blur(18px);
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.dashboardHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:24px;
+
+}
+
+
+.dashboardBrand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:18px;
+
+  min-width:0;
+
+}
+
+
+.dashboardLogoBox{
+
+  width:92px;
+
+  height:92px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:23px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbff
+    );
+
+  border:
+    1px solid #e0f2fe;
+
+  box-shadow:
+
+    0 14px 30px
+    rgba(14,165,233,.10);
+
+}
+
+
+.dashboardLogo{
+
+  width:80px;
+
+  height:80px;
+
+  object-fit:contain;
+
+  filter:
+
+    drop-shadow(
+      0 8px 13px
+      rgba(14,165,233,.13)
+    );
+
+}
+
+
+.dashboardTitle{
+
+  margin:0;
+
+  color:#0b3d78;
+
+  font-size:29px;
+
+  font-weight:1000;
+
+  line-height:1.18;
+
+}
+
+
+.dashboardEnglish{
+
+  margin-top:4px;
+
+  color:#0891b2;
+
+  font-size:14px;
+
+  font-weight:1000;
+
+}
+
+
+.dashboardSub{
+
+  margin:
+    5px 0 0;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  font-weight:850;
+
+}
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+.logoutBtn{
+
+  min-width:205px;
+
+  padding:
+    11px 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+  border:none;
+
+  border-radius:20px;
+
+  cursor:pointer;
+
+  color:#0f172a;
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #ffffff
+    );
+
+  border:
+    1px solid #bfdbfe;
+
+  box-shadow:
+
+    0 10px 25px
+    rgba(37,99,235,.08);
+
+  transition:.18s;
+
+}
+
+
+.logoutBtn:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+
+    0 15px 30px
+    rgba(37,99,235,.13);
+
+}
+
+
+.logoutIcon{
+
+  width:44px;
+  height:44px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:15px;
+
+  background:#dbeafe;
+
+  font-size:20px;
+
+}
+
+
+.logoutText{
+
+  display:flex;
+
+  flex-direction:column;
+
+  text-align:left;
+
+}
+
+
+.logoutText b{
+
+  font-size:14px;
+
+}
+
+
+.logoutText small{
+
+  margin-top:2px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   LINE
+===================================================== */
+
+.dashboardLine{
+
+  height:1px;
+
+  margin:
+    22px 0;
+
+  background:#e2e8f0;
+
+}
+
+
+/* =====================================================
+   TOP GRID
+===================================================== */
+
+.dashboardTop{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1.05fr)
+    minmax(300px,.95fr);
+
+  gap:18px;
+
+}
+
+
+/* =====================================================
+   PANEL
+===================================================== */
+
+.dashboardPanel{
+
+  padding:21px;
+
+  border-radius:24px;
+
+  background:#fff;
+
+  border:
+    1px solid #e2e8f0;
+
+  box-shadow:
+
+    0 15px 40px
+    rgba(15,23,42,.055);
+
+}
+
+
+.panelHeading{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin-bottom:15px;
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+/* =====================================================
+   PROFILE
+===================================================== */
+
+.profileCard{
+
+  padding:17px;
+
+  border-radius:20px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #eff6ff
+    );
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.profileTop{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:14px;
+
+}
+
+
+.profileAvatar{
+
+  width:64px;
+
+  height:64px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:20px;
+
+  background:#fff;
+
+  border:
+    1px solid #bae6fd;
+
+  box-shadow:
+
+    0 10px 22px
+    rgba(14,165,233,.09);
+
+}
+
+
+.profileAvatar img{
+
+  width:53px;
+
+  height:53px;
+
+  object-fit:contain;
+
+}
+
+
+.profileName{
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+.profileClass{
+
+  margin-top:3px;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  font-weight:850;
+
+}
+
+
+.profileGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-top:15px;
+
+}
+
+
+.profileItem{
+
+  padding:
+    11px 13px;
+
+  border-radius:16px;
+
+  background:#fff;
+
+  border:
+    1px solid #dbe4f0;
+
+}
+
+
+.profileLabel{
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:1000;
+
+}
+
+
+.profileValue{
+
+  margin-top:3px;
+
+  color:#0f172a;
+
+  font-size:14px;
+
+  font-weight:1000;
+
+}
+
+
+.systemStatus{
+
+  margin-top:10px;
+
+  padding:
+    11px 13px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  border-radius:16px;
+
+  background:#f0fdf4;
+
+  border:
+    1px solid #bbf7d0;
+
+  color:#166534;
+
+  font-size:12px;
+
+  font-weight:950;
+
+}
+
+
+/* =====================================================
+   ANNOUNCEMENT
+===================================================== */
+
+.announcementBox{
+
+  padding:17px;
+
+  border-radius:20px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      #f8fbff
+    );
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.announcementBox ul{
+
+  margin:0;
+
+  padding-left:22px;
+
+  color:#475569;
+
+  font-size:12px;
+
+  line-height:2.1;
+
+  font-weight:800;
+
+}
+
+
+.infoNote{
+
+  margin-top:12px;
+
+  padding:13px;
+
+  border-radius:16px;
+
+  background:#ecfeff;
+
+  border:
+    1px solid #a5f3fc;
+
+  color:#155e75;
+
+  font-size:10px;
+
+  line-height:1.7;
+
+  font-weight:850;
+
+}
+
+
+/* =====================================================
+   SCORE PANEL
+===================================================== */
+
+.scorePanel{
+
+  margin-top:18px;
+
+  padding:21px;
+
+  border-radius:24px;
+
+  background:#fff;
+
+  border:
+    1px solid #e2e8f0;
+
+  box-shadow:
+
+    0 15px 40px
+    rgba(15,23,42,.055);
+
+}
+
+
+.scoreHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:14px;
+
+}
+
+
+.scoreTitle{
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+.scoreUpdated{
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:850;
+
+}
+
+
+.scoreGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(4,minmax(0,1fr));
+
+  gap:12px;
+
+}
+
+
+.scoreCard{
+
+  position:relative;
+
+  overflow:hidden;
+
+  padding:15px;
+
+  min-height:104px;
+
+  border-radius:19px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fafc
+    );
+
+  border:
+    1px solid #e2e8f0;
+
+  box-shadow:
+
+    0 10px 25px
+    rgba(15,23,42,.055);
+
+}
+
+
+.scoreCard::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:90px;
+  height:90px;
+
+  right:-42px;
+  top:-42px;
+
+  border-radius:50%;
+
+  background:
+    rgba(37,99,235,.06);
+
+}
+
+
+.scoreContent{
+
+  position:relative;
+
+  z-index:2;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+}
+
+
+.scoreIcon{
+
+  width:48px;
+
+  height:48px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:16px;
+
+  font-size:19px;
+
+}
+
+
+.iconKeep{
+
+  color:#059669;
+
+  background:#ecfdf5;
+
+  border:
+    1px solid #a7f3d0;
+
+}
+
+
+.iconMid{
+
+  color:#ea580c;
+
+  background:#fff7ed;
+
+  border:
+    1px solid #fed7aa;
+
+}
+
+
+.iconFinal{
+
+  color:#db2777;
+
+  background:#fdf2f8;
+
+  border:
+    1px solid #fbcfe8;
+
+}
+
+
+.iconTotal{
+
+  color:#2563eb;
+
+  background:#eff6ff;
+
+  border:
+    1px solid #bfdbfe;
+
+}
+
+
+.scoreName{
+
+  font-size:13px;
+
+  font-weight:1000;
+
+}
+
+
+.scoreValue{
+
+  margin-top:5px;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  font-weight:900;
+
+}
+
+
+/* =====================================================
+   EXAM ACTIONS
+===================================================== */
+
+.examActions{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:12px;
+
+  margin-top:15px;
+
+}
+
+
+.examBtn{
+
+  min-height:70px;
+
+  padding:
+    13px 15px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
+
+  text-decoration:none;
+
+  color:#0f172a;
+
+  border-radius:18px;
+
+  background:#fff;
+
+  border:
+    1px solid #dbe4f0;
+
+  box-shadow:
+
+    0 10px 25px
+    rgba(15,23,42,.055);
+
+  transition:.18s;
+
+}
+
+
+.examBtn:hover{
+
+  transform:
+    translateY(-2px);
+
+  border-color:#93c5fd;
+
+  box-shadow:
+
+    0 15px 30px
+    rgba(37,99,235,.12);
+
+}
+
+
+.examBtnIcon{
+
+  width:48px;
+
+  height:48px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:16px;
+
+  background:#eff6ff;
+
+  border:
+    1px solid #bfdbfe;
+
+  font-size:19px;
+
+}
+
+
+.examBtnText b{
+
+  display:block;
+
+  font-size:13px;
+
+  font-weight:1000;
+
+}
+
+
+.examBtnText small{
+
+  display:block;
+
+  margin-top:3px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.dashboardFooter{
+
+  margin-top:25px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:12px;
+
+  color:rgba(255,255,255,.72);
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+.footerLine{
+
+  width:150px;
+
+  height:1px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,.30)
+    );
+
+}
+
+
+.footerLine.right{
+
+  transform:
+    rotate(180deg);
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px){
+
+  .dashboardTop{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .scoreGrid{
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+  }
+
+}
+
+
+@media(max-width:650px){
+
+  .dashboardHeader{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+
+  .dashboardBrand{
+
+    align-items:flex-start;
+
+  }
+
+
+  .dashboardLogoBox{
+
+    width:74px;
+
+    height:74px;
+
+  }
+
+
+  .dashboardLogo{
+
+    width:64px;
+
+    height:64px;
+
+  }
+
+
+  .dashboardTitle{
+
+    font-size:22px;
+
+  }
+
+
+  .logoutBtn{
+
+    width:100%;
+
+  }
+
+
+  .profileGrid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .scoreGrid{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .examActions{
+
+    grid-template-columns:1fr;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body class="page-dashboard">
+
+
+<div class="dashboardBg"></div>
+
+
+<main class="dashboardWrap">
+
+
+<section class="dashboardCard">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="dashboardHeader">
+
+
+<div class="dashboardBrand">
+
+
+<div class="dashboardLogoBox">
+
+<img
+  class="dashboardLogo"
+  src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+  alt="Student Assessment System"
+>
+
+</div>
+
+
+<div>
+
+
+<h1 class="dashboardTitle">
+หน้าหลักนักเรียน
+</h1>
+
+
+<div class="dashboardEnglish">
+Student Assessment System
+</div>
+
+
+<p
+  class="dashboardSub"
+  id="studentInfo"
+>
+กำลังโหลดข้อมูลนักเรียน...
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+<button
+  class="logoutBtn"
+  id="logoutBtn"
+  type="button"
+>
+
+
+<span class="logoutIcon">
+🚪
+</span>
+
+
+<span class="logoutText">
+
+<b>
+ออกจากระบบ
+</b>
+
+<small>
+กลับหน้าเข้าสู่ระบบ
+</small>
+
+</span>
+
+
+</button>
+
+
+</header>
+
+
+<div class="dashboardLine"></div>
+
+
+
+<!-- =====================================================
+     PROFILE + ANNOUNCEMENT
+===================================================== -->
+
+<section class="dashboardTop">
+
+
+<!-- PROFILE -->
+
+<div class="dashboardPanel">
+
+
+<div class="panelHeading">
+🪪 ข้อมูลส่วนตัว
+</div>
+
+
+<div class="profileCard">
+
+
+<div class="profileTop">
+
+
+<div class="profileAvatar">
+
+<img
+  src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+  alt="Student"
+>
+
+</div>
+
+
+<div>
+
+<div
+  class="profileName"
+  id="p_name"
+>
+-
+</div>
+
+
+<div
+  class="profileClass"
+  id="p_class"
+>
+-
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="profileGrid">
+
+
+<div class="profileItem">
+
+<div class="profileLabel">
+เลขนักเรียน
+</div>
+
+<div
+  class="profileValue"
+  id="p_studentNo"
+>
+-
+</div>
+
+</div>
+
+
+
+<div class="profileItem">
+
+<div class="profileLabel">
+เลขบัตรประชาชน
+</div>
+
+<div
+  class="profileValue"
+  id="p_citizenId"
+>
+-
+</div>
+
+</div>
+
+
+</div>
+
+
+
+<div class="systemStatus">
+
+<span>
+✓
+</span>
+
+<span>
+สถานะระบบ: พร้อมใช้งาน
+</span>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- ANNOUNCEMENT -->
+
+<div class="dashboardPanel">
+
+
+<div class="panelHeading">
+📌 ประกาศจากครู
+</div>
+
+
+<div class="announcementBox">
+
+
+<ul>
+
+<li>
+ให้นักเรียนทำแบบทดสอบหลังเรียนจบบท
+</li>
+
+<li>
+ข้อสอบกลางภาคและปลายภาคเปิดตามกำหนดของครูผู้สอน
+</li>
+
+<li>
+หากทำข้อสอบแล้ว ต้องให้ครูอนุญาตก่อนจึงจะทำใหม่ได้
+</li>
+
+</ul>
+
+
+</div>
+
+
+<div class="infoNote">
+
+💡 ระบบจะแสดงคะแนนและสิทธิ์การสอบจากฐานข้อมูลล่าสุดโดยอัตโนมัติ
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     SCORE
+===================================================== -->
+
+<section class="scorePanel">
+
+
+<div class="scoreHeader">
+
+
+<div class="scoreTitle">
+📊 สรุปผลการเรียน
+</div>
+
+
+<div class="scoreUpdated">
+
+อัปเดตล่าสุด:
+
+<span id="scoreUpdated">
+-
+</span>
+
+</div>
+
+
+</div>
+
+
+
+<div class="scoreGrid">
+
+
+<!-- KEEP -->
+
+<div class="scoreCard">
+
+
+<div class="scoreContent">
+
+
+<div class="scoreIcon iconKeep">
+✓
+</div>
+
+
+<div>
+
+<div class="scoreName">
+คะแนนเก็บ
+</div>
+
+<div
+  class="scoreValue"
+  id="keepScore"
+>
+กำลังโหลด...
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- MIDTERM -->
+
+<div class="scoreCard">
+
+
+<div class="scoreContent">
+
+
+<div class="scoreIcon iconMid">
+M
+</div>
+
+
+<div>
+
+<div class="scoreName">
+กลางภาค
+</div>
+
+<div
+  class="scoreValue"
+  id="midScore"
+>
+กำลังโหลด...
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- FINAL -->
+
+<div class="scoreCard">
+
+
+<div class="scoreContent">
+
+
+<div class="scoreIcon iconFinal">
+F
+</div>
+
+
+<div>
+
+<div class="scoreName">
+ปลายภาค
+</div>
+
+<div
+  class="scoreValue"
+  id="finalScore"
+>
+กำลังโหลด...
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- TOTAL -->
+
+<div class="scoreCard">
+
+
+<div class="scoreContent">
+
+
+<div class="scoreIcon iconTotal">
+Σ
+</div>
+
+
+<div>
+
+<div class="scoreName">
+คะแนนรวม
+</div>
+
+<div
+  class="scoreValue"
+  id="totalScore"
+>
+กำลังโหลด...
+</div>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     EXAM BUTTONS
+===================================================== -->
+
+<div class="examActions">
+
+
+<a
+  id="btnMidExam"
+  class="examBtn"
+  href="exam-midterm.html"
+>
+
+
+<span class="examBtnIcon">
+📝
+</span>
+
+
+<span class="examBtnText">
+
+<b>
+ทำข้อสอบกลางภาค
+</b>
+
+<small>
+ตรวจสอบสิทธิ์ก่อนเข้าสอบ
+</small>
+
+</span>
+
+
+</a>
+
+
+
+<a
+  id="btnFinalExam"
+  class="examBtn"
+  href="exam-final.html"
+>
+
+
+<span class="examBtnIcon">
+📘
+</span>
+
+
+<span class="examBtnText">
+
+<b>
+ทำข้อสอบปลายภาค
+</b>
+
+<small>
+ตรวจสอบสิทธิ์ก่อนเข้าสอบ
+</small>
+
+</span>
+
+
+</a>
+
+
+</div>
+
+
+</section>
+
+
+</section>
+
+
+
+<footer class="dashboardFooter">
+
+
+<span class="footerLine"></span>
+
+
+<span>
+🎓 เรียนรู้ • ประเมินผล • สู่อนาคตที่ดีกว่า
+</span>
+
+
+<span class="footerLine right"></span>
+
+
+</footer>
+
+
+</main>
+
+
+<script src="dashboard.js"></script>
+
+
+</body>
+
+</html>

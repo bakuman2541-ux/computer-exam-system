@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    ระบบสารสนเทศและประเมินผลผู้เรียน
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+
+</head>
+
+
+<body class="page-login">
+
+  <!-- พื้นหลัง -->
+  <div class="bg"></div>
+
+
+  <main class="wrap loginWrap">
+
+    <section class="heroCard loginMainCard">
+
+
+      <!-- =====================================
+           HEADER
+      ====================================== -->
+
+      <header class="loginHeader">
+
+
+        <!-- LOGO + NAME -->
+
+        <div class="brandArea">
+
+
+          <div class="brandLogoBox">
+
+            <img
+              src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+              alt="Student Assessment System"
+              class="brandLogo"
+            >
+
+          </div>
+
+
+          <div class="brandDivider"></div>
+
+
+          <div class="brandText">
+
+
+            <h1>
+              ระบบสารสนเทศและประเมินผลผู้เรียน
+            </h1>
+
+
+            <div class="brandEnglish">
+              Student Assessment System
+            </div>
+
+
+            <p>
+              เข้าสู่ระบบด้วยเลข 13 หลัก และเลขนักเรียน 4 หลัก
+            </p>
+
+
+          </div>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             ADMIN
+             เอาลูกศรออกแล้ว
+        ====================================== -->
+
+        <a
+          class="loginAdminBtn"
+          href="admin.html"
+        >
+
+          <span class="adminIcon">
+            🔐
+          </span>
+
+
+          <span class="adminText">
+
+            <b>
+              Admin
+            </b>
+
+            <small>
+              จัดการระบบ
+            </small>
+
+          </span>
+
+        </a>
+
+
+      </header>
+
+
+
+      <!-- เส้นแบ่ง -->
+
+      <div class="loginLine"></div>
+
+
+
+      <!-- =====================================
+           CONTENT
+      ====================================== -->
+
+      <section class="loginContent">
+
+
+
+        <!-- =====================================
+             LEFT : LOGIN
+        ====================================== -->
+
+        <div class="loginPanel">
+
+
+          <!--
+            ID loginForm ห้ามเปลี่ยน
+            เพราะ script.js เดิมใช้งาน
+          -->
+
+          <form
+            id="loginForm"
+            class="modernLoginForm"
+          >
+
+
+
+            <!-- เลขบัตรประชาชน -->
+
+            <div class="modernField">
+
+
+              <label>
+                เลขบัตรประชาชน (13 หลัก)
+              </label>
+
+
+              <div class="modernInput">
+
+
+                <span class="modernInputIcon">
+                  🪪
+                </span>
+
+
+                <input
+                  id="citizenId"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="13"
+                  placeholder="เช่น 1234567890123"
+                  autocomplete="off"
+                  required
+                >
+
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- เลขนักเรียน -->
+
+            <div class="modernField">
+
+
+              <label>
+                เลขนักเรียน (4 หลัก)
+              </label>
+
+
+              <div class="modernInput">
+
+
+                <span class="modernInputIcon">
+                  🎓
+                </span>
+
+
+                <input
+                  id="studentNo"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="4"
+                  placeholder="เช่น 0001"
+                  autocomplete="off"
+                  required
+                >
+
+
+              </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================
+                 LOGIN BUTTON
+                 เอาลูกศรออกแล้ว
+            ====================================== -->
+
+            <button
+              type="submit"
+              class="modernLoginBtn"
+            >
+
+              <span>
+                เข้าสู่ระบบ
+              </span>
+
+            </button>
+
+
+
+            <!--
+              script.js ใช้ id="msg"
+              ห้ามเปลี่ยน
+            -->
+
+            <div
+              id="msg"
+              class="msg"
+            ></div>
+
+
+          </form>
+
+
+        </div>
+
+
+
+        <!-- =====================================
+             RIGHT : GUIDE
+        ====================================== -->
+
+        <div class="guidePanel">
+
+
+          <div class="guideTitle">
+
+            <span>
+              📣
+            </span>
+
+            <b>
+              คำแนะนำ
+            </b>
+
+          </div>
+
+
+
+          <div class="guideList">
+
+
+            <!-- 1 -->
+
+            <div class="guideItem">
+
+              <div class="guideNumber">
+                1
+              </div>
+
+              <div>
+                กรอกเลขบัตรประชาชนให้ครบ 13 หลัก
+              </div>
+
+            </div>
+
+
+
+            <!-- 2 -->
+
+            <div class="guideItem">
+
+              <div class="guideNumber">
+                2
+              </div>
+
+              <div>
+                กรอกเลขนักเรียนให้ครบ 4 หลัก
+              </div>
+
+            </div>
+
+
+
+            <!-- 3 -->
+
+            <div class="guideItem">
+
+              <div class="guideNumber">
+                3
+              </div>
+
+              <div>
+                หากเข้าไม่ได้ ให้แจ้งครูผู้สอน
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+      </section>
+
+
+    </section>
+
+
+
+    <!-- =====================================
+         FOOTER
+    ====================================== -->
+
+    <div class="loginFooter">
+
+      <div class="footerLine"></div>
+
+      <span>
+        🎓
+      </span>
+
+      <div class="footerLine"></div>
+
+    </div>
+
+
+    <div class="footerText">
+      “เรียนรู้ ประเมินผล สู่อนาคตที่ดีกว่า”
+    </div>
+
+
+  </main>
+
+
+
+  <!-- =====================================
+       ระบบ Login เดิม
+       ห้ามลบ
+  ====================================== -->
+
+  <script src="script.js"></script>
+
+
+</body>
+
+</html>

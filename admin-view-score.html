@@ -1,0 +1,2443 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ดูคะแนนรวมรายห้อง - Student Assessment System</title>
+
+<script>
+/* ป้องกันนักเรียนเปิดหน้า Admin โดยตรง */
+if (
+  sessionStorage.getItem("ADMIN_UNLOCKED_SESSION") !== "1"
+) {
+  window.location.replace("admin.html");
+}
+</script>
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:#0f172a;
+  background:#020617;
+}
+
+.pageBg{
+  position:fixed;
+  inset:0;
+  z-index:-10;
+
+  background:
+    radial-gradient(circle at 8% 14%,rgba(14,165,233,.55),transparent 34%),
+    radial-gradient(circle at 91% 12%,rgba(236,72,153,.38),transparent 35%),
+    radial-gradient(circle at 18% 92%,rgba(6,182,212,.28),transparent 42%),
+    radial-gradient(circle at 90% 88%,rgba(168,85,247,.25),transparent 40%),
+    linear-gradient(135deg,#020617 0%,#061725 42%,#09091a 72%,#020617 100%);
+}
+
+.pageBg::before{
+  content:"";
+  position:absolute;
+  width:430px;
+  height:430px;
+  left:-190px;
+  bottom:-180px;
+  border-radius:50%;
+  border:1px solid rgba(103,232,249,.20);
+}
+
+.pageBg::after{
+  content:"";
+  position:absolute;
+  width:430px;
+  height:430px;
+  right:-190px;
+  top:-180px;
+  border-radius:50%;
+  border:1px solid rgba(244,114,182,.18);
+}
+
+.pageWrap{
+  width:min(1320px,calc(100% - 34px));
+  margin:30px auto 50px;
+}
+
+.mainCard{
+  padding:28px;
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.985),
+      rgba(248,250,252,.96)
+    );
+
+  border:1px solid rgba(255,255,255,.84);
+
+  box-shadow:
+    0 35px 100px rgba(0,0,0,.42),
+    0 0 55px rgba(56,189,248,.08);
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+
+  padding-bottom:22px;
+  border-bottom:1px solid #e2e8f0;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.logo{
+  width:70px;
+  height:70px;
+  object-fit:contain;
+}
+
+.titleBox h1{
+  margin:0;
+  font-size:30px;
+  color:#0f4c81;
+  font-weight:900;
+}
+
+.english{
+  margin-top:4px;
+  color:#0891b2;
+  font-weight:800;
+}
+
+.subtitle{
+  margin-top:4px;
+  color:#64748b;
+  font-size:14px;
+  font-weight:700;
+}
+
+.backBtn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  text-decoration:none;
+  color:#0f172a;
+
+  padding:14px 18px;
+  border-radius:20px;
+
+  background:#f8fbff;
+  border:1px solid #bfdbfe;
+
+  font-weight:800;
+}
+
+.backIcon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:#dbeafe;
+  font-size:20px;
+}
+
+.controlPanel{
+  margin-top:24px;
+
+  padding:22px;
+
+  border-radius:24px;
+
+  background:rgba(255,255,255,.94);
+  border:1px solid #e2e8f0;
+
+  box-shadow:0 10px 35px rgba(15,23,42,.06);
+}
+
+.controlHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:16px;
+}
+
+.controlTitle{
+  font-size:18px;
+  font-weight:900;
+}
+
+.status{
+  padding:7px 13px;
+  border-radius:999px;
+
+  font-size:12px;
+  font-weight:900;
+
+  color:#64748b;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+}
+
+.status.loading{
+  color:#0369a1;
+  background:#f0f9ff;
+  border-color:#bae6fd;
+}
+
+.status.ok{
+  color:#15803d;
+  background:#f0fdf4;
+  border-color:#bbf7d0;
+}
+
+.status.error{
+  color:#dc2626;
+  background:#fff7f7;
+  border-color:#fecaca;
+}
+
+.filters{
+  display:grid;
+  grid-template-columns:1.15fr 1.5fr .8fr 1.1fr;
+  gap:12px;
+}
+
+.field{
+  padding:10px;
+
+  background:#eff6ff;
+  border:1px solid #dbeafe;
+  border-radius:18px;
+}
+
+.field label{
+  display:block;
+  margin-bottom:7px;
+  font-size:12px;
+  font-weight:800;
+  color:#64748b;
+}
+
+.field select{
+  width:100%;
+  height:48px;
+
+  border:1px solid #dbe4f0;
+  border-radius:13px;
+
+  padding:0 12px;
+
+  background:white;
+
+  color:#0f172a;
+  font-size:15px;
+  font-weight:800;
+
+  outline:none;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:15px;
+}
+
+button{
+  border:none;
+  cursor:pointer;
+  font:inherit;
+}
+
+.actionBtn{
+  min-width:150px;
+
+  padding:14px 20px;
+
+  border-radius:16px;
+
+  font-weight:900;
+
+  transition:.2s;
+}
+
+.actionBtn:hover{
+  transform:translateY(-1px);
+}
+
+.actionBtn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.primary{
+  color:#fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #0ea5e9
+    );
+}
+
+.green{
+  color:#047857;
+
+  background:#ecfdf5;
+  border:1px solid #a7f3d0;
+}
+
+.red{
+  color:#dc2626;
+
+  background:#fff7f7;
+  border:1px solid #fecaca;
+}
+
+.light{
+  color:#334155;
+
+  background:#fff;
+  border:1px solid #dbe4f0;
+}
+
+.summaryGrid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:18px;
+}
+
+.summaryCard{
+  padding:18px;
+  min-height:78px;
+
+  border-radius:18px;
+
+  background:#eff6ff;
+  border:1px solid #dbeafe;
+}
+
+.summaryLabel{
+  color:#64748b;
+  font-size:12px;
+  font-weight:800;
+}
+
+.summaryValue{
+  display:inline-block;
+  margin-top:8px;
+
+  font-size:22px;
+  color:#0f172a;
+  font-weight:950;
+}
+
+.summaryUnit{
+  margin-left:6px;
+  color:#64748b;
+  font-size:12px;
+  font-weight:800;
+}
+
+.resultPanel{
+  margin-top:18px;
+  padding:20px;
+
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:24px;
+
+  overflow:hidden;
+}
+
+.resultHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+
+  margin-bottom:14px;
+}
+
+.resultTitle{
+  font-size:17px;
+  font-weight:900;
+}
+
+.classInfo{
+  font-size:12px;
+  color:#64748b;
+  font-weight:800;
+}
+
+.tableWrap{
+  width:100%;
+  overflow:auto;
+  border-radius:16px;
+  border:1px solid #e2e8f0;
+}
+
+.scoreTable{
+  width:100%;
+  min-width:850px;
+
+  border-collapse:collapse;
+  background:#fff;
+}
+
+.scoreTable th,
+.scoreTable td{
+  padding:11px 10px;
+  border:1px solid #e2e8f0;
+  text-align:center;
+  white-space:nowrap;
+}
+
+.scoreTable th{
+  background:#eff6ff;
+  color:#1e3a8a;
+  font-size:13px;
+  font-weight:900;
+}
+
+.scoreTable td{
+  font-size:13px;
+  font-weight:700;
+}
+
+.scoreTable .nameCell{
+  min-width:190px;
+  text-align:left;
+}
+
+.failRow{
+  background:#fff1f2;
+}
+
+.averageRow{
+  background:#f8fafc;
+  font-weight:900;
+}
+
+.gradeBadge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:40px;
+  padding:5px 9px;
+
+  border-radius:999px;
+
+  color:#15803d;
+  background:#dcfce7;
+
+  font-weight:900;
+}
+
+.gradeBadge.fail{
+  color:#dc2626;
+  background:#fee2e2;
+}
+
+.emptyState{
+  padding:55px 20px;
+  text-align:center;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #fbfdff,
+      #f8fafc
+    );
+}
+
+.emptyIcon{
+  font-size:42px;
+}
+
+.emptyTitle{
+  margin-top:10px;
+
+  font-size:16px;
+  font-weight:900;
+}
+
+.emptyText{
+  margin-top:5px;
+
+  color:#64748b;
+  font-size:13px;
+  font-weight:700;
+}
+
+.errorDetail{
+  margin-top:8px;
+  color:#dc2626;
+  word-break:break-word;
+}
+
+#printHeader{
+  display:none;
+}
+
+.signatureBox{
+  margin-top:40px;
+  display:flex;
+  justify-content:flex-end;
+}
+
+.signature{
+  width:280px;
+  text-align:center;
+}
+
+.signatureLine{
+  margin:0 auto 8px;
+  width:190px;
+  border-top:1px dotted #64748b;
+}
+
+@media(max-width:900px){
+
+  .filters{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .summaryGrid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .header{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .pageWrap{
+    width:calc(100% - 18px);
+    margin:10px auto 30px;
+  }
+
+  .mainCard{
+    padding:15px;
+    border-radius:22px;
+  }
+
+  .filters{
+    grid-template-columns:1fr;
+  }
+
+  .summaryGrid{
+    grid-template-columns:1fr;
+  }
+
+  .titleBox h1{
+    font-size:24px;
+  }
+
+}
+
+@media print{
+
+  body{
+    background:#fff !important;
+  }
+
+  .pageBg,
+  .header,
+  .controlPanel,
+  .summaryGrid,
+  .signatureBox{
+    display:none !important;
+  }
+
+  .pageWrap,
+  .mainCard,
+  .resultPanel{
+    width:100% !important;
+    margin:0 !important;
+    padding:0 !important;
+    border:none !important;
+    box-shadow:none !important;
+  }
+
+  #printHeader{
+    display:block;
+    text-align:center;
+    margin-bottom:20px;
+  }
+
+  .printSchool{
+    font-size:18px;
+    font-weight:900;
+  }
+
+  .printTitle{
+    margin-top:4px;
+    font-size:17px;
+    font-weight:900;
+  }
+
+  .printInfo{
+    margin-top:8px;
+    font-size:13px;
+  }
+
+  .scoreTable{
+    min-width:0;
+  }
+
+  .scoreTable th,
+  .scoreTable td{
+    padding:6px;
+    font-size:10px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="pageBg"></div>
+
+<main class="pageWrap">
+
+<section class="mainCard">
+
+<header class="header">
+
+  <div class="brand">
+
+    <img
+      class="logo"
+      src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+      alt="Student Assessment System"
+    >
+
+    <div class="titleBox">
+
+      <h1>
+        ดูคะแนนรวมรายห้อง
+      </h1>
+
+      <div class="english">
+        Student Assessment System
+      </div>
+
+      <div class="subtitle">
+        สรุปคะแนน คะแนนเก็บ กลางภาค ปลายภาค และผลการเรียน
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <a
+    href="admin.html"
+    class="backBtn"
+  >
+
+    <span class="backIcon">
+      🛡️
+    </span>
+
+    <span>
+      กลับหน้า Admin
+      <br>
+      <small style="color:#64748b">
+        ศูนย์รวมเมนูผู้ดูแล
+      </small>
+    </span>
+
+  </a>
+
+</header>
+
+
+<section class="controlPanel">
+
+  <div class="controlHeader">
+
+    <div class="controlTitle">
+      📊 เลือกห้องเรียน
+    </div>
+
+    <div
+      class="status"
+      id="status"
+    >
+      พร้อมใช้งาน
+    </div>
+
+  </div>
+
+
+  <div class="filters">
+
+    <div class="field">
+
+      <label>
+        ประเภทการศึกษา
+      </label>
+
+      <select id="educationType">
+
+        <option value="GENERAL">
+          สายสามัญ
+        </option>
+
+        <option value="VOCATIONAL">
+          สายวิชาชีพ
+        </option>
+
+      </select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        ระดับชั้น
+      </label>
+
+      <select id="level"></select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        ห้อง
+      </label>
+
+      <select id="room"></select>
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        ภาคเรียน
+      </label>
+
+      <select id="term">
+
+        <option value="1">
+          ภาคเรียนที่ 1
+        </option>
+
+        <option value="2">
+          ภาคเรียนที่ 2
+        </option>
+
+      </select>
+
+    </div>
+
+  </div>
+
+
+  <div class="actions">
+
+    <button
+      class="actionBtn primary"
+      id="btnView"
+      type="button"
+    >
+      📊 ดูคะแนน
+    </button>
+
+
+    <button
+      class="actionBtn green"
+      id="btnPP5"
+      type="button"
+      disabled
+    >
+      📄 สร้าง ปพ.5
+    </button>
+
+
+    <button
+      class="actionBtn red"
+      id="btnPDF"
+      type="button"
+      disabled
+    >
+      ⬇️ PDF
+    </button>
+
+
+    <button
+      class="actionBtn light"
+      id="btnRefresh"
+      type="button"
+    >
+      ↻ รีเฟรช
+    </button>
+
+  </div>
+
+</section>
+
+
+<section class="summaryGrid">
+
+  <div class="summaryCard">
+
+    <div class="summaryLabel">
+      นักเรียนทั้งหมด
+    </div>
+
+    <div>
+
+      <span
+        class="summaryValue"
+        id="studentCount"
+      >
+        -
+      </span>
+
+      <span class="summaryUnit">
+        คน
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="summaryCard">
+
+    <div class="summaryLabel">
+      คะแนนเฉลี่ย
+    </div>
+
+    <div>
+
+      <span
+        class="summaryValue"
+        id="averageScore"
+      >
+        -
+      </span>
+
+      <span class="summaryUnit">
+        คะแนน
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="summaryCard">
+
+    <div class="summaryLabel">
+      ผ่าน
+    </div>
+
+    <div>
+
+      <span
+        class="summaryValue"
+        id="passCount"
+      >
+        -
+      </span>
+
+      <span class="summaryUnit">
+        คน
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="summaryCard">
+
+    <div class="summaryLabel">
+      ผลการเรียน ร
+    </div>
+
+    <div>
+
+      <span
+        class="summaryValue"
+        id="failCount"
+      >
+        -
+      </span>
+
+      <span class="summaryUnit">
+        คน
+      </span>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<div id="printHeader">
+
+  <div class="printSchool">
+    โรงเรียนอนุบาลพร้อมจิต
+  </div>
+
+  <div class="printTitle">
+    รายงานผลการเรียนรายวิชา
+  </div>
+
+  <div class="printInfo">
+
+    <div>
+      รายวิชา : คอมพิวเตอร์
+    </div>
+
+    <div id="printClass"></div>
+
+    <div id="printTerm"></div>
+
+  </div>
+
+</div>
+
+
+<section class="resultPanel">
+
+  <div class="resultHeader">
+
+    <div class="resultTitle">
+      📋 ตารางคะแนนรายห้อง
+    </div>
+
+    <div
+      class="classInfo"
+      id="classInfo"
+    >
+      ยังไม่ได้โหลดข้อมูล
+    </div>
+
+  </div>
+
+
+  <div id="result">
+
+    <div class="emptyState">
+
+      <div class="emptyIcon">
+        📊
+      </div>
+
+      <div class="emptyTitle">
+        ยังไม่ได้แสดงคะแนน
+      </div>
+
+      <div class="emptyText">
+        เลือกระดับชั้น ห้อง และภาคเรียน แล้วกด “ดูคะแนน”
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="signatureBox">
+
+    <div class="signature">
+
+      <div class="signatureLine"></div>
+
+      <b>
+        ว่าที่ ร.ต. บุญญฤทธิ์ ศรีนาค
+      </b>
+
+      <div>
+        ครูประจำวิชา
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* =====================================================
+   API ตัวล่าสุด
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbw7fx6dBKoc9d87XNqOCb4R1HRKgfY79dzVvUAnWfs46noLnyeGBxMvJRTO3Qr23kMFQA/exec";
+
+
+/* =====================================================
+   LEVELS
+===================================================== */
+
+const LEVELS = {
+
+  GENERAL:[
+
+    ["K1","อนุบาล 1"],
+    ["K2","อนุบาล 2"],
+    ["K3","อนุบาล 3"],
+
+    ["P1","ประถมศึกษาปีที่ 1"],
+    ["P2","ประถมศึกษาปีที่ 2"],
+    ["P3","ประถมศึกษาปีที่ 3"],
+    ["P4","ประถมศึกษาปีที่ 4"],
+    ["P5","ประถมศึกษาปีที่ 5"],
+    ["P6","ประถมศึกษาปีที่ 6"],
+
+    ["M1","มัธยมศึกษาปีที่ 1"],
+    ["M2","มัธยมศึกษาปีที่ 2"],
+    ["M3","มัธยมศึกษาปีที่ 3"],
+    ["M4","มัธยมศึกษาปีที่ 4"],
+    ["M5","มัธยมศึกษาปีที่ 5"],
+    ["M6","มัธยมศึกษาปีที่ 6"]
+
+  ],
+
+
+  VOCATIONAL:[
+
+    ["VOC1","ปวช. ปีที่ 1"],
+    ["VOC2","ปวช. ปีที่ 2"],
+    ["VOC3","ปวช. ปีที่ 3"],
+
+    ["HVC1","ปวส. ปีที่ 1"],
+    ["HVC2","ปวส. ปีที่ 2"]
+
+  ]
+
+};
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const educationType =
+document.getElementById(
+  "educationType"
+);
+
+const level =
+document.getElementById(
+  "level"
+);
+
+const room =
+document.getElementById(
+  "room"
+);
+
+const term =
+document.getElementById(
+  "term"
+);
+
+const btnView =
+document.getElementById(
+  "btnView"
+);
+
+const btnPP5 =
+document.getElementById(
+  "btnPP5"
+);
+
+const btnPDF =
+document.getElementById(
+  "btnPDF"
+);
+
+const btnRefresh =
+document.getElementById(
+  "btnRefresh"
+);
+
+const result =
+document.getElementById(
+  "result"
+);
+
+const statusEl =
+document.getElementById(
+  "status"
+);
+
+const classInfo =
+document.getElementById(
+  "classInfo"
+);
+
+const studentCount =
+document.getElementById(
+  "studentCount"
+);
+
+const averageScore =
+document.getElementById(
+  "averageScore"
+);
+
+const passCount =
+document.getElementById(
+  "passCount"
+);
+
+const failCount =
+document.getElementById(
+  "failCount"
+);
+
+
+let currentStudents = [];
+
+
+/* =====================================================
+   SAFE
+===================================================== */
+
+function safe(value){
+
+  return String(
+    value ?? ""
+  )
+
+  .replace(
+    /&/g,
+    "&amp;"
+  )
+
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+function setStatus(
+  text,
+  type=""
+){
+
+  statusEl.textContent =
+  text;
+
+  statusEl.className =
+  "status";
+
+  if(type){
+
+    statusEl
+    .classList
+    .add(type);
+
+  }
+
+}
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function renderLevels(){
+
+  const list =
+  LEVELS[
+    educationType.value
+  ]
+  ||
+  LEVELS.GENERAL;
+
+
+  level.innerHTML =
+  list
+  .map(
+    item=>`
+
+      <option value="${item[0]}">
+        ${item[1]} (${item[0]})
+      </option>
+
+    `
+  )
+  .join("");
+
+}
+
+
+/* =====================================================
+   ROOMS
+===================================================== */
+
+function renderRooms(){
+
+  room.innerHTML =
+  Array
+  .from(
+    {
+      length:20
+    },
+    (_,index)=>{
+
+      const no =
+      index + 1;
+
+      return `
+
+        <option value="${no}">
+          ห้อง ${no}
+        </option>
+
+      `;
+
+    }
+  )
+  .join("");
+
+}
+
+
+/* =====================================================
+   LEVEL NAME
+===================================================== */
+
+function levelName(value){
+
+  const all = [
+    ...LEVELS.GENERAL,
+    ...LEVELS.VOCATIONAL
+  ];
+
+
+  const found =
+  all.find(
+    item=>
+    item[0] === value
+  );
+
+
+  return found
+    ? found[1]
+    : value;
+
+}
+
+
+/* =====================================================
+   FETCH JSON
+===================================================== */
+
+async function fetchJSON(url){
+
+  const controller =
+  new AbortController();
+
+
+  const timeout =
+  setTimeout(
+    ()=>{
+      controller.abort();
+    },
+    25000
+  );
+
+
+  try{
+
+    const response =
+    await fetch(
+      url,
+      {
+        method:"GET",
+        cache:"no-store",
+        redirect:"follow",
+        credentials:"omit",
+        signal:
+          controller.signal
+      }
+    );
+
+
+    const text =
+    await response.text();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        "HTTP " +
+        response.status
+      );
+
+    }
+
+
+    const trimmed =
+    text.trim();
+
+
+    if(
+      trimmed.startsWith(
+        "<!DOCTYPE"
+      )
+      ||
+      trimmed.startsWith(
+        "<html"
+      )
+    ){
+
+      throw new Error(
+        "Apps Script ยังไม่ได้เปิดสิทธิ์ หรือ Deployment ไม่ถูกต้อง"
+      );
+
+    }
+
+
+    try{
+
+      return JSON.parse(
+        text
+      );
+
+    }
+
+    catch(error){
+
+      console.error(
+        "API RESPONSE:",
+        text
+      );
+
+
+      throw new Error(
+        "API ตอบกลับไม่ใช่ JSON"
+      );
+
+    }
+
+  }
+
+  catch(error){
+
+    if(
+      error.name ===
+      "AbortError"
+    ){
+
+      throw new Error(
+        "API ใช้เวลาตอบกลับนานเกินไป"
+      );
+
+    }
+
+
+    throw error;
+
+  }
+
+  finally{
+
+    clearTimeout(
+      timeout
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   RESET
+===================================================== */
+
+function resetView(){
+
+  currentStudents =
+  [];
+
+
+  studentCount.textContent =
+  "-";
+
+  averageScore.textContent =
+  "-";
+
+  passCount.textContent =
+  "-";
+
+  failCount.textContent =
+  "-";
+
+
+  btnPP5.disabled =
+  true;
+
+  btnPDF.disabled =
+  true;
+
+
+  classInfo.textContent =
+  "ยังไม่ได้โหลดข้อมูล";
+
+
+  result.innerHTML = `
+
+    <div class="emptyState">
+
+      <div class="emptyIcon">
+        📊
+      </div>
+
+      <div class="emptyTitle">
+        ยังไม่ได้แสดงคะแนน
+      </div>
+
+      <div class="emptyText">
+        กด “ดูคะแนน” เพื่อโหลดข้อมูล
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* =====================================================
+   LOAD ROOM SCORE
+===================================================== */
+
+async function loadRoomScore(){
+
+  const selectedLevel =
+  String(
+    level.value || ""
+  ).trim();
+
+
+  const selectedRoom =
+  String(
+    room.value || ""
+  ).trim();
+
+
+  const selectedTerm =
+  String(
+    term.value || ""
+  ).trim();
+
+
+  if(
+    !selectedLevel ||
+    !selectedRoom ||
+    !selectedTerm
+  ){
+
+    setStatus(
+      "กรุณาเลือกข้อมูลให้ครบ",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  btnView.disabled =
+  true;
+
+
+  btnView.textContent =
+  "⏳ กำลังโหลด...";
+
+
+  setStatus(
+    "กำลังโหลดข้อมูล...",
+    "loading"
+  );
+
+
+  result.innerHTML = `
+
+    <div class="emptyState">
+
+      <div class="emptyIcon">
+        ⏳
+      </div>
+
+      <div class="emptyTitle">
+        กำลังโหลดคะแนน
+      </div>
+
+      <div class="emptyText">
+        กรุณารอสักครู่
+      </div>
+
+    </div>
+
+  `;
+
+
+  try{
+
+    const url =
+    API_URL
+
+    +
+
+    "?action=viewRoomGrade"
+
+    +
+
+    "&level="
+
+    +
+
+    encodeURIComponent(
+      selectedLevel
+    )
+
+    +
+
+    "&room="
+
+    +
+
+    encodeURIComponent(
+      selectedRoom
+    )
+
+    +
+
+    "&term="
+
+    +
+
+    encodeURIComponent(
+      selectedTerm
+    )
+
+    +
+
+    "&_="
+
+    +
+
+    Date.now();
+
+
+    console.log(
+      "ROOM GRADE API:",
+      url
+    );
+
+
+    const data =
+    await fetchJSON(
+      url
+    );
+
+
+    console.log(
+      "ROOM GRADE RESPONSE:",
+      data
+    );
+
+
+    if(
+      !data ||
+      data.ok !== true
+    ){
+
+      throw new Error(
+        data?.error ||
+        "โหลดข้อมูลไม่สำเร็จ"
+      );
+
+    }
+
+
+    currentStudents =
+    Array.isArray(
+      data.students
+    )
+      ? data.students
+      : [];
+
+
+    renderTable(
+      currentStudents
+    );
+
+
+    setStatus(
+      "ข้อมูลล่าสุด",
+      "ok"
+    );
+
+  }
+
+  catch(error){
+
+    console.error(
+      "LOAD ROOM SCORE ERROR:",
+      error
+    );
+
+
+    currentStudents =
+    [];
+
+
+    studentCount.textContent =
+    "-";
+
+    averageScore.textContent =
+    "-";
+
+    passCount.textContent =
+    "-";
+
+    failCount.textContent =
+    "-";
+
+
+    btnPP5.disabled =
+    true;
+
+    btnPDF.disabled =
+    true;
+
+
+    setStatus(
+      "โหลดไม่สำเร็จ",
+      "error"
+    );
+
+
+    result.innerHTML = `
+
+      <div class="emptyState">
+
+        <div class="emptyIcon">
+          ❌
+        </div>
+
+        <div class="emptyTitle">
+          โหลดข้อมูลไม่สำเร็จ
+        </div>
+
+        <div class="emptyText errorDetail">
+          ${safe(error.message)}
+        </div>
+
+      </div>
+
+    `;
+
+  }
+
+  finally{
+
+    btnView.disabled =
+    false;
+
+
+    btnView.textContent =
+    "📊 ดูคะแนน";
+
+  }
+
+}
+
+
+/* =====================================================
+   RENDER TABLE
+===================================================== */
+
+function renderTable(
+  students
+){
+
+  const levelText =
+  levelName(
+    level.value
+  );
+
+
+  classInfo.textContent =
+
+  levelText
+
+  +
+
+  " • ห้อง "
+
+  +
+
+  room.value
+
+  +
+
+  " • ภาคเรียนที่ "
+
+  +
+
+  term.value;
+
+
+  studentCount.textContent =
+  students.length;
+
+
+  if(
+    !students.length
+  ){
+
+    averageScore.textContent =
+    "0";
+
+    passCount.textContent =
+    "0";
+
+    failCount.textContent =
+    "0";
+
+
+    btnPP5.disabled =
+    true;
+
+    btnPDF.disabled =
+    true;
+
+
+    result.innerHTML = `
+
+      <div class="emptyState">
+
+        <div class="emptyIcon">
+          📭
+        </div>
+
+        <div class="emptyTitle">
+          ไม่พบข้อมูลนักเรียนหรือคะแนน
+        </div>
+
+        <div class="emptyText">
+          ตรวจสอบระดับชั้น ห้อง และข้อมูลใน Google Sheet
+        </div>
+
+      </div>
+
+    `;
+
+
+    return;
+
+  }
+
+
+  const workSet =
+  new Set();
+
+
+  students.forEach(
+    student=>{
+
+      (
+        student.works ||
+        []
+      )
+      .forEach(
+        work=>{
+
+          if(
+            work &&
+            work.name
+          ){
+
+            workSet.add(
+              String(
+                work.name
+              )
+            );
+
+          }
+
+        }
+      );
+
+    }
+  );
+
+
+  const workNames =
+  Array.from(
+    workSet
+  );
+
+
+  const avgWorks =
+  Object.fromEntries(
+    workNames.map(
+      name=>[
+        name,
+        0
+      ]
+    )
+  );
+
+
+  let avgMid =
+  0;
+
+  let avgFinal =
+  0;
+
+  let avgTotal =
+  0;
+
+  let passed =
+  0;
+
+  let failed =
+  0;
+
+
+  let html = `
+
+  <div class="tableWrap">
+
+  <table class="scoreTable">
+
+  <thead>
+
+  <tr>
+
+    <th rowspan="2">
+      เลขที่
+    </th>
+
+    <th rowspan="2">
+      ชื่อ
+    </th>
+
+    <th
+      colspan="${
+        workNames.length + 2
+      }"
+    >
+      คะแนน
+    </th>
+
+    <th rowspan="2">
+      รวม
+    </th>
+
+    <th rowspan="2">
+      เกรด
+    </th>
+
+  </tr>
+
+
+  <tr>
+
+  ${
+    workNames
+    .map(
+      name=>`
+        <th>
+          ${safe(name)}
+        </th>
+      `
+    )
+    .join("")
+  }
+
+    <th>
+      กลางภาค
+    </th>
+
+    <th>
+      ปลายภาค
+    </th>
+
+  </tr>
+
+  </thead>
+
+
+  <tbody>
+
+  `;
+
+
+  students.forEach(
+    student=>{
+
+
+      const workMap =
+      {};
+
+
+      (
+        student.works ||
+        []
+      )
+      .forEach(
+        work=>{
+
+          workMap[
+            work.name
+          ]
+          =
+          Number(
+            work.score ||
+            0
+          );
+
+        }
+      );
+
+
+      const workScores =
+      workNames.map(
+        name=>
+        Number(
+          workMap[name] ||
+          0
+        )
+      );
+
+
+      workNames.forEach(
+        (name,index)=>{
+
+          avgWorks[name] +=
+          workScores[index];
+
+        }
+      );
+
+
+      const mid =
+      Number(
+        student.mid ||
+        0
+      );
+
+
+      const fin =
+      Number(
+        student.fin ||
+        0
+      );
+
+
+      const total =
+      Number(
+        student.total ||
+        0
+      );
+
+
+      const grade =
+      Number(
+        student.grade ||
+        0
+      );
+
+
+      avgMid +=
+      mid;
+
+      avgFinal +=
+      fin;
+
+      avgTotal +=
+      total;
+
+
+      const isFail =
+      grade === 0;
+
+
+      if(isFail){
+        failed++;
+      }
+      else{
+        passed++;
+      }
+
+
+      const fullName =
+      [
+        student.prefix,
+        student.name,
+        student.lastname
+      ]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+
+
+      html += `
+
+      <tr class="${
+        isFail
+        ?
+        "failRow"
+        :
+        ""
+      }">
+
+        <td>
+          ${safe(
+            student.no ?? ""
+          )}
+        </td>
+
+        <td class="nameCell">
+          ${safe(
+            fullName ||
+            student.name ||
+            "-"
+          )}
+        </td>
+
+        ${
+          workScores
+          .map(
+            score=>`
+              <td>
+                ${score}
+              </td>
+            `
+          )
+          .join("")
+        }
+
+        <td>
+          ${mid}
+        </td>
+
+        <td>
+          ${fin}
+        </td>
+
+        <td>
+          <b>
+            ${total}
+          </b>
+        </td>
+
+        <td>
+
+          <span
+            class="gradeBadge ${
+              isFail
+              ?
+              "fail"
+              :
+              ""
+            }"
+          >
+
+            ${
+              isFail
+              ?
+              "ร"
+              :
+              safe(
+                student.grade
+              )
+            }
+
+          </span>
+
+        </td>
+
+      </tr>
+
+      `;
+
+    }
+  );
+
+
+  const n =
+  students.length;
+
+
+  html += `
+
+  <tr class="averageRow">
+
+    <td colspan="2">
+      ค่าเฉลี่ย
+    </td>
+
+    ${
+      workNames
+      .map(
+        name=>`
+          <td>
+            ${
+              (
+                avgWorks[name]
+                /
+                n
+              )
+              .toFixed(2)
+            }
+          </td>
+        `
+      )
+      .join("")
+    }
+
+    <td>
+      ${
+        (
+          avgMid /
+          n
+        )
+        .toFixed(2)
+      }
+    </td>
+
+    <td>
+      ${
+        (
+          avgFinal /
+          n
+        )
+        .toFixed(2)
+      }
+    </td>
+
+    <td>
+      ${
+        (
+          avgTotal /
+          n
+        )
+        .toFixed(2)
+      }
+    </td>
+
+    <td>
+      -
+    </td>
+
+  </tr>
+
+
+  </tbody>
+
+  </table>
+
+  </div>
+
+  `;
+
+
+  result.innerHTML =
+  html;
+
+
+  averageScore.textContent =
+  (
+    avgTotal /
+    n
+  )
+  .toFixed(2);
+
+
+  passCount.textContent =
+  passed;
+
+
+  failCount.textContent =
+  failed;
+
+
+  btnPP5.disabled =
+  false;
+
+
+  btnPDF.disabled =
+  false;
+
+}
+
+
+/* =====================================================
+   EXPORT PP5
+===================================================== */
+
+function exportPP5(){
+
+  const url =
+  API_URL
+
+  +
+
+  "?action=exportPP5"
+
+  +
+
+  "&level="
+
+  +
+
+  encodeURIComponent(
+    level.value
+  )
+
+  +
+
+  "&room="
+
+  +
+
+  encodeURIComponent(
+    room.value
+  )
+
+  +
+
+  "&term="
+
+  +
+
+  encodeURIComponent(
+    term.value
+  );
+
+
+  window.open(
+    url,
+    "_blank"
+  );
+
+}
+
+
+/* =====================================================
+   PDF
+===================================================== */
+
+function exportPDF(){
+
+  if(
+    currentStudents.length === 0
+  ){
+
+    alert(
+      "กรุณาโหลดคะแนนก่อนสร้าง PDF"
+    );
+
+    return;
+
+  }
+
+
+  document
+  .getElementById(
+    "printClass"
+  )
+  .textContent =
+
+  "ชั้น "
+
+  +
+
+  levelName(
+    level.value
+  )
+
+  +
+
+  " ห้อง "
+
+  +
+
+  room.value;
+
+
+  document
+  .getElementById(
+    "printTerm"
+  )
+  .textContent =
+
+  "ภาคเรียนที่ "
+
+  +
+
+  term.value;
+
+
+  window.print();
+
+}
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+educationType
+.addEventListener(
+  "change",
+  ()=>{
+
+    renderLevels();
+    resetView();
+
+  }
+);
+
+
+level
+.addEventListener(
+  "change",
+  resetView
+);
+
+
+room
+.addEventListener(
+  "change",
+  resetView
+);
+
+
+term
+.addEventListener(
+  "change",
+  resetView
+);
+
+
+btnView
+.addEventListener(
+  "click",
+  loadRoomScore
+);
+
+
+btnRefresh
+.addEventListener(
+  "click",
+  ()=>{
+
+    resetView();
+    loadRoomScore();
+
+  }
+);
+
+
+btnPP5
+.addEventListener(
+  "click",
+  exportPP5
+);
+
+
+btnPDF
+.addEventListener(
+  "click",
+  exportPDF
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderLevels();
+
+renderRooms();
+
+resetView();
+
+</script>
+
+</body>
+</html>

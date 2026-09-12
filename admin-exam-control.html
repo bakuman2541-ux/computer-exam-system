@@ -1,0 +1,4172 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  อนุญาตให้ทำข้อสอบใหม่ - Student Assessment System
+</title>
+
+
+<script>
+
+/* ป้องกันนักเรียนเปิดหน้า Admin โดยตรง */
+
+if(
+  sessionStorage.getItem(
+    "ADMIN_UNLOCKED_SESSION"
+  ) !== "1"
+){
+  window.location.replace(
+    "admin.html"
+  );
+}
+
+</script>
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+
+  margin:0;
+
+  min-height:100vh;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+
+  color:#0f172a;
+
+  background:#020617;
+
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.pageBg{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:-10;
+
+
+  background:
+
+    radial-gradient(
+      circle at 8% 14%,
+      rgba(14,165,233,.55),
+      transparent 34%
+    ),
+
+    radial-gradient(
+      circle at 91% 12%,
+      rgba(236,72,153,.38),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 18% 92%,
+      rgba(6,182,212,.28),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 90% 88%,
+      rgba(168,85,247,.25),
+      transparent 40%
+    ),
+
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #061725 42%,
+      #09091a 72%,
+      #020617 100%
+    );
+
+}
+
+
+.pageBg::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:430px;
+  height:430px;
+
+  left:-190px;
+  bottom:-180px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(103,232,249,.20);
+
+}
+
+
+.pageBg::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:430px;
+  height:430px;
+
+  right:-190px;
+  top:-180px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(244,114,182,.18);
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.pageWrap{
+
+  width:
+    min(
+      1280px,
+      calc(100% - 34px)
+    );
+
+  margin:
+    30px auto 50px;
+
+}
+
+
+.mainCard{
+
+  padding:28px;
+
+  border-radius:30px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.985),
+      rgba(248,250,252,.96)
+    );
+
+
+  border:
+    1px solid rgba(255,255,255,.84);
+
+
+  box-shadow:
+
+    0 35px 100px
+    rgba(0,0,0,.42),
+
+    0 0 55px
+    rgba(56,189,248,.08);
+
+
+  backdrop-filter:blur(18px);
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:20px;
+
+}
+
+
+.brand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:17px;
+
+}
+
+
+.logo{
+
+  width:78px;
+
+  height:78px;
+
+  object-fit:contain;
+
+
+  filter:
+
+    drop-shadow(
+      0 8px 15px
+      rgba(14,165,233,.17)
+    );
+
+}
+
+
+.title{
+
+  margin:0;
+
+  color:#0b3d78;
+
+  font-size:29px;
+
+  line-height:1.2;
+
+  font-weight:1000;
+
+}
+
+
+.english{
+
+  margin-top:4px;
+
+  color:#0891b2;
+
+  font-size:14px;
+
+  font-weight:1000;
+
+}
+
+
+.subTitle{
+
+  margin:
+    5px 0 0;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   BACK ADMIN
+===================================================== */
+
+.backAdmin{
+
+  min-width:205px;
+
+  padding:
+    11px 14px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+
+  text-decoration:none;
+
+  color:#0f172a;
+
+
+  border-radius:20px;
+
+
+  border:
+    1px solid #bfdbfe;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #fff
+    );
+
+
+  box-shadow:
+
+    0 10px 25px
+    rgba(37,99,235,.08);
+
+
+  transition:.18s;
+
+}
+
+
+.backAdmin:hover{
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.backIcon{
+
+  width:44px;
+
+  height:44px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  flex:none;
+
+
+  border-radius:15px;
+
+
+  background:#dbeafe;
+
+
+  font-size:20px;
+
+}
+
+
+.backText{
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+
+.backText b{
+
+  font-size:14px;
+
+}
+
+
+.backText small{
+
+  margin-top:2px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+.headerLine{
+
+  height:1px;
+
+  margin:
+    22px 0;
+
+  background:#e2e8f0;
+
+}
+
+
+/* =====================================================
+   TOP GRID
+===================================================== */
+
+.topGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1.15fr)
+    minmax(300px,.85fr);
+
+  gap:18px;
+
+}
+
+
+.panel{
+
+  padding:21px;
+
+  border-radius:24px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid #e2e8f0;
+
+
+  box-shadow:
+
+    0 15px 40px
+    rgba(15,23,42,.055);
+
+}
+
+
+.panelHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  margin-bottom:16px;
+
+}
+
+
+.panelTitle{
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+.statusChip{
+
+  padding:
+    7px 11px;
+
+  border-radius:999px;
+
+
+  color:#047857;
+
+  background:#ecfdf5;
+
+  border:
+    1px solid #a7f3d0;
+
+
+  font-size:10px;
+
+  font-weight:1000;
+
+}
+
+
+.statusChip.loading{
+
+  color:#0369a1;
+
+  background:#f0f9ff;
+
+  border-color:#bae6fd;
+
+}
+
+
+.statusChip.error{
+
+  color:#b91c1c;
+
+  background:#fef2f2;
+
+  border-color:#fecaca;
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.filterGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1.35fr .75fr;
+
+  gap:10px;
+
+}
+
+
+.filterBox{
+
+  min-width:0;
+
+  padding:10px;
+
+  border-radius:17px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #f1f7ff
+    );
+
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.filterLabel{
+
+  margin-bottom:6px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:1000;
+
+}
+
+
+.filterBox select{
+
+  width:100%;
+
+  height:44px;
+
+
+  padding:
+    0 10px;
+
+
+  border-radius:13px;
+
+
+  border:
+    1px solid #dbe4f0;
+
+
+  outline:none;
+
+  cursor:pointer;
+
+
+  background:#fff;
+
+  color:#0f172a;
+
+
+  font-size:13px;
+
+  font-weight:850;
+
+}
+
+
+.filterBox select:focus{
+
+  border-color:#38bdf8;
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.10);
+
+}
+
+
+/* =====================================================
+   EXAM MODE
+===================================================== */
+
+.examMode{
+
+  margin-top:12px;
+
+}
+
+
+.examMode select{
+
+  width:100%;
+
+  height:52px;
+
+  padding:
+    0 14px;
+
+
+  border-radius:16px;
+
+
+  border:
+    1px solid #dbeafe;
+
+
+  outline:none;
+
+  cursor:pointer;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #f8fbff,
+      #eff6ff
+    );
+
+
+  color:#0f172a;
+
+  font-weight:950;
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.actionRow{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-top:14px;
+
+}
+
+
+.btn{
+
+  min-height:51px;
+
+  padding:
+    10px 15px;
+
+
+  border:none;
+
+  border-radius:17px;
+
+
+  cursor:pointer;
+
+
+  font-size:13px;
+
+  font-weight:950;
+
+
+  transition:.17s;
+
+}
+
+
+.btn:hover:not(:disabled){
+
+  transform:
+    translateY(-2px);
+
+}
+
+
+.btn:disabled{
+
+  opacity:.45;
+
+  cursor:not-allowed;
+
+}
+
+
+.btnLoad{
+
+  color:#fff;
+
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #155eef,
+      #1687f8,
+      #19b7ef
+    );
+
+
+  box-shadow:
+
+    0 14px 28px
+    rgba(37,99,235,.22);
+
+}
+
+
+.btnUnlock{
+
+  color:#fff;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #111827,
+      #0f172a
+    );
+
+
+  box-shadow:
+
+    0 14px 28px
+    rgba(15,23,42,.18);
+
+}
+
+
+.secondaryActions{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-top:10px;
+
+}
+
+
+.btnSmallAction{
+
+  min-height:42px;
+
+  padding:
+    8px 13px;
+
+
+  border-radius:14px;
+
+
+  cursor:pointer;
+
+
+  color:#475569;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid #dbe4f0;
+
+
+  font-size:11px;
+
+  font-weight:900;
+
+}
+
+
+/* =====================================================
+   INFO BOX
+===================================================== */
+
+.tipBox{
+
+  padding:17px;
+
+  border-radius:20px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      #f8fbff
+    );
+
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.tipBox ul{
+
+  margin:0;
+
+  padding-left:20px;
+
+
+  color:#475569;
+
+
+  font-size:12px;
+
+  line-height:2.15;
+
+  font-weight:800;
+
+}
+
+
+.fastBox{
+
+  margin-top:12px;
+
+  padding:14px;
+
+
+  border-radius:17px;
+
+
+  color:#155e75;
+
+  background:#ecfeff;
+
+
+  border:
+    1px solid #a5f3fc;
+
+
+  font-size:10px;
+
+  line-height:1.75;
+
+  font-weight:850;
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message{
+
+  min-height:22px;
+
+  margin-top:12px;
+
+
+  color:#64748b;
+
+
+  font-size:11px;
+
+  font-weight:950;
+
+}
+
+
+.message.ok{
+
+  color:#16a34a;
+
+}
+
+
+.message.error{
+
+  color:#dc2626;
+
+}
+
+
+/* =====================================================
+   STUDENT PANEL
+===================================================== */
+
+.studentPanel{
+
+  margin-top:18px;
+
+  padding:21px;
+
+
+  border-radius:24px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid #e2e8f0;
+
+
+  box-shadow:
+
+    0 15px 40px
+    rgba(15,23,42,.055);
+
+}
+
+
+.studentHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-bottom:12px;
+
+}
+
+
+.studentTitle{
+
+  font-size:16px;
+
+  font-weight:1000;
+
+}
+
+
+.studentMeta{
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:900;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.searchBox{
+
+  min-height:52px;
+
+  padding:
+    8px 14px;
+
+  margin-bottom:12px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+
+  border-radius:17px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid #dbe4f0;
+
+}
+
+
+.searchBox:focus-within{
+
+  border-color:#38bdf8;
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.10);
+
+}
+
+
+.searchBox input{
+
+  width:100%;
+
+  height:35px;
+
+
+  border:none;
+
+  outline:none;
+
+
+  background:transparent;
+
+
+  color:#0f172a;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.tableWrap{
+
+  max-height:500px;
+
+  overflow:auto;
+
+
+  border-radius:18px;
+
+
+  border:
+    1px solid #e2e8f0;
+
+}
+
+
+.studentTable{
+
+  width:100%;
+
+  min-width:800px;
+
+  border-collapse:collapse;
+
+}
+
+
+.studentTable th{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:3;
+
+
+  padding:
+    11px;
+
+
+  color:#475569;
+
+
+  background:#eff6ff;
+
+
+  border-bottom:
+    1px solid #dbeafe;
+
+
+  text-align:left;
+
+
+  font-size:11px;
+
+  font-weight:1000;
+
+}
+
+
+.studentTable td{
+
+  padding:
+    11px;
+
+
+  border-bottom:
+    1px solid #eef2f7;
+
+
+  font-size:11px;
+
+  font-weight:800;
+
+}
+
+
+.studentTable tbody tr:hover td{
+
+  background:#f8fbff;
+
+}
+
+
+.emptyRow{
+
+  height:130px;
+
+  text-align:center;
+
+  color:#94a3b8;
+
+  font-weight:900;
+
+}
+
+
+/* =====================================================
+   BADGES
+===================================================== */
+
+.badge{
+
+  display:inline-flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  margin:
+    2px 3px 2px 0;
+
+
+  padding:
+    5px 8px;
+
+
+  border-radius:999px;
+
+
+  white-space:nowrap;
+
+
+  font-size:9px;
+
+  font-weight:1000;
+
+}
+
+
+.badge.ok{
+
+  color:#047857;
+
+  background:#dcfce7;
+
+}
+
+
+.badge.bad{
+
+  color:#b91c1c;
+
+  background:#fee2e2;
+
+}
+
+
+.badge.gray{
+
+  color:#64748b;
+
+  background:#f1f5f9;
+
+}
+
+
+.attemptTxt{
+
+  margin-top:3px;
+
+  color:#64748b;
+
+  font-size:9px;
+
+}
+
+
+.btnStudent{
+
+  min-height:36px;
+
+  padding:
+    7px 11px;
+
+
+  border:none;
+
+  border-radius:12px;
+
+
+  cursor:pointer;
+
+
+  color:#1d4ed8;
+
+  background:#eff6ff;
+
+
+  border:
+    1px solid #bfdbfe;
+
+
+  font-size:10px;
+
+  font-weight:950;
+
+}
+
+
+.btnStudent:disabled{
+
+  opacity:.5;
+
+  cursor:not-allowed;
+
+}
+
+
+/* =====================================================
+   CONFIRM MODAL
+===================================================== */
+
+.confirmBackdrop{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:999999;
+
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  padding:18px;
+
+
+  background:
+    rgba(2,6,23,.80);
+
+
+  backdrop-filter:
+    blur(14px);
+
+}
+
+
+.confirmCard{
+
+  width:
+    min(
+      430px,
+      94vw
+    );
+
+
+  padding:25px;
+
+
+  border-radius:26px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid rgba(125,211,252,.35);
+
+
+  box-shadow:
+
+    0 40px 100px
+    rgba(0,0,0,.48);
+
+}
+
+
+.confirmIcon{
+
+  width:60px;
+
+  height:60px;
+
+
+  margin:
+    0 auto 12px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  border-radius:19px;
+
+
+  background:#eff6ff;
+
+
+  font-size:28px;
+
+}
+
+
+.confirmTitle{
+
+  text-align:center;
+
+  color:#0f172a;
+
+  font-size:19px;
+
+  font-weight:1000;
+
+}
+
+
+.confirmText{
+
+  margin-top:8px;
+
+  text-align:center;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  line-height:1.7;
+
+  font-weight:800;
+
+}
+
+
+.confirmActions{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:10px;
+
+  margin-top:19px;
+
+}
+
+
+.confirmYes{
+
+  min-height:48px;
+
+  border:none;
+
+  border-radius:15px;
+
+
+  cursor:pointer;
+
+
+  color:#fff;
+
+  background:
+    linear-gradient(
+      90deg,
+      #155eef,
+      #19b7ef
+    );
+
+
+  font-weight:1000;
+
+}
+
+
+.confirmNo{
+
+  min-height:48px;
+
+  border:
+    1px solid #dbe4f0;
+
+  border-radius:15px;
+
+
+  cursor:pointer;
+
+
+  color:#475569;
+
+  background:#fff;
+
+
+  font-weight:1000;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:900px){
+
+.topGrid{
+
+  grid-template-columns:1fr;
+
+}
+
+
+.filterGrid{
+
+  grid-template-columns:
+    1fr 1fr;
+
+}
+
+}
+
+
+@media(max-width:650px){
+
+.header{
+
+  flex-direction:column;
+
+  align-items:stretch;
+
+}
+
+
+.backAdmin{
+
+  width:100%;
+
+}
+
+
+.filterGrid{
+
+  grid-template-columns:1fr;
+
+}
+
+
+.actionRow{
+
+  grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="pageBg"></div>
+
+
+<main class="pageWrap">
+
+
+<section class="mainCard">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="header">
+
+
+<div class="brand">
+
+
+<img
+
+  class="logo"
+
+  src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+
+  alt="Student Assessment System"
+
+>
+
+
+<div>
+
+
+<h1 class="title">
+อนุญาตให้ทำข้อสอบใหม่
+</h1>
+
+
+<div class="english">
+Student Assessment System
+</div>
+
+
+<p class="subTitle">
+จัดการสิทธิ์การสอบกลางภาคและปลายภาค
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+<a
+  href="admin.html"
+  class="backAdmin"
+>
+
+
+<span class="backIcon">
+🛡️
+</span>
+
+
+<span class="backText">
+
+<b>
+กลับหน้า Admin
+</b>
+
+<small>
+ศูนย์รวมเมนูผู้ดูแล
+</small>
+
+</span>
+
+
+</a>
+
+
+</header>
+
+
+<div class="headerLine"></div>
+
+
+
+<!-- =====================================================
+     TOP
+===================================================== -->
+
+<section class="topGrid">
+
+
+<!-- SETTINGS -->
+
+<div class="panel">
+
+
+<div class="panelHeader">
+
+
+<div class="panelTitle">
+🎯 ตั้งค่าการปลดล็อก
+</div>
+
+
+<div
+  class="statusChip"
+  id="statusChip"
+>
+พร้อมใช้งาน
+</div>
+
+
+</div>
+
+
+
+<div class="filterGrid">
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ประเภทการศึกษา
+</div>
+
+<select id="educationType">
+
+<option value="GENERAL">
+สายสามัญ
+</option>
+
+<option value="VOCATIONAL">
+สายวิชาชีพ
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ระดับชั้น
+</div>
+
+<select id="level"></select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ห้อง
+</div>
+
+<select id="room"></select>
+
+</div>
+
+
+</div>
+
+
+
+<div class="examMode">
+
+
+<div class="filterLabel">
+ปลดล็อกข้อสอบ
+</div>
+
+
+<select id="examType">
+
+<option value="BOTH">
+🧪 ทั้งกลางภาค + ปลายภาค
+</option>
+
+<option value="MIDTERM">
+📝 กลางภาค
+</option>
+
+<option value="FINAL">
+📘 ปลายภาค
+</option>
+
+</select>
+
+
+</div>
+
+
+
+<div class="actionRow">
+
+
+<button
+  type="button"
+  class="btn btnLoad"
+  id="btnLoad"
+>
+📥 โหลดรายชื่อห้องนี้
+</button>
+
+
+<button
+  type="button"
+  class="btn btnUnlock"
+  id="btnUnlockRoom"
+  disabled
+>
+✅ ปลดล็อกทั้งห้อง
+</button>
+
+
+</div>
+
+
+
+<div class="secondaryActions">
+
+
+<button
+  type="button"
+  class="btnSmallAction"
+  id="btnLoadStatus"
+  disabled
+>
+🔎 ตรวจสถานะสิทธิ์
+</button>
+
+
+<button
+  type="button"
+  class="btnSmallAction"
+  id="btnRefresh"
+>
+↻ รีเฟรชรายชื่อ
+</button>
+
+
+</div>
+
+
+<div
+  class="message"
+  id="msg"
+></div>
+
+
+</div>
+
+
+
+<!-- HELP -->
+
+<div class="panel">
+
+
+<div
+  class="panelTitle"
+  style="margin-bottom:15px;"
+>
+💡 วิธีใช้งาน
+</div>
+
+
+<div class="tipBox">
+
+
+<ul>
+
+<li>
+เลือกสายสามัญหรือสายวิชาชีพ
+</li>
+
+<li>
+เลือกระดับชั้นและห้อง
+</li>
+
+<li>
+เลือกว่าจะปลดล็อกกลางภาค ปลายภาค หรือทั้งสอง
+</li>
+
+<li>
+กด “โหลดรายชื่อห้องนี้”
+</li>
+
+<li>
+ปลดล็อกรายคนจากตารางด้านล่าง
+</li>
+
+<li>
+หรือกด “ปลดล็อกทั้งห้อง” เพื่อเปิดสิทธิ์พร้อมกัน
+</li>
+
+</ul>
+
+
+</div>
+
+
+<div class="fastBox">
+
+⚡ เวอร์ชันนี้ปรับ “ปลดล็อกทั้งห้อง”
+ให้ส่งคำสั่งไป Google Apps Script เพียงครั้งเดียว
+แทนการวนส่งทีละนักเรียน จึงเร็วขึ้นมาก
+
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     STUDENTS
+===================================================== -->
+
+<section class="studentPanel">
+
+
+<div class="studentHeader">
+
+
+<div class="studentTitle">
+👥 รายชื่อนักเรียน
+</div>
+
+
+<div
+  class="studentMeta"
+  id="studentMeta"
+>
+ยังไม่ได้โหลดรายชื่อ
+</div>
+
+
+</div>
+
+
+
+<div class="searchBox">
+
+<span>
+🔎
+</span>
+
+<input
+  id="search"
+  type="text"
+  placeholder="ค้นหาชื่อ / เลขนักเรียน"
+>
+
+</div>
+
+
+
+<div class="tableWrap">
+
+
+<table class="studentTable">
+
+
+<thead>
+
+<tr>
+
+<th style="width:75px;">
+เลขที่
+</th>
+
+<th>
+ชื่อ
+</th>
+
+<th style="width:170px;">
+เลขนักเรียน
+</th>
+
+<th style="width:280px;">
+สิทธิ์การสอบ
+</th>
+
+<th style="width:145px;">
+จัดการ
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tbody">
+
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyRow"
+>
+กรุณากด “โหลดรายชื่อห้องนี้”
+</td>
+
+</tr>
+
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</section>
+
+
+</section>
+
+
+</main>
+
+
+
+<!-- =====================================================
+     CONFIRM MODAL
+===================================================== -->
+
+<div
+  class="confirmBackdrop"
+  id="confirmBackdrop"
+>
+
+
+<div class="confirmCard">
+
+
+<div class="confirmIcon">
+🔓
+</div>
+
+
+<div
+  class="confirmTitle"
+  id="confirmTitle"
+>
+ยืนยันการปลดล็อก
+</div>
+
+
+<div
+  class="confirmText"
+  id="confirmText"
+></div>
+
+
+<div class="confirmActions">
+
+
+<button
+  type="button"
+  class="confirmYes"
+  id="confirmYes"
+>
+ยืนยัน
+</button>
+
+
+<button
+  type="button"
+  class="confirmNo"
+  id="confirmNo"
+>
+ยกเลิก
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   API ตัวเดียวกับระบบล่าสุด
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbw7fx6dBKoc9d87XNqOCb4R1HRKgfY79dzVvUAnWfs46noLnyeGBxMvJRTO3Qr23kMFQA/exec";
+
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+const LEVELS = {
+
+GENERAL:[
+
+["K1","อนุบาล 1"],
+["K2","อนุบาล 2"],
+["K3","อนุบาล 3"],
+
+["P1","ประถมศึกษาปีที่ 1"],
+["P2","ประถมศึกษาปีที่ 2"],
+["P3","ประถมศึกษาปีที่ 3"],
+["P4","ประถมศึกษาปีที่ 4"],
+["P5","ประถมศึกษาปีที่ 5"],
+["P6","ประถมศึกษาปีที่ 6"],
+
+["M1","มัธยมศึกษาปีที่ 1"],
+["M2","มัธยมศึกษาปีที่ 2"],
+["M3","มัธยมศึกษาปีที่ 3"],
+["M4","มัธยมศึกษาปีที่ 4"],
+["M5","มัธยมศึกษาปีที่ 5"],
+["M6","มัธยมศึกษาปีที่ 6"]
+
+],
+
+
+VOCATIONAL:[
+
+["VOC1","ปวช. ปีที่ 1"],
+["VOC2","ปวช. ปีที่ 2"],
+["VOC3","ปวช. ปีที่ 3"],
+
+["HVC1","ปวส. ปีที่ 1"],
+["HVC2","ปวส. ปีที่ 2"]
+
+]
+
+};
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const educationTypeEl =
+document.getElementById(
+  "educationType"
+);
+
+
+const levelEl =
+document.getElementById(
+  "level"
+);
+
+
+const roomEl =
+document.getElementById(
+  "room"
+);
+
+
+const examEl =
+document.getElementById(
+  "examType"
+);
+
+
+const btnLoad =
+document.getElementById(
+  "btnLoad"
+);
+
+
+const btnUnlockRoom =
+document.getElementById(
+  "btnUnlockRoom"
+);
+
+
+const btnLoadStatus =
+document.getElementById(
+  "btnLoadStatus"
+);
+
+
+const btnRefresh =
+document.getElementById(
+  "btnRefresh"
+);
+
+
+const tbody =
+document.getElementById(
+  "tbody"
+);
+
+
+const msg =
+document.getElementById(
+  "msg"
+);
+
+
+const statusChip =
+document.getElementById(
+  "statusChip"
+);
+
+
+const studentMeta =
+document.getElementById(
+  "studentMeta"
+);
+
+
+const searchEl =
+document.getElementById(
+  "search"
+);
+
+
+/* MODAL */
+
+const confirmBackdrop =
+document.getElementById(
+  "confirmBackdrop"
+);
+
+
+const confirmTitle =
+document.getElementById(
+  "confirmTitle"
+);
+
+
+const confirmText =
+document.getElementById(
+  "confirmText"
+);
+
+
+const confirmYes =
+document.getElementById(
+  "confirmYes"
+);
+
+
+const confirmNo =
+document.getElementById(
+  "confirmNo"
+);
+
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let currentStudents =
+[];
+
+
+let pendingConfirm =
+null;
+
+
+const roomCache =
+new Map();
+
+
+const CACHE_TIME =
+60 * 1000;
+
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHTML(value){
+
+return String(
+  value ?? ""
+)
+
+.replace(/&/g,"&amp;")
+
+.replace(/</g,"&lt;")
+
+.replace(/>/g,"&gt;")
+
+.replace(/"/g,"&quot;")
+
+.replace(/'/g,"&#039;");
+
+}
+
+
+
+function setMsg(
+  text,
+  type=""
+){
+
+msg.textContent =
+text || "";
+
+
+msg.className =
+"message";
+
+
+if(type){
+
+msg.classList.add(
+  type
+);
+
+}
+
+}
+
+
+
+function setStatus(
+  text,
+  type=""
+){
+
+statusChip.textContent =
+text;
+
+
+statusChip.className =
+"statusChip";
+
+
+if(type){
+
+statusChip.classList.add(
+  type
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function renderLevels(){
+
+const list =
+LEVELS[
+  educationTypeEl.value
+]
+||
+LEVELS.GENERAL;
+
+
+levelEl.innerHTML =
+list.map(
+  item=>`
+
+<option value="${item[0]}">
+${item[1]} (${item[0]})
+</option>
+
+`
+).join("");
+
+}
+
+
+
+/* =====================================================
+   ROOMS
+===================================================== */
+
+function renderRooms(){
+
+roomEl.innerHTML =
+Array.from(
+  {length:20},
+  (_,index)=>{
+
+const no =
+index + 1;
+
+
+return `
+
+<option value="${no}">
+ห้อง ${no}
+</option>
+
+`;
+
+}
+).join("");
+
+}
+
+
+
+/* =====================================================
+   API
+===================================================== */
+
+async function fetchJSON(
+  url,
+  options={}
+){
+
+const controller =
+new AbortController();
+
+
+const timeout =
+setTimeout(
+  ()=>{
+
+controller.abort();
+
+  },
+  25000
+);
+
+
+try{
+
+const response =
+await fetch(
+  url,
+  {
+    ...options,
+
+    signal:
+    controller.signal
+  }
+);
+
+
+const text =
+await response.text();
+
+
+try{
+
+return JSON.parse(
+  text
+);
+
+}
+catch(_){
+
+throw new Error(
+  "API ตอบกลับไม่ถูกต้อง"
+);
+
+}
+
+}
+finally{
+
+clearTimeout(
+  timeout
+);
+
+}
+
+}
+
+
+
+async function apiGet(
+  params
+){
+
+const url =
+API_URL
++
+"?"
++
+new URLSearchParams(
+  params
+).toString();
+
+
+return await fetchJSON(
+  url,
+  {
+    cache:"no-store"
+  }
+);
+
+}
+
+
+
+async function apiPost(
+  action,
+  body
+){
+
+const url =
+API_URL
++
+"?action="
++
+encodeURIComponent(
+  action
+);
+
+
+return await fetchJSON(
+  url,
+  {
+
+    method:"POST",
+
+    headers:{
+
+      "Content-Type":
+      "text/plain;charset=utf-8"
+
+    },
+
+    body:
+    JSON.stringify(
+      body
+    )
+
+  }
+);
+
+}
+
+
+
+/* =====================================================
+   CACHE
+===================================================== */
+
+function roomKey(){
+
+return (
+
+levelEl.value
+
++
+
+"|"
+
++
+
+roomEl.value
+
+);
+
+}
+
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+function getFilteredStudents(){
+
+const q =
+String(
+  searchEl.value ||
+  ""
+)
+.trim()
+.toLowerCase();
+
+
+if(!q){
+
+return currentStudents;
+
+}
+
+
+return currentStudents.filter(
+  st=>{
+
+const name =
+getFullName(st)
+.toLowerCase();
+
+
+const studentNo =
+String(
+  st.studentNo ||
+  ""
+)
+.toLowerCase();
+
+
+return (
+
+name.includes(q)
+
+||
+
+studentNo.includes(q)
+
+);
+
+}
+);
+
+}
+
+
+
+/* =====================================================
+   NAME
+===================================================== */
+
+function getFullName(st){
+
+const normalName =
+String(
+  st.name ||
+  st.fullname ||
+  ""
+).trim();
+
+
+if(normalName){
+
+return normalName;
+
+}
+
+
+return (
+
+String(
+  st.prefix ||
+  ""
+)
+
++
+
+String(
+  st.firstname ||
+  ""
+)
+
++
+
+" "
+
++
+
+String(
+  st.lastname ||
+  ""
+)
+
+)
+.trim();
+
+}
+
+
+
+/* =====================================================
+   LOAD ROOM
+===================================================== */
+
+async function loadRoom(
+  force=false
+){
+
+const key =
+roomKey();
+
+
+if(
+  !force
+  &&
+  roomCache.has(key)
+){
+
+const cache =
+roomCache.get(key);
+
+
+if(
+  Date.now()
+  -
+  cache.time
+  <
+  CACHE_TIME
+  &&
+  cache.students.length
+){
+
+currentStudents =
+cache.students;
+
+
+afterRoomLoaded(
+  true
+);
+
+
+return;
+
+}
+
+}
+
+
+btnLoad.disabled =
+true;
+
+
+btnLoad.textContent =
+"⏳ กำลังโหลด...";
+
+
+setStatus(
+  "กำลังโหลดรายชื่อ...",
+  "loading"
+);
+
+
+setMsg(
+  "⏳ กำลังดึงรายชื่อนักเรียน..."
+);
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyRow"
+>
+กำลังโหลด...
+</td>
+
+</tr>
+
+`;
+
+
+try{
+
+const data =
+await apiGet({
+
+  action:
+  "getRoomStudents",
+
+  level:
+  levelEl.value,
+
+  room:
+  roomEl.value
+
+});
+
+
+if(!data.ok){
+
+throw new Error(
+  data.error ||
+  "โหลดรายชื่อไม่สำเร็จ"
+);
+
+}
+
+
+currentStudents =
+Array.isArray(
+  data.students
+)
+
+?
+data.students
+:
+[];
+
+
+/*
+  ไม่เก็บ Cache กรณี 0 คน
+*/
+
+if(
+  currentStudents.length
+){
+
+roomCache.set(
+  key,
+  {
+
+    time:
+    Date.now(),
+
+    students:
+    currentStudents
+
+  }
+);
+
+}
+else{
+
+roomCache.delete(
+  key
+);
+
+}
+
+
+afterRoomLoaded(
+  false
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+currentStudents =
+[];
+
+
+btnUnlockRoom.disabled =
+true;
+
+
+btnLoadStatus.disabled =
+true;
+
+
+studentMeta.textContent =
+"โหลดรายชื่อไม่สำเร็จ";
+
+
+setStatus(
+  "โหลดไม่สำเร็จ",
+  "error"
+);
+
+
+let text =
+String(
+  error.message ||
+  ""
+);
+
+
+if(
+  text.includes(
+    "Sheet not found"
+  )
+){
+
+text =
+"ยังไม่มี Sheet ของระดับชั้นนี้";
+
+}
+
+
+setMsg(
+  "❌ " +
+  text,
+  "error"
+);
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyRow"
+>
+โหลดข้อมูลไม่สำเร็จ
+</td>
+
+</tr>
+
+`;
+
+}
+finally{
+
+btnLoad.disabled =
+false;
+
+
+btnLoad.textContent =
+"📥 โหลดรายชื่อห้องนี้";
+
+}
+
+}
+
+
+
+/* =====================================================
+   AFTER ROOM
+===================================================== */
+
+function afterRoomLoaded(
+  fromCache
+){
+
+searchEl.value =
+"";
+
+
+renderTable();
+
+
+studentMeta.textContent =
+currentStudents.length
+?
+`${currentStudents.length} คน`
+:
+"ไม่พบนักเรียน";
+
+
+btnUnlockRoom.disabled =
+currentStudents.length === 0;
+
+
+btnLoadStatus.disabled =
+currentStudents.length === 0;
+
+
+if(
+  currentStudents.length
+){
+
+setMsg(
+
+fromCache
+
+?
+
+`✅ ใช้รายชื่อที่โหลดไว้ (${currentStudents.length} คน)`
+
+:
+
+`✅ โหลดรายชื่อสำเร็จ (${currentStudents.length} คน)`,
+
+"ok"
+);
+
+
+setStatus(
+
+fromCache
+?
+"ใช้ข้อมูลแคช"
+:
+"ข้อมูลล่าสุด"
+
+);
+
+}
+else{
+
+setMsg(
+  "ℹ️ ยังไม่มีนักเรียนในห้องนี้"
+);
+
+
+setStatus(
+  "ไม่พบรายชื่อ"
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+function renderTable(){
+
+const list =
+getFilteredStudents();
+
+
+if(
+  !list.length
+){
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyRow"
+>
+
+${
+currentStudents.length
+?
+"ไม่พบรายชื่อที่ค้นหา"
+:
+"ไม่พบรายชื่อนักเรียน"
+}
+
+</td>
+
+</tr>
+
+`;
+
+
+return;
+
+}
+
+
+tbody.innerHTML =
+"";
+
+
+list.forEach(
+  st=>{
+
+
+/*
+  ใช้ index จริงจาก currentStudents
+  เพื่อให้ปลดล็อกถูกคนแม้กำลังค้นหา
+*/
+
+const realIndex =
+currentStudents.indexOf(
+  st
+);
+
+
+const tr =
+document.createElement(
+  "tr"
+);
+
+
+tr.innerHTML = `
+
+<td>
+${escapeHTML(
+  st.no ??
+  realIndex + 1
+)}
+</td>
+
+
+<td>
+${escapeHTML(
+  getFullName(st) ||
+  "-"
+)}
+</td>
+
+
+<td>
+${escapeHTML(
+  st.studentNo ||
+  "-"
+)}
+</td>
+
+
+<td
+  class="permCell"
+  id="perm_${realIndex}"
+>
+
+<span class="badge gray">
+ยังไม่ได้ตรวจ
+</span>
+
+</td>
+
+
+<td>
+
+<button
+
+  type="button"
+
+  class="btnStudent"
+
+  data-index="${realIndex}"
+
+>
+อนุญาตทำใหม่
+</button>
+
+</td>
+
+`;
+
+
+tbody.appendChild(
+  tr
+);
+
+}
+);
+
+
+tbody
+.querySelectorAll(
+  ".btnStudent"
+)
+.forEach(
+  button=>{
+
+button
+.addEventListener(
+  "click",
+  ()=>{
+
+const index =
+Number(
+  button.dataset.index
+);
+
+
+askUnlockStudent(
+  index
+);
+
+  }
+);
+
+}
+);
+
+}
+
+
+
+/* =====================================================
+   LOAD ACCESS STATUS
+===================================================== */
+
+async function loadAccessStatus(){
+
+if(
+  !currentStudents.length
+){
+
+return;
+
+}
+
+
+btnLoadStatus.disabled =
+true;
+
+
+btnLoadStatus.textContent =
+"⏳ กำลังตรวจ...";
+
+
+setStatus(
+  "กำลังตรวจสิทธิ์...",
+  "loading"
+);
+
+
+setMsg(
+  "⏳ กำลังตรวจสถานะสิทธิ์การสอบ..."
+);
+
+
+try{
+
+
+/*
+  Backend ปัจจุบันมี getExamAccess รายคน
+  จึงยิงพร้อมกันแทนการรอทีละคน
+*/
+
+const results =
+await Promise.all(
+
+currentStudents.map(
+  st=>
+
+  apiGet({
+
+    action:
+    "getExamAccess",
+
+    citizenId:
+    st.citizenId ||
+    "",
+
+    studentNo:
+    st.studentNo ||
+    ""
+
+  })
+
+)
+
+);
+
+
+results.forEach(
+  (res,index)=>{
+
+
+const cell =
+document.getElementById(
+  `perm_${index}`
+);
+
+
+if(!cell){
+
+return;
+
+}
+
+
+const access =
+(
+  res
+  &&
+  res.ok
+  &&
+  res.access
+)
+
+?
+res.access
+:
+null;
+
+
+renderAccessCell(
+  cell,
+  access
+);
+
+}
+);
+
+
+setMsg(
+  "✅ ตรวจสถานะสิทธิ์เรียบร้อย",
+  "ok"
+);
+
+
+setStatus(
+  "ตรวจสิทธิ์แล้ว"
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+setMsg(
+  "❌ ตรวจสถานะสิทธิ์ไม่สำเร็จ",
+  "error"
+);
+
+
+setStatus(
+  "ตรวจสิทธิ์ไม่สำเร็จ",
+  "error"
+);
+
+}
+finally{
+
+btnLoadStatus.disabled =
+false;
+
+
+btnLoadStatus.textContent =
+"🔎 ตรวจสถานะสิทธิ์";
+
+}
+
+}
+
+
+
+/* =====================================================
+   ACCESS CELL
+===================================================== */
+
+function renderAccessCell(
+  cell,
+  access
+){
+
+if(!access){
+
+cell.innerHTML = `
+
+<span class="badge gray">
+ยังไม่กำหนด
+</span>
+
+`;
+
+return;
+
+}
+
+
+const midUnlocked =
+String(
+  access.midtermUnlocked ||
+  ""
+)
+.toUpperCase()
+===
+"TRUE";
+
+
+const finalUnlocked =
+String(
+  access.finalUnlocked ||
+  ""
+)
+.toUpperCase()
+===
+"TRUE";
+
+
+const midAttempted =
+String(
+  access.midtermAttempted ||
+  ""
+)
+.toUpperCase()
+===
+"TRUE";
+
+
+const finalAttempted =
+String(
+  access.finalAttempted ||
+  ""
+)
+.toUpperCase()
+===
+"TRUE";
+
+
+const midBadge =
+midUnlocked
+
+?
+
+`<span class="badge ok">
+MID ✅
+</span>`
+
+:
+
+`<span class="badge bad">
+MID ⛔
+</span>`;
+
+
+
+const finalBadge =
+finalUnlocked
+
+?
+
+`<span class="badge ok">
+FINAL ✅
+</span>`
+
+:
+
+`<span class="badge bad">
+FINAL ⛔
+</span>`;
+
+
+
+const attempts =
+[];
+
+
+if(midAttempted){
+
+attempts.push(
+  "MID ทำแล้ว"
+);
+
+}
+
+
+if(finalAttempted){
+
+attempts.push(
+  "FINAL ทำแล้ว"
+);
+
+}
+
+
+cell.innerHTML = `
+
+<div>
+
+${midBadge}
+
+${finalBadge}
+
+${
+attempts.length
+
+?
+
+`
+<div class="attemptTxt">
+${attempts.join(", ")}
+</div>
+`
+
+:
+
+""
+}
+
+</div>
+
+`;
+
+}
+
+
+
+/* =====================================================
+   MODE LABEL
+===================================================== */
+
+function modeLabel(){
+
+const mode =
+examEl.value;
+
+
+if(
+  mode === "MIDTERM"
+){
+
+return "กลางภาค";
+
+}
+
+
+if(
+  mode === "FINAL"
+){
+
+return "ปลายภาค";
+
+}
+
+
+return "กลางภาค + ปลายภาค";
+
+}
+
+
+
+/* =====================================================
+   CONFIRM MODAL
+===================================================== */
+
+function openConfirm(
+  title,
+  text,
+  callback
+){
+
+confirmTitle.textContent =
+title;
+
+
+confirmText.textContent =
+text;
+
+
+pendingConfirm =
+callback;
+
+
+confirmBackdrop.style.display =
+"flex";
+
+}
+
+
+function closeConfirm(){
+
+confirmBackdrop.style.display =
+"none";
+
+
+pendingConfirm =
+null;
+
+}
+
+
+
+/* =====================================================
+   ASK STUDENT
+===================================================== */
+
+function askUnlockStudent(
+  index
+){
+
+const st =
+currentStudents[index];
+
+
+if(!st){
+
+return;
+
+}
+
+
+openConfirm(
+
+"อนุญาตให้ทำข้อสอบใหม่",
+
+`${getFullName(st)}
+• ${modeLabel()}
+
+ต้องการเปิดสิทธิ์ให้นักเรียนคนนี้ทำข้อสอบใหม่ใช่หรือไม่?`,
+
+()=>unlockStudent(
+  index
+)
+
+);
+
+}
+
+
+
+/* =====================================================
+   UNLOCK STUDENT
+===================================================== */
+
+async function unlockStudent(
+  index
+){
+
+const st =
+currentStudents[index];
+
+
+if(!st){
+
+return;
+
+}
+
+
+const button =
+tbody.querySelector(
+  `[data-index="${index}"]`
+);
+
+
+if(button){
+
+button.disabled =
+true;
+
+
+button.textContent =
+"กำลังปลดล็อก...";
+
+}
+
+
+setStatus(
+  "กำลังปลดล็อก...",
+  "loading"
+);
+
+
+setMsg(
+  `⏳ กำลังเปิดสิทธิ์ให้ ${getFullName(st)}`
+);
+
+
+try{
+
+
+/*
+  Apps Script รองรับ BOTH อยู่แล้ว
+  ดังนั้น 1 คน = 1 POST เท่านั้น
+*/
+
+const res =
+await apiPost(
+  "unlockExam",
+  {
+
+    citizenId:
+    st.citizenId ||
+    "",
+
+    studentNo:
+    st.studentNo ||
+    "",
+
+    type:
+    examEl.value
+
+  }
+);
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "ปลดล็อกไม่สำเร็จ"
+);
+
+}
+
+
+setMsg(
+  `✅ เปิดสิทธิ์ให้ ${getFullName(st)} สำเร็จ`,
+  "ok"
+);
+
+
+setStatus(
+  "ปลดล็อกแล้ว"
+);
+
+
+/*
+  อัปเดต UI ทันที
+  ไม่ต้องโหลดสถานะทั้งหมดใหม่
+*/
+
+const cell =
+document.getElementById(
+  `perm_${index}`
+);
+
+
+if(cell){
+
+updateUnlockedCell(
+  cell,
+  examEl.value
+);
+
+}
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+setMsg(
+  "❌ ปลดล็อกไม่สำเร็จ: " +
+  error.message,
+  "error"
+);
+
+
+setStatus(
+  "ปลดล็อกไม่สำเร็จ",
+  "error"
+);
+
+}
+finally{
+
+if(button){
+
+button.disabled =
+false;
+
+
+button.textContent =
+"อนุญาตทำใหม่";
+
+}
+
+}
+
+}
+
+
+
+/* =====================================================
+   ASK ROOM
+===================================================== */
+
+function askUnlockRoom(){
+
+if(
+  !currentStudents.length
+){
+
+setMsg(
+  "❌ กรุณาโหลดรายชื่อก่อน",
+  "error"
+);
+
+return;
+
+}
+
+
+const levelText =
+levelEl.options[
+  levelEl.selectedIndex
+]?.text
+||
+levelEl.value;
+
+
+openConfirm(
+
+"ปลดล็อกทั้งห้อง",
+
+`${levelText}
+ห้อง ${roomEl.value}
+• ${modeLabel()}
+
+จะอนุญาตให้นักเรียน ${currentStudents.length} คน
+ทำข้อสอบใหม่ทั้งหมดใช่หรือไม่?`,
+
+unlockRoom
+
+);
+
+}
+
+
+
+/* =====================================================
+   UNLOCK WHOLE ROOM
+===================================================== */
+
+async function unlockRoom(){
+
+btnUnlockRoom.disabled =
+true;
+
+
+btnUnlockRoom.textContent =
+"⏳ กำลังปลดล็อก...";
+
+
+setStatus(
+  "กำลังปลดล็อกทั้งห้อง...",
+  "loading"
+);
+
+
+setMsg(
+  "⏳ กำลังส่งคำสั่งปลดล็อกทั้งห้อง..."
+);
+
+
+try{
+
+
+/*
+  จุดที่เร็วขึ้นมาก:
+  ส่ง level + room + type
+  ให้ Apps Script จัดการทั้งห้องในคำสั่งเดียว
+*/
+
+const res =
+await apiPost(
+  "unlockExam",
+  {
+
+    level:
+    levelEl.value,
+
+    room:
+    roomEl.value,
+
+    type:
+    examEl.value
+
+  }
+);
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "ปลดล็อกทั้งห้องไม่สำเร็จ"
+);
+
+}
+
+
+setMsg(
+  `✅ ปลดล็อก ${modeLabel()} ทั้งห้องเรียบร้อย`,
+  "ok"
+);
+
+
+setStatus(
+  "ปลดล็อกทั้งห้องแล้ว"
+);
+
+
+/*
+  อัปเดต badge ที่มองเห็นทันที
+*/
+
+currentStudents.forEach(
+  (_,index)=>{
+
+const cell =
+document.getElementById(
+  `perm_${index}`
+);
+
+
+if(cell){
+
+updateUnlockedCell(
+  cell,
+  examEl.value
+);
+
+}
+
+}
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+setMsg(
+  "❌ ปลดล็อกทั้งห้องไม่สำเร็จ: " +
+  error.message,
+  "error"
+);
+
+
+setStatus(
+  "ปลดล็อกไม่สำเร็จ",
+  "error"
+);
+
+}
+finally{
+
+btnUnlockRoom.disabled =
+currentStudents.length === 0;
+
+
+btnUnlockRoom.textContent =
+"✅ ปลดล็อกทั้งห้อง";
+
+}
+
+}
+
+
+
+/* =====================================================
+   UPDATE BADGE AFTER UNLOCK
+===================================================== */
+
+function updateUnlockedCell(
+  cell,
+  mode
+){
+
+if(
+  mode === "MIDTERM"
+){
+
+cell.innerHTML = `
+
+<span class="badge ok">
+MID ✅
+</span>
+
+<span class="badge gray">
+FINAL -
+</span>
+
+`;
+
+return;
+
+}
+
+
+if(
+  mode === "FINAL"
+){
+
+cell.innerHTML = `
+
+<span class="badge gray">
+MID -
+</span>
+
+<span class="badge ok">
+FINAL ✅
+</span>
+
+`;
+
+return;
+
+}
+
+
+cell.innerHTML = `
+
+<span class="badge ok">
+MID ✅
+</span>
+
+<span class="badge ok">
+FINAL ✅
+</span>
+
+`;
+
+}
+
+
+
+/* =====================================================
+   RESET WHEN FILTER CHANGES
+===================================================== */
+
+function filterChanged(){
+
+currentStudents =
+[];
+
+
+searchEl.value =
+"";
+
+
+studentMeta.textContent =
+"ยังไม่ได้โหลดรายชื่อ";
+
+
+btnUnlockRoom.disabled =
+true;
+
+
+btnLoadStatus.disabled =
+true;
+
+
+setMsg("");
+
+
+setStatus(
+  "พร้อมใช้งาน"
+);
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyRow"
+>
+กด “โหลดรายชื่อห้องนี้”
+</td>
+
+</tr>
+
+`;
+
+}
+
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+educationTypeEl
+.addEventListener(
+  "change",
+  ()=>{
+
+renderLevels();
+
+filterChanged();
+
+}
+);
+
+
+levelEl
+.addEventListener(
+  "change",
+  filterChanged
+);
+
+
+roomEl
+.addEventListener(
+  "change",
+  filterChanged
+);
+
+
+examEl
+.addEventListener(
+  "change",
+  ()=>{
+
+setMsg(
+  `เลือกการปลดล็อก: ${modeLabel()}`
+);
+
+}
+);
+
+
+btnLoad
+.addEventListener(
+  "click",
+  ()=>{
+
+loadRoom(
+  false
+);
+
+}
+);
+
+
+btnRefresh
+.addEventListener(
+  "click",
+  ()=>{
+
+roomCache.delete(
+  roomKey()
+);
+
+
+loadRoom(
+  true
+);
+
+}
+);
+
+
+btnLoadStatus
+.addEventListener(
+  "click",
+  loadAccessStatus
+);
+
+
+btnUnlockRoom
+.addEventListener(
+  "click",
+  askUnlockRoom
+);
+
+
+searchEl
+.addEventListener(
+  "input",
+  renderTable
+);
+
+
+confirmNo
+.addEventListener(
+  "click",
+  closeConfirm
+);
+
+
+confirmYes
+.addEventListener(
+  "click",
+  async ()=>{
+
+const callback =
+pendingConfirm;
+
+
+closeConfirm();
+
+
+if(callback){
+
+await callback();
+
+}
+
+}
+);
+
+
+confirmBackdrop
+.addEventListener(
+  "click",
+  event=>{
+
+if(
+  event.target ===
+  confirmBackdrop
+){
+
+closeConfirm();
+
+}
+
+}
+);
+
+
+window
+.addEventListener(
+  "keydown",
+  event=>{
+
+if(
+  event.key === "Escape"
+  &&
+  confirmBackdrop.style.display
+  ===
+  "flex"
+){
+
+closeConfirm();
+
+}
+
+}
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderLevels();
+
+renderRooms();
+
+filterChanged();
+
+</script>
+
+
+</body>
+
+</html>

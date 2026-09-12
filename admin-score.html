@@ -1,0 +1,5056 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+  Admin - บันทึกคะแนนเก็บ
+</title>
+
+
+<!-- =====================================================
+     ป้องกันนักเรียนเปิด URL หน้า Admin โดยตรง
+===================================================== -->
+
+<script>
+
+if(
+  sessionStorage.getItem(
+    "ADMIN_UNLOCKED_SESSION"
+  ) !== "1"
+){
+  window.location.replace(
+    "admin.html"
+  );
+}
+
+</script>
+
+
+<style>
+
+/* =====================================================
+   RESET
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  margin:0;
+
+  min-height:100vh;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+
+  color:#0f172a;
+
+  background:#020617;
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.pageBg{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:-5;
+
+
+  background:
+
+    radial-gradient(
+      circle at 8% 14%,
+      rgba(14,165,233,.55),
+      transparent 34%
+    ),
+
+    radial-gradient(
+      circle at 91% 12%,
+      rgba(236,72,153,.38),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 18% 92%,
+      rgba(6,182,212,.28),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 90% 88%,
+      rgba(168,85,247,.25),
+      transparent 40%
+    ),
+
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #061725 42%,
+      #09091a 72%,
+      #020617 100%
+    );
+
+}
+
+
+.pageBg::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:430px;
+  height:430px;
+
+  left:-190px;
+  bottom:-180px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(103,232,249,.20);
+
+}
+
+
+.pageBg::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:430px;
+  height:430px;
+
+  right:-190px;
+  top:-180px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(244,114,182,.18);
+
+}
+
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+.adminWrap{
+
+  width:
+    min(
+      1280px,
+      calc(100% - 34px)
+    );
+
+  margin:
+    30px auto 45px;
+
+}
+
+
+.adminCard{
+
+  padding:28px;
+
+  border-radius:30px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.985),
+      rgba(248,250,252,.96)
+    );
+
+
+  border:
+    1px solid rgba(255,255,255,.84);
+
+
+  box-shadow:
+
+    0 35px 100px
+    rgba(0,0,0,.42),
+
+    0 0 55px
+    rgba(56,189,248,.08);
+
+
+  backdrop-filter:
+    blur(18px);
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.adminHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+    space-between;
+
+  gap:20px;
+
+}
+
+
+.brandArea{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:17px;
+
+}
+
+
+.brandLogo{
+
+  width:78px;
+
+  height:78px;
+
+  object-fit:contain;
+
+
+  filter:
+
+    drop-shadow(
+      0 8px 15px
+      rgba(14,165,233,.17)
+    );
+
+}
+
+
+.pageTitle{
+
+  margin:0;
+
+  color:#0b3d78;
+
+  font-size:29px;
+
+  line-height:1.2;
+
+  font-weight:1000;
+
+}
+
+
+.pageEnglish{
+
+  margin-top:4px;
+
+  color:#0891b2;
+
+  font-size:14px;
+
+  font-weight:1000;
+
+}
+
+
+.pageSub{
+
+  margin:
+    5px 0 0;
+
+  color:#64748b;
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+
+/* ADMIN BACK */
+
+.backAdmin{
+
+  min-width:205px;
+
+  padding:
+    11px 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+
+  text-decoration:none;
+
+  color:#0f172a;
+
+
+  border-radius:20px;
+
+  border:
+    1px solid #bfdbfe;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #ffffff
+    );
+
+
+  box-shadow:
+
+    0 10px 25px
+    rgba(37,99,235,.08);
+
+
+  transition:.18s;
+
+}
+
+
+.backAdmin:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+
+    0 14px 28px
+    rgba(37,99,235,.13);
+
+}
+
+
+.backIcon{
+
+  width:44px;
+
+  height:44px;
+
+  flex:none;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  border-radius:15px;
+
+
+  background:#dbeafe;
+
+
+  font-size:20px;
+
+}
+
+
+.backText{
+
+  display:flex;
+
+  flex-direction:column;
+
+}
+
+
+.backText b{
+
+  font-size:14px;
+
+}
+
+
+.backText small{
+
+  margin-top:2px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:800;
+
+}
+
+
+.headerLine{
+
+  height:1px;
+
+  margin:
+    22px 0 24px;
+
+  background:#e2e8f0;
+
+}
+
+
+/* =====================================================
+   MAIN GRID
+===================================================== */
+
+.mainGrid{
+
+  display:grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    310px;
+
+  gap:20px;
+
+}
+
+
+.panel{
+
+  min-width:0;
+
+  padding:22px;
+
+  border-radius:26px;
+
+
+  background:
+    rgba(255,255,255,.96);
+
+
+  border:
+    1px solid #e2e8f0;
+
+
+  box-shadow:
+
+    0 18px 45px
+    rgba(15,23,42,.065);
+
+}
+
+
+/* =====================================================
+   PANEL HEADER
+===================================================== */
+
+.panelHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+    space-between;
+
+  gap:12px;
+
+  margin-bottom:16px;
+
+}
+
+
+.panelTitle{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  color:#172033;
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.statusChip{
+
+  padding:
+    7px 12px;
+
+  border-radius:999px;
+
+  white-space:nowrap;
+
+  font-size:10px;
+
+  font-weight:1000;
+
+
+  color:#047857;
+
+  background:#ecfdf5;
+
+  border:
+    1px solid #a7f3d0;
+
+
+  transition:.2s;
+
+}
+
+
+.statusChip.loading{
+
+  color:#0369a1;
+
+  background:#f0f9ff;
+
+  border-color:#bae6fd;
+
+}
+
+
+.statusChip.error{
+
+  color:#b91c1c;
+
+  background:#fef2f2;
+
+  border-color:#fecaca;
+
+}
+
+
+/* =====================================================
+   FILTER
+===================================================== */
+
+.filterGrid{
+
+  display:grid;
+
+  grid-template-columns:
+
+    1.05fr
+    1.45fr
+    .75fr
+    1fr
+    1.45fr;
+
+  gap:10px;
+
+}
+
+
+.filterBox{
+
+  min-width:0;
+
+  padding:11px;
+
+  border-radius:18px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #f1f7ff
+    );
+
+
+  border:
+    1px solid #dbeafe;
+
+
+  transition:.18s;
+
+}
+
+
+.filterBox:hover{
+
+  border-color:#bfdbfe;
+
+  box-shadow:
+
+    0 8px 20px
+    rgba(37,99,235,.05);
+
+}
+
+
+.filterLabel{
+
+  margin-bottom:6px;
+
+  color:#64748b;
+
+  font-size:10px;
+
+  font-weight:1000;
+
+}
+
+
+.filterBox select{
+
+  width:100%;
+
+  height:44px;
+
+
+  padding:
+    0 10px;
+
+
+  border-radius:13px;
+
+
+  border:
+    1px solid #dbe4f0;
+
+
+  outline:none;
+
+  cursor:pointer;
+
+
+  background:#fff;
+
+  color:#0f172a;
+
+
+  font-size:13px;
+
+  font-weight:850;
+
+
+  box-shadow:
+
+    0 5px 12px
+    rgba(15,23,42,.025);
+
+}
+
+
+.filterBox select:focus{
+
+  border-color:#38bdf8;
+
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.10);
+
+}
+
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.actionRow{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-top:15px;
+
+}
+
+
+.actionBtn{
+
+  min-height:49px;
+
+  padding:
+    10px 16px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:8px;
+
+
+  border-radius:17px;
+
+  border:
+    1px solid #dbe4f0;
+
+
+  cursor:pointer;
+
+
+  background:#fff;
+
+  color:#0f172a;
+
+
+  font-size:13px;
+
+  font-weight:950;
+
+
+  box-shadow:
+
+    0 7px 16px
+    rgba(15,23,42,.035);
+
+
+  transition:.17s;
+
+}
+
+
+.actionBtn:hover:not(:disabled){
+
+  transform:
+    translateY(-2px);
+
+
+  border-color:#93c5fd;
+
+
+  box-shadow:
+
+    0 12px 23px
+    rgba(37,99,235,.10);
+
+}
+
+
+.actionBtn:disabled{
+
+  opacity:.43;
+
+  cursor:not-allowed;
+
+  transform:none;
+
+}
+
+
+.actionBtn.load{
+
+  color:#0369a1;
+
+
+  border-color:#bfdbfe;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #e0f2fe
+    );
+
+}
+
+
+.actionBtn.primary{
+
+  color:#fff;
+
+  border:none;
+
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #155eef,
+      #1687f8,
+      #19b7ef
+    );
+
+
+  box-shadow:
+
+    0 14px 28px
+    rgba(37,99,235,.24);
+
+}
+
+
+/* =====================================================
+   META
+===================================================== */
+
+.metaRow{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+  margin-top:14px;
+
+}
+
+
+.metaChip{
+
+  padding:
+    9px 12px;
+
+  border-radius:14px;
+
+
+  color:#1e3a8a;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #eff6ff,
+      #f8fbff
+    );
+
+
+  border:
+    1px solid #bfdbfe;
+
+
+  font-size:11px;
+
+  font-weight:950;
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+.searchBox{
+
+  min-height:58px;
+
+  margin-top:13px;
+
+  padding:
+    9px 15px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+
+  border-radius:19px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid #dbe4f0;
+
+
+  box-shadow:
+
+    0 8px 20px
+    rgba(15,23,42,.035);
+
+}
+
+
+.searchBox:focus-within{
+
+  border-color:#38bdf8;
+
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.10);
+
+}
+
+
+.searchIcon{
+
+  font-size:19px;
+
+}
+
+
+.searchBox input{
+
+  width:100%;
+
+  height:38px;
+
+
+  border:none;
+
+  outline:none;
+
+
+  background:transparent;
+
+
+  color:#0f172a;
+
+
+  font-size:14px;
+
+  font-weight:800;
+
+}
+
+
+.searchBox input::placeholder{
+
+  color:#94a3b8;
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.message{
+
+  min-height:21px;
+
+  margin-top:10px;
+
+  font-size:12px;
+
+  font-weight:950;
+
+}
+
+
+.message.ok{
+
+  color:#16a34a;
+
+}
+
+
+.message.error{
+
+  color:#dc2626;
+
+}
+
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.tableWrap{
+
+  min-height:230px;
+
+  max-height:510px;
+
+  margin-top:12px;
+
+
+  overflow:auto;
+
+
+  border-radius:20px;
+
+
+  border:
+    1px solid #e2e8f0;
+
+
+  background:#fff;
+
+}
+
+
+.scoreTable{
+
+  width:100%;
+
+  min-width:800px;
+
+  border-collapse:collapse;
+
+}
+
+
+.scoreTable th{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:3;
+
+
+  height:48px;
+
+
+  padding:
+    11px 13px;
+
+
+  text-align:left;
+
+
+  color:#334155;
+
+
+  background:
+
+    linear-gradient(
+      180deg,
+      #f8fafc,
+      #f1f5f9
+    );
+
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+
+  font-size:11px;
+
+  font-weight:1000;
+
+}
+
+
+.scoreTable td{
+
+  min-height:52px;
+
+  padding:
+    11px 13px;
+
+
+  border-bottom:
+    1px solid #eef2f7;
+
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+
+.scoreTable tbody tr:hover td{
+
+  background:#f8fbff;
+
+}
+
+
+.emptyCell{
+
+  height:170px;
+
+  text-align:center !important;
+
+
+  color:#94a3b8 !important;
+
+
+  background:
+
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f8fbff
+    );
+
+
+  font-size:13px !important;
+
+  font-weight:900 !important;
+
+}
+
+
+/* SCORE INPUT */
+
+.scoreInput{
+
+  width:95px;
+
+  height:40px;
+
+
+  padding:
+    0 8px;
+
+
+  text-align:center;
+
+
+  border-radius:12px;
+
+
+  border:
+    1px solid #cbd5e1;
+
+
+  outline:none;
+
+
+  font-weight:900;
+
+}
+
+
+.scoreInput:focus{
+
+  border-color:#38bdf8;
+
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.10);
+
+}
+
+
+/* =====================================================
+   GUIDE
+===================================================== */
+
+.guideBox{
+
+  padding:17px;
+
+  border-radius:20px;
+
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #eff6ff,
+      #f8fbff
+    );
+
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.guideBox ul{
+
+  margin:0;
+
+  padding-left:20px;
+
+
+  color:#475569;
+
+
+  font-size:12px;
+
+  line-height:2.15;
+
+  font-weight:800;
+
+}
+
+
+.speedBox{
+
+  margin-top:13px;
+
+  padding:15px;
+
+
+  border-radius:19px;
+
+
+  color:#155e75;
+
+
+  background:#ecfeff;
+
+
+  border:
+    1px solid #a5f3fc;
+
+
+  font-size:10px;
+
+  line-height:1.75;
+
+  font-weight:850;
+
+}
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modalBackdrop{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:99999;
+
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+
+  padding:18px;
+
+
+  background:
+    rgba(2,6,23,.80);
+
+
+  backdrop-filter:
+    blur(15px);
+
+}
+
+
+.modalCard{
+
+  width:
+    min(
+      960px,
+      96vw
+    );
+
+
+  max-height:90vh;
+
+
+  overflow:auto;
+
+
+  border-radius:27px;
+
+
+  background:#fff;
+
+
+  border:
+    1px solid
+    rgba(125,211,252,.35);
+
+
+  box-shadow:
+
+    0 40px 100px
+    rgba(0,0,0,.48);
+
+}
+
+
+.modalHeader{
+
+  position:sticky;
+
+  top:0;
+
+  z-index:5;
+
+
+  padding:16px 18px;
+
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:
+    space-between;
+
+
+  gap:12px;
+
+
+  background:
+    rgba(248,250,252,.98);
+
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+}
+
+
+.modalTitle{
+
+  color:#0f172a;
+
+  font-size:17px;
+
+  font-weight:1000;
+
+}
+
+
+.modalSub{
+
+  margin-top:3px;
+
+  color:#64748b;
+
+  font-size:11px;
+
+  font-weight:800;
+
+}
+
+
+.modalBody{
+
+  padding:18px;
+
+}
+
+
+.contextRow{
+
+  display:flex;
+
+  gap:8px;
+
+  flex-wrap:wrap;
+
+  margin-bottom:13px;
+
+}
+
+
+.contextChip{
+
+  padding:
+    7px 11px;
+
+  border-radius:999px;
+
+
+  color:#1e40af;
+
+
+  background:#eff6ff;
+
+
+  border:
+    1px solid #bfdbfe;
+
+
+  font-size:10px;
+
+  font-weight:950;
+
+}
+
+
+.modalActions{
+
+  display:flex;
+
+  gap:9px;
+
+  flex-wrap:wrap;
+
+}
+
+
+/* =====================================================
+   ASSIGNMENT TABLE
+===================================================== */
+
+.assignmentHead{
+
+  margin-top:14px;
+
+  padding:10px;
+
+
+  display:grid;
+
+
+  grid-template-columns:
+
+    110px
+    1fr
+    110px
+    110px
+    75px;
+
+
+  gap:9px;
+
+
+  border-radius:15px;
+
+
+  color:#1e3a8a;
+
+
+  background:#eff6ff;
+
+
+  font-size:11px;
+
+  font-weight:1000;
+
+}
+
+
+.assignmentRow{
+
+  margin-top:9px;
+
+  padding:10px;
+
+
+  display:grid;
+
+
+  grid-template-columns:
+
+    110px
+    1fr
+    110px
+    110px
+    75px;
+
+
+  gap:9px;
+
+
+  align-items:center;
+
+
+  border-radius:16px;
+
+
+  border:
+    1px solid #e2e8f0;
+
+
+  background:#fff;
+
+}
+
+
+.assignmentRow input,
+.assignmentRow select{
+
+  width:100%;
+
+  height:40px;
+
+
+  padding:
+    0 9px;
+
+
+  border-radius:11px;
+
+
+  border:
+    1px solid #cbd5e1;
+
+
+  outline:none;
+
+
+  background:#fff;
+
+
+  font-weight:800;
+
+}
+
+
+.assignmentRow input:focus,
+.assignmentRow select:focus{
+
+  border-color:#38bdf8;
+
+
+  box-shadow:
+
+    0 0 0 3px
+    rgba(56,189,248,.09);
+
+}
+
+
+.deleteBtn{
+
+  height:40px;
+
+
+  border:none;
+
+  border-radius:11px;
+
+
+  cursor:pointer;
+
+
+  color:#991b1b;
+
+
+  background:#fee2e2;
+
+
+  font-weight:950;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(
+  max-width:1100px
+){
+
+  .mainGrid{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+  .filterGrid{
+
+    grid-template-columns:
+      1fr 1fr 1fr;
+
+  }
+
+}
+
+
+@media(
+  max-width:720px
+){
+
+  .adminHeader{
+
+    flex-direction:column;
+
+    align-items:stretch;
+
+  }
+
+  .backAdmin{
+
+    width:100%;
+
+  }
+
+  .filterGrid{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+  .assignmentHead{
+
+    display:none;
+
+  }
+
+  .assignmentRow{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="pageBg"></div>
+
+
+<main class="adminWrap">
+
+<section class="adminCard">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="adminHeader">
+
+
+<div class="brandArea">
+
+
+<img
+
+  class="brandLogo"
+
+  src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+
+  alt="Student Assessment System"
+
+>
+
+
+<div>
+
+<h1 class="pageTitle">
+บันทึกคะแนนเก็บ
+</h1>
+
+
+<div class="pageEnglish">
+Student Assessment System
+</div>
+
+
+<p class="pageSub">
+จัดการและบันทึกคะแนนนักเรียนรายห้อง
+</p>
+
+</div>
+
+
+</div>
+
+
+
+<a
+  href="admin.html"
+  class="backAdmin"
+>
+
+<span class="backIcon">
+🛡️
+</span>
+
+
+<span class="backText">
+
+<b>
+กลับหน้า Admin
+</b>
+
+<small>
+ศูนย์รวมเมนูผู้ดูแล
+</small>
+
+</span>
+
+</a>
+
+
+</header>
+
+
+<div class="headerLine"></div>
+
+
+
+<!-- =====================================================
+     CONTENT
+===================================================== -->
+
+<section class="mainGrid">
+
+
+<!-- LEFT -->
+
+<div class="panel">
+
+
+<div class="panelHeader">
+
+
+<div class="panelTitle">
+🧾 บันทึกคะแนน
+</div>
+
+
+<div
+  class="statusChip"
+  id="dataStatus"
+>
+พร้อมใช้งาน
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     FILTER
+===================================================== -->
+
+<div class="filterGrid">
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ประเภทการศึกษา
+</div>
+
+<select id="educationType">
+
+<option value="GENERAL">
+สายสามัญ
+</option>
+
+<option value="VOCATIONAL">
+สายวิชาชีพ
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ระดับชั้น
+</div>
+
+<select id="level"></select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ห้อง
+</div>
+
+<select id="room"></select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+ภาคเรียน
+</div>
+
+<select id="term">
+
+<option value="1">
+ภาคเรียนที่ 1
+</option>
+
+<option value="2">
+ภาคเรียนที่ 2
+</option>
+
+</select>
+
+</div>
+
+
+
+<div class="filterBox">
+
+<div class="filterLabel">
+งาน / คะแนน
+</div>
+
+<select id="assignmentSelect">
+
+<option value="">
+กำลังโหลด...
+</option>
+
+</select>
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     BUTTONS
+===================================================== -->
+
+<div class="actionRow">
+
+
+<button
+  type="button"
+  class="actionBtn"
+  id="btnManageAssignments"
+>
+⚙️ จัดการงาน
+</button>
+
+
+<button
+  type="button"
+  class="actionBtn load"
+  id="btnLoad"
+>
+📥 โหลดรายชื่อ
+</button>
+
+
+<button
+  type="button"
+  class="actionBtn primary"
+  id="btnSave"
+  disabled
+>
+💾 บันทึกคะแนน
+</button>
+
+
+<button
+  type="button"
+  class="actionBtn"
+  id="btnRefresh"
+>
+↻ รีเฟรชข้อมูล
+</button>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     META
+===================================================== -->
+
+<div class="metaRow">
+
+
+<div
+  class="metaChip"
+  id="metaTotal"
+>
+คะแนนเต็ม: -
+</div>
+
+
+<div
+  class="metaChip"
+  id="metaDone"
+>
+กรอกแล้ว: 0 คน
+</div>
+
+
+<div
+  class="metaChip"
+  id="metaStudents"
+>
+นักเรียน: -
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     SEARCH
+===================================================== -->
+
+<div class="searchBox">
+
+
+<span class="searchIcon">
+🔎
+</span>
+
+
+<input
+
+  id="search"
+
+  type="text"
+
+  placeholder="ค้นหาชื่อ / เลขนักเรียน / เลขบัตร"
+
+>
+
+
+</div>
+
+
+
+<div
+  id="msg"
+  class="message"
+></div>
+
+
+
+<!-- =====================================================
+     TABLE
+===================================================== -->
+
+<div class="tableWrap">
+
+
+<table class="scoreTable">
+
+
+<thead>
+
+<tr>
+
+<th>
+เลขที่
+</th>
+
+<th>
+ชื่อ
+</th>
+
+<th>
+เลขนักเรียน
+</th>
+
+<th>
+เลขบัตร
+</th>
+
+<th style="text-align:center;">
+คะแนน
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="tbody">
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyCell"
+>
+เลือกระดับชั้นแล้วกด “โหลดรายชื่อ”
+</td>
+
+</tr>
+
+</tbody>
+
+
+</table>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     GUIDE
+===================================================== -->
+
+<aside class="panel">
+
+
+<div class="panelTitle"
+     style="margin-bottom:15px;">
+💡 วิธีใช้งาน
+</div>
+
+
+<div class="guideBox">
+
+
+<ul>
+
+<li>
+เลือกสายสามัญหรือสายวิชาชีพ
+</li>
+
+<li>
+เลือกระดับชั้น ห้อง และภาคเรียน
+</li>
+
+<li>
+กด “จัดการงาน” เพื่อกำหนดงานและคะแนนเต็ม
+</li>
+
+<li>
+กด “โหลดรายชื่อ” เพื่อดึงรายชื่อนักเรียน
+</li>
+
+<li>
+กรอกคะแนนแล้วกด “บันทึกคะแนน”
+</li>
+
+<li>
+ค้นหารายชื่อได้โดยคะแนนที่กรอกไว้ไม่หาย
+</li>
+
+<li>
+กดรีเฟรชเมื่อต้องการข้อมูลล่าสุด
+</li>
+
+</ul>
+
+
+</div>
+
+
+<div class="speedBox">
+
+⚡ ระบบจะเก็บเฉพาะข้อมูลที่มีนักเรียนจริงไว้ชั่วคราว
+เพื่อลดการเรียก Google Apps Script ซ้ำ
+แต่หากห้องมี 0 คน ระบบจะไม่ Cache
+เพื่อป้องกันกรณีเพิ่มนักเรียนใหม่แล้วข้อมูลไม่อัปเดต
+
+</div>
+
+
+</aside>
+
+
+</section>
+
+
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     ASSIGNMENT MODAL
+===================================================== -->
+
+<div
+  class="modalBackdrop"
+  id="modalBackdrop"
+>
+
+
+<div class="modalCard">
+
+
+<div class="modalHeader">
+
+
+<div>
+
+<div class="modalTitle">
+⚙️ จัดการงาน / คะแนนเต็ม
+</div>
+
+<div class="modalSub">
+กำหนดงานสำหรับระดับชั้น ห้อง และภาคเรียนที่เลือก
+</div>
+
+</div>
+
+
+
+<button
+  type="button"
+  class="actionBtn"
+  id="btnCloseModal"
+>
+✕ ปิด
+</button>
+
+
+</div>
+
+
+
+<div class="modalBody">
+
+
+<div class="contextRow">
+
+
+<div
+  class="contextChip"
+  id="managerLevel"
+>
+ระดับ: -
+</div>
+
+
+<div
+  class="contextChip"
+  id="managerRoom"
+>
+ห้อง: -
+</div>
+
+
+<div
+  class="contextChip"
+  id="managerTerm"
+>
+ภาคเรียน: -
+</div>
+
+
+</div>
+
+
+
+<div class="modalActions">
+
+
+<button
+  type="button"
+  class="actionBtn"
+  id="btnAddRow"
+>
+➕ เพิ่มงาน
+</button>
+
+
+<button
+  type="button"
+  class="actionBtn load"
+  id="btnReloadAssignments"
+>
+↻ ดึงจากเซิร์ฟเวอร์
+</button>
+
+
+<button
+  type="button"
+  class="actionBtn primary"
+  id="btnSaveAssignments"
+>
+💾 บันทึกรายการงาน
+</button>
+
+
+</div>
+
+
+
+<div class="assignmentHead">
+
+<div>รหัส</div>
+
+<div>ชื่องาน</div>
+
+<div>คะแนนเต็ม</div>
+
+<div>สถานะ</div>
+
+<div>ลบ</div>
+
+</div>
+
+
+<div id="assignmentGrid"></div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+
+<script>
+
+/* =====================================================
+   API
+   ใช้ URL เดิมของหน้า admin-score
+===================================================== */
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycby_Rd8q2Xdj1kSJOVvgho1Fcqa9OtAYMhQzcU8IHww1puOc0KZ_CMSas_-swjLZsDK20Q/exec";
+
+
+
+/* =====================================================
+   LEVELS
+===================================================== */
+
+const LEVELS = {
+
+GENERAL:[
+
+["K1","อนุบาล 1"],
+["K2","อนุบาล 2"],
+["K3","อนุบาล 3"],
+
+["P1","ประถมศึกษาปีที่ 1"],
+["P2","ประถมศึกษาปีที่ 2"],
+["P3","ประถมศึกษาปีที่ 3"],
+["P4","ประถมศึกษาปีที่ 4"],
+["P5","ประถมศึกษาปีที่ 5"],
+["P6","ประถมศึกษาปีที่ 6"],
+
+["M1","มัธยมศึกษาปีที่ 1"],
+["M2","มัธยมศึกษาปีที่ 2"],
+["M3","มัธยมศึกษาปีที่ 3"],
+["M4","มัธยมศึกษาปีที่ 4"],
+["M5","มัธยมศึกษาปีที่ 5"],
+["M6","มัธยมศึกษาปีที่ 6"]
+
+],
+
+
+VOCATIONAL:[
+
+["VOC1","ปวช. ปีที่ 1"],
+["VOC2","ปวช. ปีที่ 2"],
+["VOC3","ปวช. ปีที่ 3"],
+
+["HVC1","ปวส. ปีที่ 1"],
+["HVC2","ปวส. ปีที่ 2"]
+
+]
+
+};
+
+
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const educationType =
+document.getElementById(
+  "educationType"
+);
+
+
+const level =
+document.getElementById(
+  "level"
+);
+
+
+const room =
+document.getElementById(
+  "room"
+);
+
+
+const term =
+document.getElementById(
+  "term"
+);
+
+
+const assignmentSelect =
+document.getElementById(
+  "assignmentSelect"
+);
+
+
+const btnLoad =
+document.getElementById(
+  "btnLoad"
+);
+
+
+const btnSave =
+document.getElementById(
+  "btnSave"
+);
+
+
+const btnRefresh =
+document.getElementById(
+  "btnRefresh"
+);
+
+
+const btnManageAssignments =
+document.getElementById(
+  "btnManageAssignments"
+);
+
+
+const search =
+document.getElementById(
+  "search"
+);
+
+
+const tbody =
+document.getElementById(
+  "tbody"
+);
+
+
+const msg =
+document.getElementById(
+  "msg"
+);
+
+
+const dataStatus =
+document.getElementById(
+  "dataStatus"
+);
+
+
+const metaTotal =
+document.getElementById(
+  "metaTotal"
+);
+
+
+const metaDone =
+document.getElementById(
+  "metaDone"
+);
+
+
+const metaStudents =
+document.getElementById(
+  "metaStudents"
+);
+
+
+/* MODAL */
+
+const modalBackdrop =
+document.getElementById(
+  "modalBackdrop"
+);
+
+
+const assignmentGrid =
+document.getElementById(
+  "assignmentGrid"
+);
+
+
+const managerLevel =
+document.getElementById(
+  "managerLevel"
+);
+
+
+const managerRoom =
+document.getElementById(
+  "managerRoom"
+);
+
+
+const managerTerm =
+document.getElementById(
+  "managerTerm"
+);
+
+
+const btnAddRow =
+document.getElementById(
+  "btnAddRow"
+);
+
+
+const btnReloadAssignments =
+document.getElementById(
+  "btnReloadAssignments"
+);
+
+
+const btnSaveAssignments =
+document.getElementById(
+  "btnSaveAssignments"
+);
+
+
+const btnCloseModal =
+document.getElementById(
+  "btnCloseModal"
+);
+
+
+
+/* =====================================================
+   DATA
+===================================================== */
+
+let students = [];
+
+let assignments = [];
+
+let currentAssignment =
+null;
+
+
+/*
+  คะแนนที่พิมพ์
+  key = citizenId|studentNo|assignment
+*/
+
+const drafts =
+new Map();
+
+
+/*
+  Cache
+
+  สำคัญ:
+  ห้องที่ได้ 0 คนจะไม่ Cache
+*/
+
+const studentCache =
+new Map();
+
+
+const assignmentCache =
+new Map();
+
+
+
+/* =====================================================
+   HELPERS
+===================================================== */
+
+function escapeHTML(value){
+
+return String(
+  value ?? ""
+)
+
+.replace(
+  /&/g,
+  "&amp;"
+)
+
+.replace(
+  /</g,
+  "&lt;"
+)
+
+.replace(
+  />/g,
+  "&gt;"
+)
+
+.replace(
+  /"/g,
+  "&quot;"
+)
+
+.replace(
+  /'/g,
+  "&#039;"
+);
+
+}
+
+
+
+function setMessage(
+  text,
+  type=""
+){
+
+msg.textContent =
+text || "";
+
+
+msg.className =
+"message" +
+(type ? " " + type : "");
+
+}
+
+
+
+function setStatus(
+  text,
+  type=""
+){
+
+dataStatus.textContent =
+text || "พร้อมใช้งาน";
+
+
+dataStatus.className =
+"statusChip";
+
+
+if(type){
+
+dataStatus
+.classList
+.add(type);
+
+}
+
+}
+
+
+
+function setBusy(
+  button,
+  busy,
+  loadingText,
+  normalText
+){
+
+button.disabled =
+busy;
+
+
+button.textContent =
+busy
+? loadingText
+: normalText;
+
+}
+
+
+
+/* =====================================================
+   FETCH WITH TIMEOUT
+===================================================== */
+
+async function fetchJSON(
+  url,
+  options={}
+){
+
+const controller =
+new AbortController();
+
+
+const timer =
+setTimeout(
+  ()=>{
+    controller.abort();
+  },
+  25000
+);
+
+
+try{
+
+const res =
+await fetch(
+  url,
+  {
+    ...options,
+    signal:
+      controller.signal
+  }
+);
+
+
+const text =
+await res.text();
+
+
+try{
+
+return JSON.parse(
+  text
+);
+
+}
+catch(_){
+
+throw new Error(
+  "API ตอบกลับไม่ใช่ JSON"
+);
+
+}
+
+}
+finally{
+
+clearTimeout(
+  timer
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   API GET
+===================================================== */
+
+async function apiGet(
+  params
+){
+
+const url =
+API_URL +
+"?" +
+new URLSearchParams(
+  params
+).toString();
+
+
+return await fetchJSON(
+  url,
+  {
+    cache:"no-store"
+  }
+);
+
+}
+
+
+
+/* =====================================================
+   API POST
+===================================================== */
+
+async function apiPost(
+  action,
+  body
+){
+
+const url =
+API_URL +
+"?action=" +
+encodeURIComponent(
+  action
+);
+
+
+return await fetchJSON(
+  url,
+  {
+
+    method:"POST",
+
+    headers:{
+
+      "Content-Type":
+      "text/plain;charset=utf-8"
+
+    },
+
+    body:
+    JSON.stringify(
+      body
+    )
+
+  }
+);
+
+}
+
+
+
+/* =====================================================
+   LEVEL
+===================================================== */
+
+function renderLevels(){
+
+const type =
+educationType.value;
+
+
+const list =
+LEVELS[type] ||
+LEVELS.GENERAL;
+
+
+level.innerHTML =
+list.map(
+  item=>`
+
+  <option value="${item[0]}">
+    ${item[1]} (${item[0]})
+  </option>
+
+  `
+).join("");
+
+}
+
+
+
+/* =====================================================
+   ROOMS
+===================================================== */
+
+function renderRooms(){
+
+room.innerHTML =
+Array.from(
+  {length:20},
+  (_,index)=>{
+
+    const no =
+    index + 1;
+
+    return `
+
+    <option value="${no}">
+      ห้อง ${no}
+    </option>
+
+    `;
+
+  }
+).join("");
+
+}
+
+
+
+/* =====================================================
+   KEYS
+===================================================== */
+
+function roomKey(){
+
+return (
+  level.value +
+  "|" +
+  room.value
+);
+
+}
+
+
+function assignmentKey(){
+
+return (
+  level.value +
+  "|" +
+  room.value +
+  "|" +
+  term.value
+);
+
+}
+
+
+function draftKey(
+  student
+){
+
+return (
+
+  String(
+    currentAssignment?.code ||
+    currentAssignment?.name ||
+    ""
+  )
+
+  +
+
+  "|" +
+
+  String(
+    student.citizenId ||
+    ""
+  )
+
+  +
+
+  "|" +
+
+  String(
+    student.studentNo ||
+    ""
+  )
+
+);
+
+}
+
+
+
+/* =====================================================
+   MASK
+===================================================== */
+
+function maskCitizen(
+  value
+){
+
+const s =
+String(
+  value || ""
+);
+
+
+if(
+  s.length < 13
+){
+
+return s;
+
+}
+
+
+return (
+
+  s.substring(
+    0,
+    3
+  )
+
+  +
+
+  "********"
+
+  +
+
+  s.substring(
+    11
+  )
+
+);
+
+}
+
+
+
+/* =====================================================
+   RESET STUDENT AREA
+===================================================== */
+
+function resetStudentArea(
+  text=
+  "เลือกระดับชั้นแล้วกด “โหลดรายชื่อ”"
+){
+
+students = [];
+
+
+search.value =
+"";
+
+
+metaStudents.textContent =
+"นักเรียน: -";
+
+
+metaDone.textContent =
+"กรอกแล้ว: 0 คน";
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyCell"
+>
+${escapeHTML(text)}
+</td>
+
+</tr>
+
+`;
+
+}
+
+
+
+/* =====================================================
+   ASSIGNMENTS
+===================================================== */
+
+function applyAssignments(
+  list,
+  keepCode=""
+){
+
+assignments =
+Array.isArray(list)
+? list
+: [];
+
+
+/* เฉพาะงานเปิดใช้ */
+
+const active =
+assignments.filter(
+  item=>
+
+  String(
+    item.active ??
+    "TRUE"
+  )
+  .trim()
+  .toUpperCase()
+  !==
+  "FALSE"
+
+);
+
+
+if(
+  active.length === 0
+){
+
+assignmentSelect.innerHTML = `
+
+<option value="">
+  (ยังไม่มีงานที่เปิดใช้)
+</option>
+
+`;
+
+
+currentAssignment =
+null;
+
+
+metaTotal.textContent =
+"คะแนนเต็ม: -";
+
+
+btnSave.disabled =
+true;
+
+
+return;
+
+}
+
+
+/* render */
+
+assignmentSelect.innerHTML =
+active.map(
+  item=>`
+
+  <option
+    value="${escapeHTML(item.code)}"
+  >
+
+    ${escapeHTML(item.name)}
+    (เต็ม ${escapeHTML(item.total)})
+
+  </option>
+
+  `
+).join("");
+
+
+
+let selected =
+active.find(
+  item=>
+
+  String(
+    item.code
+  )
+  ===
+  String(
+    keepCode
+  )
+
+);
+
+
+if(!selected){
+
+selected =
+active[0];
+
+}
+
+
+assignmentSelect.value =
+selected.code;
+
+
+currentAssignment =
+selected;
+
+
+metaTotal.textContent =
+"คะแนนเต็ม: " +
+selected.total;
+
+
+btnSave.disabled =
+students.length === 0;
+
+}
+
+
+
+/* =====================================================
+   LOAD ASSIGNMENTS
+===================================================== */
+
+async function loadAssignments(
+  force=false
+){
+
+const key =
+assignmentKey();
+
+
+const oldCode =
+currentAssignment?.code ||
+"";
+
+
+if(
+  !force &&
+  assignmentCache.has(key)
+){
+
+applyAssignments(
+  assignmentCache.get(key),
+  oldCode
+);
+
+
+setStatus(
+  "ใช้ข้อมูลแคช"
+);
+
+
+return;
+
+}
+
+
+assignmentSelect.innerHTML = `
+
+<option value="">
+  กำลังโหลดงาน...
+</option>
+
+`;
+
+
+btnSave.disabled =
+true;
+
+
+setStatus(
+  "กำลังโหลดงาน...",
+  "loading"
+);
+
+
+try{
+
+const res =
+await apiGet({
+
+  action:
+  "getAssignments",
+
+  level:
+  level.value,
+
+  room:
+  room.value,
+
+  term:
+  term.value
+
+});
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "โหลดงานไม่สำเร็จ"
+);
+
+}
+
+
+const list =
+Array.isArray(
+  res.assignments
+)
+
+? res.assignments
+
+: [];
+
+
+/*
+  assignments ว่าง Cache ได้
+  เพราะเป็น config
+*/
+
+assignmentCache.set(
+  key,
+  list
+);
+
+
+applyAssignments(
+  list,
+  oldCode
+);
+
+
+setStatus(
+  "ข้อมูลล่าสุด"
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+applyAssignments(
+  []
+);
+
+
+setStatus(
+  "โหลดงานไม่สำเร็จ",
+  "error"
+);
+
+
+setMessage(
+  "❌ โหลดรายการงานไม่สำเร็จ: " +
+  error.message,
+  "error"
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   STUDENT FILTER
+===================================================== */
+
+function filteredStudents(){
+
+const q =
+search.value
+.trim()
+.toLowerCase();
+
+
+if(!q){
+
+return students;
+
+}
+
+
+return students.filter(
+  student=>{
+
+    const name =
+    String(
+      student.name ||
+      student.fullname ||
+      ""
+    )
+    .toLowerCase();
+
+
+    const no =
+    String(
+      student.studentNo ||
+      ""
+    )
+    .toLowerCase();
+
+
+    const citizen =
+    String(
+      student.citizenId ||
+      ""
+    )
+    .toLowerCase();
+
+
+    return (
+
+      name.includes(q)
+
+      ||
+
+      no.includes(q)
+
+      ||
+
+      citizen.includes(q)
+
+    );
+
+  }
+);
+
+}
+
+
+
+/* =====================================================
+   RENDER STUDENTS
+===================================================== */
+
+function renderStudents(){
+
+const list =
+filteredStudents();
+
+
+tbody.innerHTML =
+"";
+
+
+if(
+  list.length === 0
+){
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyCell"
+>
+
+${
+students.length
+?
+"ไม่พบรายชื่อที่ค้นหา"
+:
+"ไม่พบข้อมูลนักเรียนในห้องนี้"
+}
+
+</td>
+
+</tr>
+
+`;
+
+
+updateDone();
+
+
+return;
+
+}
+
+
+
+list.forEach(
+  (student,index)=>{
+
+
+const no =
+student.no ??
+(index + 1);
+
+
+const name =
+student.name ??
+student.fullname ??
+"-";
+
+
+const studentNo =
+student.studentNo ??
+"-";
+
+
+const citizenId =
+student.citizenId ??
+"-";
+
+
+const key =
+draftKey(
+  student
+);
+
+
+const draft =
+drafts.has(key)
+
+? drafts.get(key)
+
+: "";
+
+
+const total =
+Number(
+  currentAssignment?.total ||
+  0
+);
+
+
+const row =
+document.createElement(
+  "tr"
+);
+
+
+row.innerHTML = `
+
+<td>
+${escapeHTML(no)}
+</td>
+
+
+<td>
+${escapeHTML(name)}
+</td>
+
+
+<td>
+${escapeHTML(studentNo)}
+</td>
+
+
+<td>
+${escapeHTML(
+  maskCitizen(citizenId)
+)}
+</td>
+
+
+<td style="text-align:center;">
+
+<input
+
+  class="scoreInput"
+
+  type="number"
+
+  min="0"
+
+  max="${total}"
+
+  step="1"
+
+  data-citizen="${escapeHTML(citizenId)}"
+
+  data-studentno="${escapeHTML(studentNo)}"
+
+  value="${escapeHTML(draft)}"
+
+  placeholder="0-${total}"
+
+>
+
+</td>
+
+`;
+
+
+tbody.appendChild(
+  row
+);
+
+}
+);
+
+
+updateDone();
+
+}
+
+
+
+/* =====================================================
+   DONE COUNTER
+===================================================== */
+
+function updateDone(){
+
+if(
+  !currentAssignment
+){
+
+metaDone.textContent =
+"กรอกแล้ว: 0 คน";
+
+return;
+
+}
+
+
+let count =
+0;
+
+
+students.forEach(
+  student=>{
+
+    const key =
+    draftKey(
+      student
+    );
+
+
+    if(
+      drafts.has(key)
+      &&
+      String(
+        drafts.get(key)
+      ).trim()
+      !==
+      ""
+    ){
+
+      count++;
+
+    }
+
+  }
+);
+
+
+metaDone.textContent =
+`กรอกแล้ว: ${count} คน`;
+
+}
+
+
+
+/* =====================================================
+   LOAD STUDENTS
+===================================================== */
+
+async function loadStudents(
+  force=false
+){
+
+const key =
+roomKey();
+
+
+/*
+  ใช้ cache เฉพาะกรณีมีนักเรียน
+*/
+
+if(
+  !force &&
+  studentCache.has(key)
+){
+
+const cached =
+studentCache.get(key);
+
+
+if(
+  Array.isArray(cached)
+  &&
+  cached.length > 0
+){
+
+students =
+cached;
+
+
+metaStudents.textContent =
+`นักเรียน: ${students.length} คน`;
+
+
+renderStudents();
+
+
+btnSave.disabled =
+!currentAssignment;
+
+
+setMessage(
+  `✅ ใช้รายชื่อที่โหลดไว้ (${students.length} คน)`,
+  "ok"
+);
+
+
+setStatus(
+  "ใช้ข้อมูลแคช"
+);
+
+
+return;
+
+}
+
+}
+
+
+setBusy(
+  btnLoad,
+  true,
+  "⏳ กำลังโหลด...",
+  "📥 โหลดรายชื่อ"
+);
+
+
+setStatus(
+  "กำลังโหลดรายชื่อ...",
+  "loading"
+);
+
+
+setMessage(
+  "⏳ กำลังดึงรายชื่อนักเรียน..."
+);
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyCell"
+>
+กำลังโหลดรายชื่อ...
+</td>
+
+</tr>
+
+`;
+
+
+try{
+
+const res =
+await apiGet({
+
+  action:
+  "getRoomStudents",
+
+  level:
+  level.value,
+
+  room:
+  room.value
+
+});
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "โหลดรายชื่อไม่สำเร็จ"
+);
+
+}
+
+
+students =
+Array.isArray(
+  res.students
+)
+
+? res.students
+
+: [];
+
+
+/*
+  สำคัญมาก:
+  0 คน = ไม่ Cache
+*/
+
+if(
+  students.length > 0
+){
+
+studentCache.set(
+  key,
+  students
+);
+
+}
+else{
+
+studentCache.delete(
+  key
+);
+
+}
+
+
+metaStudents.textContent =
+`นักเรียน: ${students.length} คน`;
+
+
+renderStudents();
+
+
+btnSave.disabled =
+!(
+  students.length &&
+  currentAssignment
+);
+
+
+if(
+  students.length > 0
+){
+
+setMessage(
+  `✅ โหลดรายชื่อสำเร็จ ${students.length} คน`,
+  "ok"
+);
+
+
+setStatus(
+  "ข้อมูลล่าสุด"
+);
+
+}
+else{
+
+setMessage(
+  "ℹ️ ยังไม่มีนักเรียนในระดับ/ห้องนี้ กรุณาตรวจสอบข้อมูลใน Google Sheet",
+  ""
+);
+
+
+setStatus(
+  "ไม่พบรายชื่อ"
+);
+
+}
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+students = [];
+
+
+metaStudents.textContent =
+"นักเรียน: -";
+
+
+btnSave.disabled =
+true;
+
+
+let text =
+String(
+  error.message ||
+  ""
+);
+
+
+if(
+  text.includes(
+    "Sheet not found"
+  )
+){
+
+text =
+"ยังไม่มี Sheet ของระดับชั้นนี้ใน Google Sheet";
+
+}
+
+
+setMessage(
+  "❌ โหลดรายชื่อไม่สำเร็จ: " +
+  text,
+  "error"
+);
+
+
+setStatus(
+  "โหลดรายชื่อไม่สำเร็จ",
+  "error"
+);
+
+
+tbody.innerHTML = `
+
+<tr>
+
+<td
+  colspan="5"
+  class="emptyCell"
+>
+โหลดข้อมูลไม่สำเร็จ
+</td>
+
+</tr>
+
+`;
+
+}
+finally{
+
+setBusy(
+  btnLoad,
+  false,
+  "",
+  "📥 โหลดรายชื่อ"
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   INPUT SCORE
+===================================================== */
+
+document.addEventListener(
+  "input",
+  event=>{
+
+
+if(
+  !event.target
+  .classList
+  .contains(
+    "scoreInput"
+  )
+){
+
+return;
+
+}
+
+
+const citizen =
+String(
+  event.target.dataset.citizen ||
+  ""
+);
+
+
+const studentNo =
+String(
+  event.target.dataset.studentno ||
+  ""
+);
+
+
+const student =
+students.find(
+  item=>
+
+  String(
+    item.citizenId ||
+    ""
+  )
+  ===
+  citizen
+
+  &&
+
+  String(
+    item.studentNo ||
+    ""
+  )
+  ===
+  studentNo
+
+);
+
+
+if(!student){
+
+return;
+
+}
+
+
+const total =
+Number(
+  currentAssignment?.total ||
+  0
+);
+
+
+let value =
+event.target.value;
+
+
+if(
+  value !== ""
+){
+
+let number =
+Number(value);
+
+
+if(
+  number < 0
+){
+
+number = 0;
+
+}
+
+
+if(
+  total &&
+  number > total
+){
+
+number =
+total;
+
+event.target.value =
+total;
+
+}
+
+
+value =
+String(number);
+
+}
+
+
+drafts.set(
+  draftKey(student),
+  value
+);
+
+
+updateDone();
+
+}
+);
+
+
+
+/* =====================================================
+   SAVE SCORES
+===================================================== */
+
+async function saveScores(){
+
+if(
+  !currentAssignment
+){
+
+setMessage(
+  "❌ กรุณาเลือกงานก่อน",
+  "error"
+);
+
+return;
+
+}
+
+
+if(
+  students.length === 0
+){
+
+setMessage(
+  "❌ ยังไม่มีรายชื่อนักเรียน",
+  "error"
+);
+
+return;
+
+}
+
+
+const total =
+Number(
+  currentAssignment.total ||
+  0
+);
+
+
+const rows =
+[];
+
+
+students.forEach(
+  student=>{
+
+
+const key =
+draftKey(
+  student
+);
+
+
+if(
+  !drafts.has(key)
+){
+
+return;
+
+}
+
+
+const raw =
+String(
+  drafts.get(key)
+).trim();
+
+
+if(
+  raw === ""
+){
+
+return;
+
+}
+
+
+let score =
+Number(raw);
+
+
+if(
+  Number.isNaN(score)
+){
+
+return;
+
+}
+
+
+score =
+Math.max(
+  0,
+  Math.min(
+    total,
+    score
+  )
+);
+
+
+rows.push({
+
+  citizenId:
+  String(
+    student.citizenId ||
+    ""
+  ),
+
+  studentNo:
+  String(
+    student.studentNo ||
+    ""
+  ),
+
+  score
+
+});
+
+}
+);
+
+
+if(
+  rows.length === 0
+){
+
+setMessage(
+  "❌ ยังไม่ได้กรอกคะแนน",
+  "error"
+);
+
+return;
+
+}
+
+
+setBusy(
+  btnSave,
+  true,
+  "⏳ กำลังบันทึก...",
+  "💾 บันทึกคะแนน"
+);
+
+
+setStatus(
+  "กำลังบันทึก...",
+  "loading"
+);
+
+
+try{
+
+const res =
+await apiPost(
+
+  "saveRoomScores",
+
+  {
+
+    level:
+    level.value,
+
+    room:
+    room.value,
+
+    term:
+    term.value,
+
+    type:
+    "ASSIGNMENT",
+
+    exam:
+    currentAssignment.name,
+
+    total,
+
+    rows
+
+  }
+
+);
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "บันทึกไม่สำเร็จ"
+);
+
+}
+
+
+setMessage(
+  `✅ บันทึกคะแนนสำเร็จ ${res.saved ?? rows.length} รายการ`,
+  "ok"
+);
+
+
+setStatus(
+  "บันทึกแล้ว"
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+setMessage(
+  "❌ บันทึกคะแนนไม่สำเร็จ: " +
+  error.message,
+  "error"
+);
+
+
+setStatus(
+  "บันทึกไม่สำเร็จ",
+  "error"
+);
+
+}
+finally{
+
+setBusy(
+  btnSave,
+  false,
+  "",
+  "💾 บันทึกคะแนน"
+);
+
+
+btnSave.disabled =
+!(
+  currentAssignment
+  &&
+  students.length
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   ASSIGNMENT MANAGER
+===================================================== */
+
+function assignmentCode(){
+
+const used =
+new Set();
+
+
+assignments.forEach(
+  item=>{
+
+    used.add(
+      String(
+        item.code ||
+        ""
+      )
+    );
+
+  }
+);
+
+
+assignmentGrid
+.querySelectorAll(
+  ".assignmentCode"
+)
+.forEach(
+  el=>{
+
+    used.add(
+      el.value
+    );
+
+  }
+);
+
+
+let no =
+1;
+
+
+while(
+  used.has(
+    "A" +
+    String(no)
+    .padStart(
+      2,
+      "0"
+    )
+  )
+){
+
+no++;
+
+}
+
+
+return (
+  "A" +
+  String(no)
+  .padStart(
+    2,
+    "0"
+  )
+);
+
+}
+
+
+
+/* =====================================================
+   ADD ASSIGNMENT ROW
+===================================================== */
+
+function addAssignmentRow(
+  item=null
+){
+
+const code =
+item?.code ||
+assignmentCode();
+
+
+const name =
+item?.name ||
+"";
+
+
+const total =
+item?.total ||
+"";
+
+
+const active =
+String(
+  item?.active ??
+  "TRUE"
+)
+.toUpperCase()
+!==
+"FALSE";
+
+
+const row =
+document.createElement(
+  "div"
+);
+
+
+row.className =
+"assignmentRow";
+
+
+row.innerHTML = `
+
+<input
+
+  class="assignmentCode"
+
+  value="${escapeHTML(code)}"
+
+  disabled
+
+>
+
+
+<input
+
+  class="assignmentName"
+
+  value="${escapeHTML(name)}"
+
+  placeholder="เช่น ใบงานที่ 1"
+
+>
+
+
+<input
+
+  class="assignmentTotal"
+
+  type="number"
+
+  min="1"
+
+  value="${escapeHTML(total)}"
+
+  placeholder="คะแนนเต็ม"
+
+>
+
+
+<select class="assignmentActive">
+
+<option
+  value="TRUE"
+  ${active ? "selected" : ""}
+>
+เปิดใช้
+</option>
+
+<option
+  value="FALSE"
+  ${!active ? "selected" : ""}
+>
+ปิดใช้
+</option>
+
+</select>
+
+
+<button
+
+  type="button"
+
+  class="deleteBtn"
+
+>
+ลบ
+</button>
+
+`;
+
+
+row
+.querySelector(
+  ".deleteBtn"
+)
+.addEventListener(
+  "click",
+  ()=>{
+
+    row.remove();
+
+  }
+);
+
+
+assignmentGrid
+.appendChild(
+  row
+);
+
+}
+
+
+
+/* =====================================================
+   RENDER ASSIGNMENT MANAGER
+===================================================== */
+
+function renderManager(){
+
+assignmentGrid.innerHTML =
+"";
+
+
+assignments.forEach(
+  item=>{
+
+    addAssignmentRow(
+      item
+    );
+
+  }
+);
+
+
+if(
+  assignments.length === 0
+){
+
+addAssignmentRow();
+
+}
+
+}
+
+
+
+/* =====================================================
+   OPEN MODAL
+===================================================== */
+
+function openManager(){
+
+managerLevel.textContent =
+"ระดับ: " +
+(
+  level.options[
+    level.selectedIndex
+  ]?.text ||
+  level.value
+);
+
+
+managerRoom.textContent =
+"ห้อง: " +
+room.value;
+
+
+managerTerm.textContent =
+"ภาคเรียน: " +
+term.value;
+
+
+renderManager();
+
+
+modalBackdrop.style.display =
+"flex";
+
+
+document.body.style.overflow =
+"hidden";
+
+}
+
+
+
+/* =====================================================
+   CLOSE MODAL
+===================================================== */
+
+function closeManager(){
+
+modalBackdrop.style.display =
+"none";
+
+
+document.body.style.overflow =
+"";
+
+}
+
+
+
+/* =====================================================
+   FORCE LOAD ASSIGNMENTS
+===================================================== */
+
+async function reloadAssignments(){
+
+assignmentCache.delete(
+  assignmentKey()
+);
+
+
+setBusy(
+  btnReloadAssignments,
+  true,
+  "⏳ กำลังดึง...",
+  "↻ ดึงจากเซิร์ฟเวอร์"
+);
+
+
+await loadAssignments(
+  true
+);
+
+
+renderManager();
+
+
+setBusy(
+  btnReloadAssignments,
+  false,
+  "",
+  "↻ ดึงจากเซิร์ฟเวอร์"
+);
+
+}
+
+
+
+/* =====================================================
+   SAVE ASSIGNMENTS
+===================================================== */
+
+async function saveAssignments(){
+
+const rowElements =
+[
+  ...assignmentGrid
+  .querySelectorAll(
+    ".assignmentRow"
+  )
+];
+
+
+const rows =
+rowElements
+.map(
+  row=>({
+
+    term:
+    term.value,
+
+    level:
+    level.value,
+
+    room:
+    room.value,
+
+    code:
+    row
+    .querySelector(
+      ".assignmentCode"
+    )
+    .value
+    .trim(),
+
+    name:
+    row
+    .querySelector(
+      ".assignmentName"
+    )
+    .value
+    .trim(),
+
+    total:
+    Number(
+      row
+      .querySelector(
+        ".assignmentTotal"
+      )
+      .value ||
+      0
+    ),
+
+    active:
+    row
+    .querySelector(
+      ".assignmentActive"
+    )
+    .value
+
+  })
+)
+
+.filter(
+  item=>
+  item.code
+);
+
+
+if(
+  rows.length === 0
+){
+
+alert(
+  "ยังไม่มีรายการงาน"
+);
+
+return;
+
+}
+
+
+for(
+  const item
+  of rows
+){
+
+if(
+  !item.name
+){
+
+alert(
+  "กรุณากรอกชื่องานให้ครบ"
+);
+
+return;
+
+}
+
+
+if(
+  !item.total ||
+  item.total <= 0
+){
+
+alert(
+  "คะแนนเต็มต้องมากกว่า 0"
+);
+
+return;
+
+}
+
+}
+
+
+setBusy(
+  btnSaveAssignments,
+  true,
+  "⏳ กำลังบันทึก...",
+  "💾 บันทึกรายการงาน"
+);
+
+
+try{
+
+const res =
+await apiPost(
+
+  "saveAssignments",
+
+  {
+
+    term:
+    term.value,
+
+    level:
+    level.value,
+
+    room:
+    room.value,
+
+    rows
+
+  }
+
+);
+
+
+if(!res.ok){
+
+throw new Error(
+  res.error ||
+  "บันทึกรายการงานไม่สำเร็จ"
+);
+
+}
+
+
+/*
+  ใช้ข้อมูลที่เพิ่งบันทึก
+  ไม่ GET ซ้ำ
+*/
+
+assignments =
+rows.map(
+  item=>({
+
+    code:
+    item.code,
+
+    name:
+    item.name,
+
+    total:
+    item.total,
+
+    active:
+    item.active
+
+  })
+);
+
+
+assignmentCache.set(
+  assignmentKey(),
+  assignments
+);
+
+
+applyAssignments(
+  assignments,
+  currentAssignment?.code
+);
+
+
+renderManager();
+
+
+setStatus(
+  "บันทึกรายการงานแล้ว"
+);
+
+
+alert(
+  "✅ บันทึกรายการงานสำเร็จ"
+);
+
+}
+catch(error){
+
+console.error(
+  error
+);
+
+
+alert(
+  "❌ บันทึกไม่สำเร็จ: " +
+  error.message
+);
+
+}
+finally{
+
+setBusy(
+  btnSaveAssignments,
+  false,
+  "",
+  "💾 บันทึกรายการงาน"
+);
+
+}
+
+}
+
+
+
+/* =====================================================
+   CHANGE FILTER
+===================================================== */
+
+function filterChanged(){
+
+currentAssignment =
+null;
+
+
+btnSave.disabled =
+true;
+
+
+metaTotal.textContent =
+"คะแนนเต็ม: -";
+
+
+resetStudentArea(
+  "ตัวกรองเปลี่ยนแล้ว กด “โหลดรายชื่อ”"
+);
+
+
+loadAssignments();
+
+}
+
+
+
+/* =====================================================
+   REFRESH
+===================================================== */
+
+async function refreshAll(){
+
+studentCache.delete(
+  roomKey()
+);
+
+
+assignmentCache.delete(
+  assignmentKey()
+);
+
+
+setBusy(
+  btnRefresh,
+  true,
+  "⏳ รีเฟรช...",
+  "↻ รีเฟรชข้อมูล"
+);
+
+
+setMessage(
+  "⏳ กำลังดึงข้อมูลล่าสุด..."
+);
+
+
+await loadAssignments(
+  true
+);
+
+
+await loadStudents(
+  true
+);
+
+
+setBusy(
+  btnRefresh,
+  false,
+  "",
+  "↻ รีเฟรชข้อมูล"
+);
+
+}
+
+
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+educationType
+.addEventListener(
+  "change",
+  ()=>{
+
+    renderLevels();
+
+    filterChanged();
+
+  }
+);
+
+
+level
+.addEventListener(
+  "change",
+  filterChanged
+);
+
+
+room
+.addEventListener(
+  "change",
+  filterChanged
+);
+
+
+term
+.addEventListener(
+  "change",
+  filterChanged
+);
+
+
+assignmentSelect
+.addEventListener(
+  "change",
+  ()=>{
+
+
+currentAssignment =
+assignments.find(
+  item=>
+
+  String(
+    item.code
+  )
+  ===
+  String(
+    assignmentSelect.value
+  )
+
+)
+
+||
+
+null;
+
+
+metaTotal.textContent =
+currentAssignment
+
+?
+
+"คะแนนเต็ม: " +
+currentAssignment.total
+
+:
+
+"คะแนนเต็ม: -";
+
+
+btnSave.disabled =
+!(
+  currentAssignment
+  &&
+  students.length
+);
+
+
+renderStudents();
+
+}
+);
+
+
+search
+.addEventListener(
+  "input",
+  renderStudents
+);
+
+
+btnLoad
+.addEventListener(
+  "click",
+  ()=>{
+
+    loadStudents(
+      false
+    );
+
+  }
+);
+
+
+btnSave
+.addEventListener(
+  "click",
+  saveScores
+);
+
+
+btnRefresh
+.addEventListener(
+  "click",
+  refreshAll
+);
+
+
+btnManageAssignments
+.addEventListener(
+  "click",
+  openManager
+);
+
+
+btnCloseModal
+.addEventListener(
+  "click",
+  closeManager
+);
+
+
+btnAddRow
+.addEventListener(
+  "click",
+  ()=>{
+
+    addAssignmentRow();
+
+  }
+);
+
+
+btnReloadAssignments
+.addEventListener(
+  "click",
+  reloadAssignments
+);
+
+
+btnSaveAssignments
+.addEventListener(
+  "click",
+  saveAssignments
+);
+
+
+modalBackdrop
+.addEventListener(
+  "click",
+  event=>{
+
+    if(
+      event.target ===
+      modalBackdrop
+    ){
+
+      closeManager();
+
+    }
+
+  }
+);
+
+
+window
+.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.key ===
+      "Escape"
+      &&
+      modalBackdrop.style.display
+      ===
+      "flex"
+    ){
+
+      closeManager();
+
+    }
+
+  }
+);
+
+
+
+/* =====================================================
+   START
+===================================================== */
+
+renderLevels();
+
+renderRooms();
+
+resetStudentArea();
+
+loadAssignments();
+
+</script>
+
+
+</body>
+
+</html>

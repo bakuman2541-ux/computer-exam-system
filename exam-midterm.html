@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>
+ข้อสอบกลางภาค - Student Assessment System
+</title>
+
+<link
+  rel="stylesheet"
+  href="style.css"
+>
+
+<style>
+
+/* =====================================================
+   MIDTERM EXAM THEME
+   กระทบเฉพาะหน้านี้
+===================================================== */
+
+*{
+  box-sizing:border-box;
+}
+
+
+body.page-exam-midterm{
+
+  margin:0;
+
+  min-height:100vh;
+
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+
+  color:#0f172a;
+
+  background:#020617;
+
+}
+
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+.page-exam-midterm .examBg{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:-10;
+
+  background:
+
+    radial-gradient(
+      circle at 7% 16%,
+      rgba(14,165,233,.55),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 92% 12%,
+      rgba(236,72,153,.38),
+      transparent 35%
+    ),
+
+    radial-gradient(
+      circle at 18% 92%,
+      rgba(6,182,212,.25),
+      transparent 42%
+    ),
+
+    radial-gradient(
+      circle at 90% 86%,
+      rgba(168,85,247,.23),
+      transparent 40%
+    ),
+
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #061725 42%,
+      #09091a 72%,
+      #020617 100%
+    );
+
+}
+
+
+.page-exam-midterm .examBg::before{
+
+  content:"";
+
+  position:absolute;
+
+  width:450px;
+  height:450px;
+
+  left:-220px;
+  bottom:-190px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(103,232,249,.20);
+
+}
+
+
+.page-exam-midterm .examBg::after{
+
+  content:"";
+
+  position:absolute;
+
+  width:450px;
+  height:450px;
+
+  right:-200px;
+  top:-190px;
+
+  border-radius:50%;
+
+  border:
+    1px solid rgba(244,114,182,.18);
+
+}
+
+
+/* =====================================================
+   WRAPPER
+===================================================== */
+
+.page-exam-midterm .examWrap{
+
+  width:
+    min(
+      1240px,
+      calc(100% - 34px)
+    );
+
+  margin:
+    30px auto 50px;
+
+}
+
+
+/* =====================================================
+   MAIN CARD
+===================================================== */
+
+.page-exam-midterm .examMainCard{
+
+  padding:28px;
+
+  border-radius:30px;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      rgba(255,255,255,.985),
+      rgba(248,250,252,.955)
+    );
+
+  border:
+    1px solid rgba(255,255,255,.84);
+
+  box-shadow:
+
+    0 35px 100px
+    rgba(0,0,0,.42),
+
+    0 0 55px
+    rgba(56,189,248,.08);
+
+  backdrop-filter:
+    blur(18px);
+
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.page-exam-midterm .examHeader{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:24px;
+
+  padding-bottom:22px;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+}
+
+
+.page-exam-midterm .examBrand{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:17px;
+
+}
+
+
+.page-exam-midterm .examIcon{
+
+  width:70px;
+  height:70px;
+
+  flex:none;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:20px;
+
+  font-size:27px;
+
+  color:#c2410c;
+
+  background:
+
+    linear-gradient(
+      145deg,
+      #fff7ed,
+      #ffedd5
+    );
+
+  border:
+    1px solid #fed7aa;
+
+  box-shadow:
+    0 12px 30px
+    rgba(234,88,12,.10);
+
+}
+
+
+.page-exam-midterm .examTitle{
+
+  margin:0;
+
+  font-size:30px;
+
+  font-weight:950;
+
+  color:#0f4c81;
+
+  line-height:1.2;
+
+}
+
+
+.page-exam-midterm .examEnglish{
+
+  margin-top:4px;
+
+  color:#0891b2;
+
+  font-size:14px;
+
+  font-weight:900;
+
+}
+
+
+.page-exam-midterm .examSub{
+
+  margin:4px 0 0;
+
+  color:#64748b;
+
+  font-size:13px;
+
+  font-weight:750;
+
+}
+
+
+/* =====================================================
+   BACK BUTTON
+===================================================== */
+
+.page-exam-midterm .backBtn{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:11px;
+
+  min-width:190px;
+
+  padding:13px 16px;
+
+  border-radius:19px;
+
+  color:#0f172a;
+
+  text-decoration:none;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbff
+    );
+
+  border:
+    1px solid #bfdbfe;
+
+  box-shadow:
+    0 9px 26px
+    rgba(15,23,42,.05);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease;
+
+}
+
+
+.page-exam-midterm .backBtn:hover{
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0 14px 30px
+    rgba(15,23,42,.09);
+
+}
+
+
+.page-exam-midterm .backIcon{
+
+  width:42px;
+  height:42px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  border-radius:13px;
+
+  background:#dbeafe;
+
+  color:#2563eb;
+
+  font-size:19px;
+
+}
+
+
+.page-exam-midterm .backText{
+
+  display:flex;
+
+  flex-direction:column;
+
+  line-height:1.25;
+
+}
+
+
+.page-exam-midterm .backText b{
+
+  font-size:14px;
+
+  font-weight:950;
+
+}
+
+
+.page-exam-midterm .backText small{
+
+  margin-top:2px;
+
+  color:#64748b;
+
+  font-size:11px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   CONTENT GRID
+===================================================== */
+
+.page-exam-midterm .examTop{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:18px;
+
+  margin-top:22px;
+
+}
+
+
+/* =====================================================
+   PANEL
+===================================================== */
+
+.page-exam-midterm .examPanel{
+
+  padding:22px;
+
+  border-radius:23px;
+
+  background:
+    rgba(255,255,255,.96);
+
+  border:
+    1px solid #e2e8f0;
+
+  box-shadow:
+    0 12px 32px
+    rgba(15,23,42,.055);
+
+}
+
+
+.page-exam-midterm .panelTitle{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  margin-bottom:14px;
+
+  font-size:18px;
+
+  font-weight:950;
+
+  color:#0f172a;
+
+}
+
+
+/* =====================================================
+   INSTRUCTION
+===================================================== */
+
+.page-exam-midterm .instructionBox{
+
+  padding:17px 18px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #eff6ff
+    );
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.page-exam-midterm .instructionList{
+
+  margin:0;
+
+  padding-left:23px;
+
+  color:#475569;
+
+  font-weight:750;
+
+  line-height:1.9;
+
+}
+
+
+/* =====================================================
+   STUDENT
+===================================================== */
+
+.page-exam-midterm .studentBoxWrap{
+
+  padding:18px;
+
+  min-height:156px;
+
+  border-radius:17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f8fbff,
+      #f8fafc
+    );
+
+  border:
+    1px solid #dbeafe;
+
+}
+
+
+.page-exam-midterm #studentBox{
+
+  color:#0f172a;
+
+  font-weight:850;
+
+  line-height:2;
+
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.page-exam-midterm .examButton{
+
+  width:100%;
+
+  min-height:52px;
+
+  margin-top:16px;
+
+  border:0;
+
+  border-radius:16px;
+
+  cursor:pointer;
+
+  color:white;
+
+  font:inherit;
+
+  font-weight:950;
+
+  font-size:16px;
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #0ea5e9
+    );
+
+  box-shadow:
+
+    0 12px 25px
+    rgba(37,99,235,.18);
+
+  transition:
+    transform .18s ease,
+    box-shadow .18s ease,
+    opacity .18s ease;
+
+}
+
+
+.page-exam-midterm .examButton:hover:not(:disabled){
+
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+
+    0 16px 32px
+    rgba(37,99,235,.24);
+
+}
+
+
+.page-exam-midterm .examButton:disabled{
+
+  opacity:.48;
+
+  cursor:not-allowed;
+
+}
+
+
+.page-exam-midterm .submitButton{
+
+  background:
+
+    linear-gradient(
+      90deg,
+      #0f172a,
+      #334155
+    );
+
+}
+
+
+/* =====================================================
+   MESSAGE
+===================================================== */
+
+.page-exam-midterm #msg{
+
+  margin-top:10px;
+
+  font-size:13px;
+
+  font-weight:850;
+
+  line-height:1.55;
+
+  word-break:break-word;
+
+}
+
+
+.page-exam-midterm #msg.ok{
+
+  color:#15803d;
+
+}
+
+
+.page-exam-midterm #msg.err{
+
+  color:#dc2626;
+
+}
+
+
+/* =====================================================
+   QUESTION PANEL
+===================================================== */
+
+.page-exam-midterm .questionPanel{
+
+  margin-top:18px;
+
+  padding:22px;
+
+  border-radius:23px;
+
+  background:
+    rgba(255,255,255,.97);
+
+  border:
+    1px solid #e2e8f0;
+
+  box-shadow:
+    0 12px 32px
+    rgba(15,23,42,.055);
+
+}
+
+
+.page-exam-midterm .questionHeading{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:9px;
+
+  padding-bottom:14px;
+
+  margin-bottom:14px;
+
+  border-bottom:
+    1px solid #e2e8f0;
+
+  font-size:18px;
+
+  font-weight:950;
+
+}
+
+
+/* =====================================================
+   JS-GENERATED QUESTION OVERRIDE
+===================================================== */
+
+.page-exam-midterm #examArea{
+
+  display:grid !important;
+
+  gap:14px !important;
+
+}
+
+
+.page-exam-midterm #examArea > div{
+
+  border:
+    1px solid #dbeafe !important;
+
+  border-radius:
+    18px !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #f8fbff
+    ) !important;
+
+  box-shadow:
+    0 8px 24px
+    rgba(15,23,42,.045);
+
+}
+
+
+/* =====================================================
+   FOOTER NOTE
+===================================================== */
+
+.page-exam-midterm .examNote{
+
+  margin-top:16px;
+
+  padding:12px 15px;
+
+  text-align:center;
+
+  border-radius:15px;
+
+  color:#075985;
+
+  background:#ecfeff;
+
+  border:
+    1px solid #a5f3fc;
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(
+  max-width:800px
+){
+
+  .page-exam-midterm .examHeader{
+
+    align-items:flex-start;
+
+    flex-direction:column;
+
+  }
+
+
+  .page-exam-midterm .examTop{
+
+    grid-template-columns:1fr;
+
+  }
+
+
+  .page-exam-midterm .backBtn{
+
+    width:100%;
+
+  }
+
+}
+
+
+@media(
+  max-width:560px
+){
+
+  .page-exam-midterm .examWrap{
+
+    width:
+      calc(100% - 18px);
+
+    margin:
+      10px auto 28px;
+
+  }
+
+
+  .page-exam-midterm .examMainCard{
+
+    padding:15px;
+
+    border-radius:22px;
+
+  }
+
+
+  .page-exam-midterm .examIcon{
+
+    width:58px;
+    height:58px;
+
+  }
+
+
+  .page-exam-midterm .examTitle{
+
+    font-size:24px;
+
+  }
+
+
+  .page-exam-midterm .examPanel,
+  .page-exam-midterm .questionPanel{
+
+    padding:16px;
+
+  }
+
+}
+
+</style>
+
+</head>
+
+
+<body class="page-exam-midterm">
+
+
+<div class="examBg"></div>
+
+
+<main class="examWrap">
+
+
+<section class="examMainCard">
+
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header class="examHeader">
+
+
+<div class="examBrand">
+
+
+<div class="examIcon">
+📝
+</div>
+
+
+<div>
+
+<h1 class="examTitle">
+ข้อสอบกลางภาค
+</h1>
+
+
+<div class="examEnglish">
+Student Assessment System
+</div>
+
+
+<p
+  class="examSub"
+  id="sub"
+>
+กำลังโหลดข้อสอบ...
+</p>
+
+
+</div>
+
+
+</div>
+
+
+
+<a
+  class="backBtn"
+  href="dashboard.html"
+>
+
+
+<span class="backIcon">
+←
+</span>
+
+
+<span class="backText">
+
+<b>
+กลับหน้าหลัก
+</b>
+
+<small>
+Dashboard
+</small>
+
+</span>
+
+
+</a>
+
+
+</header>
+
+
+
+<!-- =====================================================
+     TOP CONTENT
+===================================================== -->
+
+<section class="examTop">
+
+
+<!-- INSTRUCTION -->
+
+<div class="examPanel">
+
+
+<div class="panelTitle">
+📌 คำแนะนำ
+</div>
+
+
+<div class="instructionBox">
+
+
+<ul class="instructionList">
+
+<li>
+เลือกคำตอบให้ครบทุกข้อ
+</li>
+
+<li>
+ส่งคำตอบแล้ว ระบบจะบันทึกคะแนนอัตโนมัติ
+</li>
+
+<li>
+หากต้องทำใหม่ ครูจะต้องอนุญาตในหน้าแอดมิน
+</li>
+
+</ul>
+
+
+</div>
+
+
+
+<button
+  class="examButton"
+  id="btnStart"
+  type="button"
+>
+เริ่มทำข้อสอบ
+</button>
+
+
+<button
+  class="examButton submitButton"
+  id="btnSubmit"
+  type="button"
+  style="display:none;"
+>
+ส่งคำตอบ
+</button>
+
+
+<div
+  id="msg"
+  class="msg"
+></div>
+
+
+</div>
+
+
+
+<!-- STUDENT -->
+
+<div class="examPanel">
+
+
+<div class="panelTitle">
+🧑‍🎓 ข้อมูลผู้สอบ
+</div>
+
+
+<div class="studentBoxWrap">
+
+
+<div id="studentBox">
+-
+</div>
+
+
+</div>
+
+
+<div class="examNote">
+🔒 ระบบตรวจสอบสิทธิ์การสอบจากฐานข้อมูลก่อนเริ่มทำข้อสอบ
+</div>
+
+
+</div>
+
+
+</section>
+
+
+
+<!-- =====================================================
+     QUESTIONS
+===================================================== -->
+
+<section class="questionPanel">
+
+
+<div class="questionHeading">
+📝 คำถาม
+</div>
+
+
+<div id="examArea"></div>
+
+
+</section>
+
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     ใช้ระบบเดิม ห้ามเปลี่ยน
+===================================================== -->
+
+<script src="exam-midterm.js"></script>
+
+
+</body>
+
+</html>

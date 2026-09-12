@@ -1,0 +1,1622 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin - ระบบสารสนเทศและประเมินผลผู้เรียน</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    /* =====================================================
+       ADMIN DARK THEME
+    ===================================================== */
+
+    body.page-admin{
+      margin:0;
+      min-height:100vh;
+      background:#020617;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      overflow-x:hidden;
+    }
+
+    .page-admin .bg{
+      position:fixed;
+      inset:0;
+      z-index:-5;
+
+      background:
+        radial-gradient(circle at 8% 15%,
+          rgba(14,165,233,.52),
+          transparent 35%),
+
+        radial-gradient(circle at 90% 14%,
+          rgba(236,72,153,.42),
+          transparent 36%),
+
+        radial-gradient(circle at 18% 90%,
+          rgba(6,182,212,.30),
+          transparent 40%),
+
+        radial-gradient(circle at 90% 85%,
+          rgba(168,85,247,.27),
+          transparent 38%),
+
+        linear-gradient(
+          135deg,
+          #020617 0%,
+          #061725 42%,
+          #09091a 72%,
+          #020617 100%
+        );
+    }
+
+    body.page-admin::before{
+      content:"";
+      position:fixed;
+
+      width:430px;
+      height:430px;
+
+      left:-200px;
+      bottom:-170px;
+
+      border-radius:50%;
+      border:1px solid rgba(103,232,249,.22);
+
+      background:rgba(6,182,212,.05);
+
+      pointer-events:none;
+    }
+
+    body.page-admin::after{
+      content:"";
+      position:fixed;
+
+      width:430px;
+      height:430px;
+
+      right:-190px;
+      top:-180px;
+
+      border-radius:50%;
+      border:1px solid rgba(244,114,182,.18);
+
+      background:rgba(236,72,153,.04);
+
+      pointer-events:none;
+    }
+
+
+    /* =====================================================
+       MAIN
+    ===================================================== */
+
+    .adminWrap{
+      max-width:1100px;
+      margin:38px auto;
+      padding:0 18px;
+    }
+
+    .adminMainCard{
+      padding:28px;
+
+      border-radius:30px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.97),
+          rgba(248,250,252,.94)
+        );
+
+      border:1px solid rgba(255,255,255,.82);
+
+      box-shadow:
+        0 35px 90px rgba(0,0,0,.42),
+        0 0 45px rgba(56,189,248,.10);
+
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    .adminHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:24px;
+    }
+
+    .adminBrand{
+      display:flex;
+      align-items:center;
+      gap:17px;
+    }
+
+    .adminBrandLogo{
+      width:86px;
+      height:86px;
+      object-fit:contain;
+
+      filter:
+        drop-shadow(0 8px 15px rgba(14,165,233,.18));
+    }
+
+    .adminTitle{
+      margin:0;
+
+      color:#0b3d78;
+
+      font-size:29px;
+      line-height:1.2;
+
+      font-weight:1000;
+    }
+
+    .adminEnglish{
+      margin-top:4px;
+
+      color:#0891b2;
+
+      font-size:15px;
+      font-weight:1000;
+    }
+
+    .adminSub{
+      margin:6px 0 0;
+
+      color:#64748b;
+
+      font-size:13px;
+      font-weight:800;
+    }
+
+    .adminLogout{
+      min-width:205px;
+
+      cursor:pointer;
+
+      border:1px solid #bfdbfe;
+      border-radius:20px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #eff6ff,
+          #ffffff
+        );
+
+      padding:11px 14px;
+
+      display:flex;
+      align-items:center;
+      gap:11px;
+
+      color:#0f172a;
+
+      box-shadow:
+        0 10px 25px rgba(37,99,235,.09);
+    }
+
+    .adminLogoutIcon{
+      width:44px;
+      height:44px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      border-radius:15px;
+
+      background:#dbeafe;
+
+      font-size:20px;
+    }
+
+    .adminLogoutText{
+      display:flex;
+      flex-direction:column;
+      text-align:left;
+    }
+
+    .adminLogoutText b{
+      font-size:14px;
+    }
+
+    .adminLogoutText small{
+      margin-top:2px;
+
+      color:#64748b;
+
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .adminLine{
+      height:1px;
+      margin:23px 0;
+      background:#e2e8f0;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .adminGrid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:20px;
+    }
+
+    .adminPanel{
+      padding:22px;
+
+      border-radius:24px;
+
+      background:rgba(255,255,255,.92);
+
+      border:1px solid #e2e8f0;
+
+      box-shadow:
+        0 14px 36px rgba(15,23,42,.06);
+    }
+
+    .adminPanelTitle{
+      margin-bottom:14px;
+
+      color:#0f172a;
+
+      font-size:17px;
+      font-weight:1000;
+    }
+
+    .adminMenu{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .adminMenuItem{
+      width:100%;
+
+      padding:13px 14px;
+
+      display:flex;
+      align-items:center;
+      gap:12px;
+
+      text-decoration:none;
+
+      border-radius:18px;
+
+      color:#0f172a;
+
+      background:#fff;
+
+      border:1px solid #e2e8f0;
+
+      box-shadow:
+        0 8px 20px rgba(15,23,42,.04);
+
+      transition:.18s;
+    }
+
+    .adminMenuItem:hover{
+      transform:translateY(-2px);
+
+      border-color:#93c5fd;
+
+      box-shadow:
+        0 12px 26px rgba(37,99,235,.11);
+    }
+
+    .adminMenuIcon{
+      width:46px;
+      height:46px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      flex:none;
+
+      border-radius:15px;
+
+      background:#eff6ff;
+
+      font-size:21px;
+    }
+
+    .adminMenuText{
+      display:flex;
+      flex-direction:column;
+    }
+
+    .adminMenuText b{
+      font-size:14px;
+    }
+
+    .adminMenuText small{
+      margin-top:2px;
+
+      color:#64748b;
+
+      font-size:11px;
+      font-weight:800;
+    }
+
+    .adminNotice{
+      margin-top:15px;
+
+      padding:13px 15px;
+
+      border-radius:17px;
+
+      background:#eff6ff;
+
+      border:1px solid #bfdbfe;
+
+      color:#1e3a8a;
+
+      font-size:12px;
+      font-weight:850;
+
+      line-height:1.7;
+    }
+
+    .adminTips{
+      margin:0;
+      padding-left:20px;
+
+      color:#475569;
+
+      font-size:13px;
+      font-weight:800;
+
+      line-height:2;
+    }
+
+
+    /* =====================================================
+       LOCK BACKGROUND
+    ===================================================== */
+
+    .adminLock{
+      position:fixed;
+      inset:0;
+
+      z-index:999999;
+
+      display:none;
+      align-items:center;
+      justify-content:center;
+
+      padding:18px;
+
+      background:
+        radial-gradient(circle at 12% 15%,
+          rgba(14,165,233,.18),
+          transparent 32%),
+
+        radial-gradient(circle at 88% 12%,
+          rgba(236,72,153,.16),
+          transparent 32%),
+
+        rgba(2,6,23,.80);
+
+      backdrop-filter:blur(18px);
+      -webkit-backdrop-filter:blur(18px);
+    }
+
+
+    /* =====================================================
+       LOGIN CARD
+    ===================================================== */
+
+    .adminLoginCard{
+      position:relative;
+
+      width:min(410px,94vw);
+
+      padding:28px;
+
+      border-radius:28px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.99),
+          rgba(248,250,252,.97)
+        );
+
+      border:1px solid rgba(125,211,252,.38);
+
+      box-shadow:
+        0 40px 100px rgba(0,0,0,.55),
+        0 0 50px rgba(56,189,248,.12);
+
+      animation:adminLoginOpen .2s ease;
+    }
+
+    @keyframes adminLoginOpen{
+
+      from{
+        opacity:0;
+        transform:translateY(12px) scale(.97);
+      }
+
+      to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+      }
+    }
+
+
+    /* CLOSE */
+
+    .adminClose{
+      position:absolute;
+
+      top:14px;
+      right:14px;
+
+      width:36px;
+      height:36px;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      border:none;
+      border-radius:50%;
+
+      cursor:pointer;
+
+      background:#f1f5f9;
+
+      color:#64748b;
+
+      font-size:20px;
+      font-weight:900;
+
+      transition:.15s;
+    }
+
+    .adminClose:hover{
+      background:#fee2e2;
+      color:#dc2626;
+    }
+
+
+    /* LOGO */
+
+    .adminLoginLogo{
+      width:82px;
+      height:82px;
+
+      display:block;
+
+      margin:0 auto 6px;
+
+      object-fit:contain;
+    }
+
+
+    /* TITLE */
+
+    .adminLoginTitle{
+      margin:0;
+
+      text-align:center;
+
+      color:#0f172a;
+
+      font-size:21px;
+      font-weight:1000;
+    }
+
+    .adminLoginEnglish{
+      margin-top:3px;
+
+      text-align:center;
+
+      color:#0891b2;
+
+      font-size:13px;
+      font-weight:1000;
+    }
+
+    .adminLoginSub{
+      margin:7px auto 0;
+
+      max-width:320px;
+
+      text-align:center;
+
+      color:#64748b;
+
+      font-size:12px;
+      font-weight:800;
+
+      line-height:1.6;
+    }
+
+
+    /* =====================================================
+       PASSWORD
+    ===================================================== */
+
+    .adminPassword{
+      margin-top:21px;
+
+      height:58px;
+
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      padding:8px 9px 8px 13px;
+
+      border-radius:18px;
+
+      background:#f8fbff;
+
+      border:1px solid #dbeafe;
+
+      transition:.17s;
+    }
+
+    .adminPassword:focus-within{
+      border-color:#38bdf8;
+
+      box-shadow:
+        0 0 0 4px rgba(56,189,248,.10);
+    }
+
+    .adminPasswordIcon{
+      width:34px;
+
+      text-align:center;
+
+      font-size:19px;
+    }
+
+    .adminPassword input{
+      flex:1;
+
+      min-width:0;
+
+      border:none;
+      outline:none;
+
+      background:transparent;
+
+      color:#0f172a;
+
+      font-size:16px;
+      font-weight:900;
+    }
+
+    .adminPassword input::placeholder{
+      color:#94a3b8;
+      font-weight:700;
+    }
+
+
+    /* =====================================================
+       EYE BUTTON SVG
+    ===================================================== */
+
+    .showPassBtn{
+      width:42px;
+      height:42px;
+
+      flex:none;
+
+      display:flex;
+      align-items:center;
+      justify-content:center;
+
+      padding:0;
+
+      border:none;
+
+      border-radius:13px;
+
+      cursor:pointer;
+
+      background:#ffffff;
+
+      color:#64748b;
+
+      box-shadow:
+        0 4px 12px rgba(15,23,42,.05);
+
+      transition:.15s;
+    }
+
+    .showPassBtn:hover{
+      color:#2563eb;
+
+      background:#eff6ff;
+    }
+
+    .showPassBtn svg{
+      width:21px;
+      height:21px;
+
+      stroke:currentColor;
+
+      fill:none;
+
+      stroke-width:2;
+
+      stroke-linecap:round;
+
+      stroke-linejoin:round;
+    }
+
+
+    /* =====================================================
+       ERROR
+    ===================================================== */
+
+    .adminError{
+      margin-top:10px;
+
+      padding:9px 11px;
+
+      border-radius:13px;
+
+      text-align:center;
+
+      color:#b91c1c;
+
+      background:#fef2f2;
+
+      border:1px solid #fecaca;
+
+      font-size:12px;
+      font-weight:900;
+    }
+
+    .adminError:empty{
+      display:none;
+    }
+
+
+    /* =====================================================
+       BUTTONS
+    ===================================================== */
+
+    .adminLoginActions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+
+      gap:10px;
+
+      margin-top:14px;
+    }
+
+    .adminEnterBtn{
+      min-height:50px;
+
+      border:none;
+
+      border-radius:16px;
+
+      cursor:pointer;
+
+      color:#fff;
+
+      font-size:14px;
+      font-weight:1000;
+
+      background:
+        linear-gradient(
+          90deg,
+          #155eef,
+          #1687f8,
+          #1eb5f5
+        );
+
+      box-shadow:
+        0 12px 25px rgba(37,99,235,.23);
+
+      transition:.17s;
+    }
+
+    .adminEnterBtn:hover{
+      transform:translateY(-1px);
+
+      box-shadow:
+        0 16px 28px rgba(37,99,235,.30);
+    }
+
+    .adminCancelBtn{
+      min-height:50px;
+
+      border:1px solid #cbd5e1;
+
+      border-radius:16px;
+
+      cursor:pointer;
+
+      color:#475569;
+
+      background:#fff;
+
+      font-size:14px;
+      font-weight:1000;
+    }
+
+    .adminCancelBtn:hover{
+      background:#f8fafc;
+    }
+
+    .adminLoginHelp{
+      margin-top:15px;
+
+      text-align:center;
+
+      color:#94a3b8;
+
+      font-size:10px;
+      font-weight:750;
+
+      line-height:1.5;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media(max-width:800px){
+
+      .adminGrid{
+        grid-template-columns:1fr;
+      }
+
+      .adminHeader{
+        align-items:flex-start;
+      }
+    }
+
+    @media(max-width:620px){
+
+      .adminHeader{
+        flex-direction:column;
+      }
+
+      .adminLogout{
+        width:100%;
+      }
+
+      .adminBrandLogo{
+        width:68px;
+        height:68px;
+      }
+
+      .adminTitle{
+        font-size:23px;
+      }
+
+      .adminLoginActions{
+        grid-template-columns:1fr;
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body class="page-admin">
+
+  <div class="bg"></div>
+
+
+  <!-- ADMIN PAGE -->
+
+  <main class="adminWrap">
+
+    <section class="adminMainCard">
+
+
+      <header class="adminHeader">
+
+
+        <div class="adminBrand">
+
+          <img
+            class="adminBrandLogo"
+            src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+            alt="Student Assessment System"
+          >
+
+
+          <div>
+
+            <h1 class="adminTitle">
+              ระบบผู้ดูแล
+            </h1>
+
+            <div class="adminEnglish">
+              Student Assessment System
+            </div>
+
+            <p class="adminSub">
+              จัดการคะแนน ข้อมูล และระบบข้อสอบ
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="adminLogout"
+          id="logoutAdminBtn"
+          type="button"
+        >
+
+          <span class="adminLogoutIcon">
+            🚪
+          </span>
+
+          <span class="adminLogoutText">
+
+            <b>ออกจากระบบ</b>
+
+            <small>
+              กลับหน้าเข้าสู่ระบบ
+            </small>
+
+          </span>
+
+        </button>
+
+
+      </header>
+
+
+      <div class="adminLine"></div>
+
+
+      <section class="adminGrid">
+
+
+        <!-- MENU -->
+
+        <div class="adminPanel">
+
+          <div class="adminPanelTitle">
+            🛡️ เมนูผู้ดูแลระบบ
+          </div>
+
+
+          <div class="adminMenu">
+
+
+            <a
+              class="adminMenuItem"
+              href="admin-score.html"
+            >
+
+              <span class="adminMenuIcon">
+                🧾
+              </span>
+
+              <span class="adminMenuText">
+
+                <b>
+                  บันทึกคะแนนเก็บ (ทั้งห้อง)
+                </b>
+
+                <small>
+                  กรอกคะแนน / ใบงาน และบันทึกลง Scores
+                </small>
+
+              </span>
+
+            </a>
+
+
+
+            <a
+              class="adminMenuItem"
+              href="admin-view-score.html"
+            >
+
+              <span class="adminMenuIcon">
+                📊
+              </span>
+
+              <span class="adminMenuText">
+
+                <b>
+                  ดูคะแนนรวมรายห้อง (ปพ.5)
+                </b>
+
+                <small>
+                  สรุปคะแนน / คิดเกรด / ค่าเฉลี่ยทั้งห้อง
+                </small>
+
+              </span>
+
+            </a>
+
+
+
+            <a
+              class="adminMenuItem"
+              href="admin-exam-control.html"
+            >
+
+              <span class="adminMenuIcon">
+                🔄
+              </span>
+
+              <span class="adminMenuText">
+
+                <b>
+                  อนุญาตให้ทำข้อสอบใหม่
+                </b>
+
+                <small>
+                  รีเซ็ตสิทธิ์ / ปลดล็อกการทำข้อสอบ
+                </small>
+
+              </span>
+
+            </a>
+
+
+
+            <a
+              class="adminMenuItem"
+              href="#"
+              onclick="
+                alert('เมนูประกาศกำลังพัฒนา');
+                return false;
+              "
+            >
+
+              <span class="adminMenuIcon">
+                📢
+              </span>
+
+              <span class="adminMenuText">
+
+                <b>
+                  ประกาศ
+                </b>
+
+                <small>
+                  กำลังพัฒนา
+                </small>
+
+              </span>
+
+            </a>
+
+
+          </div>
+
+
+          <div class="adminNotice">
+
+            ✅ แนะนำให้บันทึกคะแนนเก็บก่อน
+            แล้วตรวจสอบผลที่เมนู
+            “ดูคะแนนรวมรายห้อง”
+
+          </div>
+
+        </div>
+
+
+
+        <!-- TIPS -->
+
+        <div class="adminPanel">
+
+          <div class="adminPanelTitle">
+            💡 คำแนะนำ
+          </div>
+
+          <ul class="adminTips">
+
+            <li>
+              จัดการงานและคะแนนเต็มก่อนกรอกคะแนน
+            </li>
+
+            <li>
+              แนะนำตั้งรหัสงาน เช่น A01, A02
+            </li>
+
+            <li>
+              คะแนนทั้งหมดจะเก็บในชีต Scores
+            </li>
+
+            <li>
+              เมื่อใช้งานเสร็จควรกดออกจากระบบ
+            </li>
+
+          </ul>
+
+        </div>
+
+
+      </section>
+
+
+    </section>
+
+  </main>
+
+
+
+  <!-- =====================================================
+       ADMIN LOGIN MODAL
+  ===================================================== -->
+
+  <div
+    class="adminLock"
+    id="adminLock"
+  >
+
+    <div
+      class="adminLoginCard"
+      id="adminLoginCard"
+    >
+
+
+      <!-- CLOSE -->
+
+      <button
+        class="adminClose"
+        id="adminClose"
+        type="button"
+        title="ยกเลิก"
+      >
+        ×
+      </button>
+
+
+
+      <!-- LOGO -->
+
+      <img
+        class="adminLoginLogo"
+        src="https://drive.google.com/thumbnail?id=1mYnNoOM4tklyiUC2X4nh64D9Qum3GjtL&sz=w1000"
+        alt="Student Assessment System"
+      >
+
+
+
+      <!-- TITLE -->
+
+      <h2 class="adminLoginTitle">
+        เข้าสู่ระบบผู้ดูแล
+      </h2>
+
+
+      <div class="adminLoginEnglish">
+        Administrator Access
+      </div>
+
+
+      <p class="adminLoginSub">
+
+        สำหรับครูผู้สอนหรือผู้ดูแลระบบเท่านั้น
+        กรุณากรอกรหัสผ่านเพื่อดำเนินการต่อ
+
+      </p>
+
+
+
+      <!-- PASSWORD -->
+
+      <div class="adminPassword">
+
+
+        <span class="adminPasswordIcon">
+          🔑
+        </span>
+
+
+        <input
+          id="adminPass"
+          type="password"
+          placeholder="กรอกรหัสผ่าน Admin"
+          autocomplete="current-password"
+        >
+
+
+        <!-- SVG EYE -->
+
+        <button
+          class="showPassBtn"
+          id="showPassBtn"
+          type="button"
+          title="แสดงรหัสผ่าน"
+          aria-label="แสดงหรือซ่อนรหัสผ่าน"
+        >
+
+          <svg
+            id="eyeIcon"
+            viewBox="0 0 24 24"
+          >
+
+            <path
+              d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12"
+            ></path>
+
+            <circle
+              cx="12"
+              cy="12"
+              r="3"
+            ></circle>
+
+          </svg>
+
+        </button>
+
+
+      </div>
+
+
+
+      <!-- ERROR -->
+
+      <div
+        class="adminError"
+        id="adminError"
+      ></div>
+
+
+
+      <!-- ACTION -->
+
+      <div class="adminLoginActions">
+
+
+        <button
+          class="adminEnterBtn"
+          id="adminEnterBtn"
+          type="button"
+        >
+
+          🔓 เข้าสู่ระบบ
+
+        </button>
+
+
+        <button
+          class="adminCancelBtn"
+          id="adminCancelBtn"
+          type="button"
+        >
+
+          ยกเลิก
+
+        </button>
+
+
+      </div>
+
+
+
+      <div class="adminLoginHelp">
+
+        หากนักเรียนกดเข้าหน้านี้โดยไม่ตั้งใจ
+        สามารถกด “ยกเลิก” ปุ่ม × หรือกด Esc เพื่อกลับได้ทันที
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
+       SCRIPT
+  ===================================================== -->
+
+  <script>
+
+    const ADMIN_PASSWORD =
+      "Runix3213";
+
+
+    const ADMIN_KEY =
+      "ADMIN_UNLOCKED_SESSION";
+
+
+    const adminLock =
+      document.getElementById(
+        "adminLock"
+      );
+
+
+    const adminPass =
+      document.getElementById(
+        "adminPass"
+      );
+
+
+    const adminEnterBtn =
+      document.getElementById(
+        "adminEnterBtn"
+      );
+
+
+    const adminCancelBtn =
+      document.getElementById(
+        "adminCancelBtn"
+      );
+
+
+    const adminClose =
+      document.getElementById(
+        "adminClose"
+      );
+
+
+    const adminError =
+      document.getElementById(
+        "adminError"
+      );
+
+
+    const showPassBtn =
+      document.getElementById(
+        "showPassBtn"
+      );
+
+
+    const eyeIcon =
+      document.getElementById(
+        "eyeIcon"
+      );
+
+
+    const logoutAdminBtn =
+      document.getElementById(
+        "logoutAdminBtn"
+      );
+
+
+
+    /* ===============================
+       OPEN
+    =============================== */
+
+    function openAdminLogin(){
+
+      adminLock.style.display =
+        "flex";
+
+
+      adminPass.value =
+        "";
+
+
+      adminPass.type =
+        "password";
+
+
+      adminError.textContent =
+        "";
+
+
+      setEyeOpen();
+
+
+      setTimeout(
+        () => adminPass.focus(),
+        120
+      );
+
+    }
+
+
+
+    /* ===============================
+       EYE OPEN
+    =============================== */
+
+    function setEyeOpen(){
+
+      eyeIcon.innerHTML = `
+
+        <path
+          d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12"
+        ></path>
+
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+        ></circle>
+
+      `;
+
+
+      showPassBtn.title =
+        "แสดงรหัสผ่าน";
+
+    }
+
+
+
+    /* ===============================
+       EYE OFF
+    =============================== */
+
+    function setEyeOff(){
+
+      eyeIcon.innerHTML = `
+
+        <path
+          d="M3 3l18 18"
+        ></path>
+
+        <path
+          d="M10.6 10.6a2 2 0 0 0 2.8 2.8"
+        ></path>
+
+        <path
+          d="M9.9 4.2A9.7 9.7 0 0 1 12 4c6.5 0 10 8 10 8a17 17 0 0 1-2.1 3.2"
+        ></path>
+
+        <path
+          d="M6.6 6.6C3.7 8.4 2 12 2 12s3.5 8 10 8a9.8 9.8 0 0 0 4.2-.9"
+        ></path>
+
+      `;
+
+
+      showPassBtn.title =
+        "ซ่อนรหัสผ่าน";
+
+    }
+
+
+
+    /* ===============================
+       CANCEL
+    =============================== */
+
+    function cancelAdmin(){
+
+      sessionStorage.removeItem(
+        ADMIN_KEY
+      );
+
+
+      window.location.href =
+        "index.html";
+
+    }
+
+
+
+    /* ===============================
+       LOGIN
+    =============================== */
+
+    function loginAdmin(){
+
+      const password =
+        adminPass.value.trim();
+
+
+      if(!password){
+
+        adminError.textContent =
+          "กรุณากรอกรหัสผ่าน";
+
+        adminPass.focus();
+
+        return;
+
+      }
+
+
+      if(
+        password !==
+        ADMIN_PASSWORD
+      ){
+
+        adminError.textContent =
+          "❌ รหัสผ่านไม่ถูกต้อง";
+
+        adminPass.select();
+
+        return;
+
+      }
+
+
+      sessionStorage.setItem(
+        ADMIN_KEY,
+        "1"
+      );
+
+
+      adminLock.style.display =
+        "none";
+
+    }
+
+
+
+    /* ===============================
+       FIRST LOAD
+    =============================== */
+
+    if(
+      sessionStorage.getItem(
+        ADMIN_KEY
+      ) !== "1"
+    ){
+
+      openAdminLogin();
+
+    }
+
+    else{
+
+      adminLock.style.display =
+        "none";
+
+    }
+
+
+
+    /* ===============================
+       LOGIN EVENTS
+    =============================== */
+
+    adminEnterBtn.addEventListener(
+      "click",
+      loginAdmin
+    );
+
+
+    adminPass.addEventListener(
+      "keydown",
+      function(e){
+
+        if(e.key === "Enter"){
+
+          loginAdmin();
+
+        }
+
+
+        if(e.key === "Escape"){
+
+          cancelAdmin();
+
+        }
+
+      }
+    );
+
+
+
+    /* ===============================
+       CANCEL
+    =============================== */
+
+    adminCancelBtn.addEventListener(
+      "click",
+      cancelAdmin
+    );
+
+
+    adminClose.addEventListener(
+      "click",
+      cancelAdmin
+    );
+
+
+
+    /* คลิกพื้นหลัง */
+
+    adminLock.addEventListener(
+      "click",
+      function(e){
+
+        if(
+          e.target === adminLock
+        ){
+
+          cancelAdmin();
+
+        }
+
+      }
+    );
+
+
+
+    /* ===============================
+       SHOW / HIDE PASSWORD
+    =============================== */
+
+    showPassBtn.addEventListener(
+      "click",
+      function(){
+
+        if(
+          adminPass.type ===
+          "password"
+        ){
+
+          adminPass.type =
+            "text";
+
+
+          setEyeOff();
+
+        }
+
+        else{
+
+          adminPass.type =
+            "password";
+
+
+          setEyeOpen();
+
+        }
+
+
+        adminPass.focus();
+
+      }
+    );
+
+
+
+    /* ===============================
+       LOGOUT
+    =============================== */
+
+    logoutAdminBtn.addEventListener(
+      "click",
+      function(){
+
+        sessionStorage.removeItem(
+          ADMIN_KEY
+        );
+
+
+        window.location.href =
+          "index.html";
+
+      }
+    );
+
+
+  </script>
+
+
+</body>
+
+</html>
